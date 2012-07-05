@@ -8,17 +8,19 @@ $ ->
   ed.click ->
     do -> $('.point').focus()
 
-  click_choose = (elems) ->
-    elems.click ->
-      old = $('.point').removeAttr(editable).removeAttr('id')
-      click_choose old
-      elems.attr(editable, 'true').attr('class', 'point').focus()
-      off
-
-  window.pop_point = (elems) ->
+  pop_point = (elems) ->
     elems.removeAttr(editable).removeAttr('class')
-  window.set_point = (elems) ->
+    elems
+  set_point = (elems) ->
     elems.attr(editable, 'true').attr('class', 'point').focus()
+    elems
+
+  click_choose = (elems) ->
+    elems[0].onclick = ->
+      old = pop_point $('.point')
+      click_choose old
+      set_point elems
+      off
 
   in_sight = yes
   $('#editor').bind 'focus', -> in_sight = yes
@@ -55,6 +57,7 @@ $ ->
         when 38 # up
           if $('.point').html().length > 0
             old = pop_point $('.point')
+            click_choose old
             old.before cursor
             $('.point').focus()
           else if $('.point').prev().length > 0
@@ -64,6 +67,7 @@ $ ->
         when 40 # down
           if $('.point').html().length > 0
             old = pop_point $('.point')
+            click_choose old
             old.after cursor
             $('.point').focus()
           else if $('.point').next().length > 0
