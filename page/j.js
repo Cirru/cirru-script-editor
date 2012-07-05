@@ -14,11 +14,18 @@ $(function() {
   });
   click_choose = function(elems) {
     return elems[0].onclick = function() {
-      var old;
+      var old, up, _ref;
       old = $('.point').removeAttr(editable).removeAttr('class');
       click_choose(old);
+      console.log(old);
       if (old.html().length === 0) {
-        old[0].outerHTML = '';
+        up = old.parent();
+        old.remove();
+        while ((_ref = up.html()) === '' || _ref === '<br>') {
+          old = up;
+          up = up.parent();
+          old.remove();
+        }
       }
       set_point(elems);
       return false;

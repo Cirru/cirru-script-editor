@@ -12,8 +12,14 @@ $ ->
     elems[0].onclick = ->
       old = $('.point').removeAttr(editable).removeAttr('class')
       click_choose old
+      console.log old
       if old.html().length is 0
-        old[0].outerHTML = ''
+        up = old.parent()
+        old.remove()
+        while up.html() in ['', '<br>']
+          old = up
+          up = up.parent()
+          old.remove()
       set_point elems
       off
   pop_point = (elems) ->
