@@ -12,22 +12,26 @@ $(function() {
       return $('.point').focus();
     })();
   });
+  click_choose = function(elems) {
+    return elems[0].onclick = function() {
+      var old;
+      old = $('.point').removeAttr(editable).removeAttr('class');
+      click_choose(old);
+      if (old.html().length === 0) {
+        old[0].outerHTML = '';
+      }
+      set_point(elems);
+      return false;
+    };
+  };
   pop_point = function(elems) {
     elems.removeAttr(editable).removeAttr('class');
+    click_choose(elems);
     return elems;
   };
   set_point = function(elems) {
     elems.attr(editable, 'true').attr('class', 'point').focus();
     return elems;
-  };
-  click_choose = function(elems) {
-    return elems[0].onclick = function() {
-      var old;
-      old = pop_point($('.point'));
-      click_choose(old);
-      set_point(elems);
-      return false;
-    };
   };
   in_sight = true;
   $('#editor').bind('focus', function() {
@@ -42,7 +46,12 @@ $(function() {
     if (in_sight) {
       switch (e.keyCode) {
         case 13:
-          console.log('xx');
+          old = pop_point($('.point'));
+          old.after("<section>" + cursor + "</section>");
+          $('.point').focus();
+          if (old.html().length === 0) {
+            old[0].outerHTML = '';
+          }
           break;
         case 9:
           if ($('.point').html().length > 0) {
@@ -55,7 +64,6 @@ $(function() {
             }
             console.log($('.point'));
             pop_point(old);
-            click_choose(old);
             $('.point').focus();
           }
           break;
@@ -63,36 +71,62 @@ $(function() {
           if ($('.point').next().length > 0) {
             next = $('.point').next();
             old = pop_point($('.point'));
-            old[0].outerHTML = '';
-            set_point(next);
+            old.remove();
+            if (next[0].tagName === 'DIV') {
+              set_point(next);
+            } else if (next[0].tagName === 'SECTION') {
+              next.prepend(cursor);
+              $('.point').focus();
+            }
           } else if ($('.point').prev().length > 0) {
             prev = $('.point').prev();
             old = pop_point($('.point'));
-            old[0].outerHTML = '';
-            set_point(prev);
+            old.remove();
+            if (prev[0].tagName === 'DIV') {
+              set_point(prev);
+            } else {
+              prev.append(cursor);
+              $('.point').focus();
+            }
           }
           break;
         case 38:
           if ($('.point').html().length > 0) {
             old = pop_point($('.point'));
-            click_choose(old);
             old.before(cursor);
             $('.point').focus();
           } else if ($('.point').prev().length > 0) {
-            set_point($('.point').prev());
+            prev = $('.point').prev();
+            if (prev[0].tagName === 'DIV') {
+              set_point($('.point').prev());
+            } else if (prev[0].tagName === 'SECTION') {
+              prev.append(cursor);
+            }
             $('.point')[1].outerHTML = '';
+            $('.point').focus();
+          } else if ($('.point').parent().attr('id') !== 'editor') {
+            $('.point').parent().before(cursor);
+            $('.point').last().remove();
             $('.point').focus();
           }
           break;
         case 40:
           if ($('.point').html().length > 0) {
             old = pop_point($('.point'));
-            click_choose(old);
             old.after(cursor);
             $('.point').focus();
           } else if ($('.point').next().length > 0) {
-            set_point($('.point').next());
+            next = $('.point').next();
+            if (next[0].tagName === 'DIV') {
+              set_point($('.point').next());
+            } else if (next[0].tagName === 'SECTION') {
+              next.prepend(cursor);
+            }
             $('.point')[0].outerHTML = '';
+            $('.point').focus();
+          } else if ($('.point').parent().attr('id') !== 'editor') {
+            $('.point').parent().after(cursor);
+            $('.point').first().remove();
             $('.point').focus();
           }
           break;
