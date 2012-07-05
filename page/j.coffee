@@ -24,6 +24,11 @@ $ ->
     elems.attr(editable, 'true').attr('class', 'point').focus()
     elems
 
+  focus = ->
+    $('.point').focus()
+    sel = window.getSelection()
+    sel.collapse $('.point')[0], 1
+
   in_sight = yes
   $('#editor').bind 'focus', -> in_sight = yes
   $('#editor').bind 'blur', -> in_sight = no
@@ -34,7 +39,7 @@ $ ->
         when 13
           old = pop_point $('.point')
           old.after "<section>#{cursor}</section>"
-          $('.point').focus()
+          focus()
           if old.html().length is 0
             old[0].outerHTML = ''
         when 9
@@ -47,7 +52,7 @@ $ ->
               old = $('.point').first()
             console.log $('.point')
             pop_point old
-            $('.point').focus()
+            focus()
         when 46
           if $('.point').next().length > 0
             next = $('.point').next()
@@ -57,7 +62,7 @@ $ ->
               set_point next
             else if next[0].tagName is 'SECTION'
               next.prepend cursor
-              $('.point').focus()
+              focus()
           else if $('.point').prev().length > 0
             prev = $('.point').prev()
             old = pop_point $('.point')
@@ -66,12 +71,12 @@ $ ->
               set_point prev
             else
               prev.append cursor
-              $('.point').focus()
+              focus()
         when 38 # up
           if $('.point').html().length > 0
             old = pop_point $('.point')
             old.before cursor
-            $('.point').focus()
+            focus()
           else if $('.point').prev().length > 0
             prev = $('.point').prev()
             if prev[0].tagName is 'DIV'
@@ -79,16 +84,16 @@ $ ->
             else if prev[0].tagName is 'SECTION'
               prev.append cursor
             $('.point')[1].outerHTML = ''
-            $('.point').focus()
+            focus()
           else if $('.point').parent().attr('id') isnt 'editor'
             $('.point').parent().before(cursor)
             $('.point').last().remove()
-            $('.point').focus()
+            focus()
         when 40 # down
           if $('.point').html().length > 0
             old = pop_point $('.point')
             old.after cursor
-            $('.point').focus()
+            focus()
           else if $('.point').next().length > 0
             next = $('.point').next()
             if next[0].tagName is 'DIV'
@@ -96,10 +101,10 @@ $ ->
             else if next[0].tagName is 'SECTION'
               next.prepend cursor
             $('.point')[0].outerHTML = ''
-            $('.point').focus()
+            focus()
           else if $('.point').parent().attr('id') isnt 'editor'
             $('.point').parent().after(cursor)
             $('.point').first().remove()
-            $('.point').focus()
+            focus()
         else return on
       off
