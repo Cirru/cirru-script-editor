@@ -56,7 +56,7 @@ $(function() {
     return in_sight = false;
   });
   return $(document).keydown(function(e) {
-    var next, old, prev, _ref, _ref1;
+    var next, old, prev, up, _ref, _ref1, _ref2, _ref3;
     console.log(e.keyCode);
     if (in_sight) {
       switch (e.keyCode) {
@@ -120,12 +120,17 @@ $(function() {
             focus();
           } else if ($('.point').parent().attr('id') !== 'editor') {
             $('.point').parent().before(cursor);
-            $('.point').last().remove();
+            old = $('.point').last();
+            up = old.parent();
+            old.remove();
+            if (_ref1 = up.html(), __indexOf.call(empty, _ref1) >= 0) {
+              up.remove();
+            }
             focus();
           }
           break;
         case 40:
-          if (_ref1 = $('.point').html(), __indexOf.call(empty, _ref1) < 0) {
+          if (_ref2 = $('.point').html(), __indexOf.call(empty, _ref2) < 0) {
             old = pop_point($('.point'));
             old.after(cursor);
             focus();
@@ -140,7 +145,12 @@ $(function() {
             focus();
           } else if ($('.point').parent().attr('id') !== 'editor') {
             $('.point').parent().after(cursor);
-            $('.point').first().remove();
+            old = $('.point').first();
+            up = old.parent();
+            old.remove();
+            if (_ref3 = up.html(), __indexOf.call(empty, _ref3) >= 0) {
+              up.remove();
+            }
             focus();
           }
           break;

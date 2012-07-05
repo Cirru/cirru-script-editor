@@ -94,7 +94,10 @@ $ ->
             focus()
           else if $('.point').parent().attr('id') isnt 'editor'
             $('.point').parent().before(cursor)
-            $('.point').last().remove()
+            old = $('.point').last()
+            up = old.parent()
+            old.remove()
+            if up.html() in empty then up.remove()
             focus()
         when 40 # down
           unless $('.point').html() in empty
@@ -111,7 +114,10 @@ $ ->
             focus()
           else if $('.point').parent().attr('id') isnt 'editor'
             $('.point').parent().after(cursor)
-            $('.point').first().remove()
+            old = $('.point').first()
+            up = old.parent()
+            old.remove()
+            if up.html() in empty then up.remove()
             focus()
         else return on
       off
