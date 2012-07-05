@@ -14,7 +14,6 @@ $ ->
     elems[0].onclick = ->
       old = $('.point').removeAttr(editable).removeAttr('class')
       click_choose old
-      console.log old
       if old.html().length is 0
         up = old.parent()
         old.remove()
@@ -48,8 +47,7 @@ $ ->
           old = pop_point $('.point')
           old.after "<section>#{cursor}</section>"
           focus()
-          if old.html().length is 0
-            old[0].outerHTML = ''
+          if old.html() in empty then old.first().remove()
         when 9
           if $('.point').html().length > 0
             if e.shiftKey
@@ -121,3 +119,14 @@ $ ->
             focus()
         else return on
       off
+  window.parse = ->
+    map = (item) ->
+      if item.tagName is 'DIV'
+        item.innerText
+      else if item.tagName is 'SECTION'
+        console.log item.children
+        res = $.map item.children, (x) ->
+          map x
+        [res]
+    res = $.map $('#editor')[0].children, map
+    console.log 'res:', res

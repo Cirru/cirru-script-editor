@@ -19,7 +19,6 @@ $(function() {
       var old, up, _ref;
       old = $('.point').removeAttr(editable).removeAttr('class');
       click_choose(old);
-      console.log(old);
       if (old.html().length === 0) {
         up = old.parent();
         old.remove();
@@ -55,8 +54,8 @@ $(function() {
   $('#editor').bind('blur', function() {
     return in_sight = false;
   });
-  return $(document).keydown(function(e) {
-    var next, old, prev, up, _ref, _ref1, _ref2, _ref3;
+  $(document).keydown(function(e) {
+    var next, old, prev, up, _ref, _ref1, _ref2, _ref3, _ref4;
     console.log(e.keyCode);
     if (in_sight) {
       switch (e.keyCode) {
@@ -64,8 +63,8 @@ $(function() {
           old = pop_point($('.point'));
           old.after("<section>" + cursor + "</section>");
           focus();
-          if (old.html().length === 0) {
-            old[0].outerHTML = '';
+          if (_ref = old.html(), __indexOf.call(empty, _ref) >= 0) {
+            old.first().remove();
           }
           break;
         case 9:
@@ -105,7 +104,7 @@ $(function() {
           }
           break;
         case 38:
-          if (_ref = $('.point').html(), __indexOf.call(empty, _ref) < 0) {
+          if (_ref1 = $('.point').html(), __indexOf.call(empty, _ref1) < 0) {
             old = pop_point($('.point'));
             old.before(cursor);
             focus();
@@ -123,14 +122,14 @@ $(function() {
             old = $('.point').last();
             up = old.parent();
             old.remove();
-            if (_ref1 = up.html(), __indexOf.call(empty, _ref1) >= 0) {
+            if (_ref2 = up.html(), __indexOf.call(empty, _ref2) >= 0) {
               up.remove();
             }
             focus();
           }
           break;
         case 40:
-          if (_ref2 = $('.point').html(), __indexOf.call(empty, _ref2) < 0) {
+          if (_ref3 = $('.point').html(), __indexOf.call(empty, _ref3) < 0) {
             old = pop_point($('.point'));
             old.after(cursor);
             focus();
@@ -148,7 +147,7 @@ $(function() {
             old = $('.point').first();
             up = old.parent();
             old.remove();
-            if (_ref3 = up.html(), __indexOf.call(empty, _ref3) >= 0) {
+            if (_ref4 = up.html(), __indexOf.call(empty, _ref4) >= 0) {
               up.remove();
             }
             focus();
@@ -160,4 +159,21 @@ $(function() {
       return false;
     }
   });
+  return window.parse = function() {
+    var map, res;
+    map = function(item) {
+      var res;
+      if (item.tagName === 'DIV') {
+        return item.innerText;
+      } else if (item.tagName === 'SECTION') {
+        console.log(item.children);
+        res = $.map(item.children, function(x) {
+          return map(x);
+        });
+        return [res];
+      }
+    };
+    res = $.map($('#editor')[0].children, map);
+    return console.log('res:', res);
+  };
 });
