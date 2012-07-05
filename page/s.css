@@ -8,9 +8,12 @@
 }
 #editor #live {
   display: inline-block;
+  outline: none;
+}
+#editor code {
   border-color: #fff;
   border-style: solid;
   border-width: 0px 0px 1px 0px;
-  padding: 2px;
-  outline: none;
+  margin: 0px 4px;
+  padding: 0px 1px;
 }
