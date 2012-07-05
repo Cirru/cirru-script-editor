@@ -2,6 +2,8 @@
 $ ->
   editable = 'contenteditable'
   cursor = "<div class='point' #{editable}='true'></div>"
+  empty = ['', '<br>']
+
   ed = $('#editor')
   ed.append cursor
   $('.point').focus()
@@ -12,8 +14,14 @@ $ ->
     elems[0].onclick = ->
       old = $('.point').removeAttr(editable).removeAttr('class')
       click_choose old
+      console.log old
       if old.html().length is 0
-        old[0].outerHTML = ''
+        up = old.parent()
+        old.remove()
+        while up.html() in empty
+          old = up
+          up = up.parent()
+          old.remove()
       set_point elems
       off
   pop_point = (elems) ->
@@ -50,7 +58,6 @@ $ ->
             else
               $('.point').after cursor
               old = $('.point').first()
-            console.log $('.point')
             pop_point old
             focus()
         when 46
@@ -73,7 +80,7 @@ $ ->
               prev.append cursor
               focus()
         when 38 # up
-          if $('.point').html().length > 0
+          unless $('.point').html() in empty
             old = pop_point $('.point')
             old.before cursor
             focus()
@@ -90,7 +97,7 @@ $ ->
             $('.point').last().remove()
             focus()
         when 40 # down
-          if $('.point').html().length > 0
+          unless $('.point').html() in empty
             old = pop_point $('.point')
             old.after cursor
             focus()
@@ -100,7 +107,7 @@ $ ->
               set_point $('.point').next()
             else if next[0].tagName is 'SECTION'
               next.prepend cursor
-            $('.point')[0].outerHTML = ''
+            $('.point').first().remove()
             focus()
           else if $('.point').parent().attr('id') isnt 'editor'
             $('.point').parent().after(cursor)
