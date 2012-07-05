@@ -18,7 +18,11 @@ $ ->
       if old.html().length is 0
         up = old.parent()
         old.remove()
+<<<<<<< HEAD
         while up.html() in empty
+=======
+        while up.html() in ['', '<br>']
+>>>>>>> b6f4ce021c2ed22bd6fb5606672a8c87406c2873
           old = up
           up = up.parent()
           old.remove()

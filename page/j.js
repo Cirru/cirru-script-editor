@@ -23,7 +23,11 @@ $(function() {
       if (old.html().length === 0) {
         up = old.parent();
         old.remove();
+<<<<<<< HEAD
         while (_ref = up.html(), __indexOf.call(empty, _ref) >= 0) {
+=======
+        while ((_ref = up.html()) === '' || _ref === '<br>') {
+>>>>>>> b6f4ce021c2ed22bd6fb5606672a8c87406c2873
           old = up;
           up = up.parent();
           old.remove();
