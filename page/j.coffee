@@ -9,6 +9,7 @@ $ ->
   $('.point').focus()
   ed.click ->
     do -> $('.point').focus()
+  paste = ''
 
   click_choose = (elems) ->
     elems[0].onclick = ->
@@ -119,6 +120,17 @@ $ ->
             old.remove()
             if up.html() in empty then up.remove()
           focus()
+        when 89 # ctrl + y
+          up = $('.point').parent()
+          if e.ctrlKey and up[0].tagName is 'SECTION'
+            up.after cursor
+            pop_point $('.point').first()
+            paste = up[0].outerHTML
+            up.remove()
+            focus()
+        when 85 # ctrl + u
+          if e.ctrlKey and paste.length > 0
+            $('.point').before paste
         else return on
       off
   window.parse = ->

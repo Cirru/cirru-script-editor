@@ -2,7 +2,7 @@
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 $(function() {
-  var click_choose, cursor, ed, editable, empty, focus, in_sight, pop_point, set_point;
+  var click_choose, cursor, ed, editable, empty, focus, in_sight, paste, pop_point, set_point;
   editable = 'contenteditable';
   cursor = "<div class='point' " + editable + "='true'></div>";
   empty = ['', '<br>'];
@@ -14,6 +14,7 @@ $(function() {
       return $('.point').focus();
     })();
   });
+  paste = '';
   click_choose = function(elems) {
     return elems[0].onclick = function() {
       var old, up, _ref;
@@ -155,6 +156,21 @@ $(function() {
             }
           }
           focus();
+          break;
+        case 89:
+          up = $('.point').parent();
+          if (e.ctrlKey && up[0].tagName === 'SECTION') {
+            up.after(cursor);
+            pop_point($('.point').first());
+            paste = up[0].outerHTML;
+            up.remove();
+            focus();
+          }
+          break;
+        case 85:
+          if (e.ctrlKey && paste.length > 0) {
+            $('.point').before(paste);
+          }
           break;
         default:
           return true;
