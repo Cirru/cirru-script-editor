@@ -8,24 +8,25 @@
   padding: 6px;
   color: #fff;
   overflow: scroll;
+  box-shadow: 0px 0px 8px #808080;
 }
 #editor div {
-  outline: none;
   display: inline-block;
-  border-color: #cfcffc;
-  border-style: solid;
-  border-width: 0px 0px 1px 0px;
-  margin: 0px 4px;
-  padding: 0px 1px 2px 1px;
+  margin: 2px 4px;
+  padding: 2px 4px;
+  box-shadow: 0px 0px 4px #cfcffc;
+  border-radius: 4px;
 }
 #editor section {
-  border-color: #c0c0fc;
+  border-color: #9e9efa;
   border-style: solid;
   border-width: 0px 0px 0px 1px;
-  margin: 4px 0px 4px 11px;
-  padding-left: 8px;
-  border-radius: 6px;
+  margin: 4px 0px 4px 9px;
+  padding: 0px 0px 1px 8px;
   white-space: nowrap;
+}
+#editor .point {
+  box-shadow: 0px 0px 8px #fff;
 }
 ::-webkit-scrollbar {
   width: 4px;
@@ -33,6 +34,6 @@
   background: #ede6de;
 }
 ::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 4px;
-  background: #c2a3a3;
+  border-radius: 4px;
+  background: #ad8585;
 }
