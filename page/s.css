@@ -1,24 +1,38 @@
 #editor {
-  background: #a3a3f5;
+  background: #7575f0;
   height: 500px;
   width: 800px;
   font-family: 'wenquanyi micro hei mono';
+  font-size: 14px;
+  letter-spacing: 1px;
   padding: 6px;
   color: #fff;
+  overflow: scroll;
 }
 #editor div {
   outline: none;
   display: inline-block;
-  border-color: #fff;
+  border-color: #cfcffc;
   border-style: solid;
   border-width: 0px 0px 1px 0px;
   margin: 0px 4px;
-  padding: 0px 1px;
+  padding: 0px 1px 2px 1px;
 }
 #editor section {
-  border-color: #cfcffc;
+  border-color: #c0c0fc;
   border-style: solid;
   border-width: 0px 0px 0px 1px;
-  margin: 1px 0px 0px 20px;
-  padding: 1px;
+  margin: 4px 0px 4px 11px;
+  padding-left: 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background: #ede6de;
+}
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 4px;
+  background: #c2a3a3;
 }
