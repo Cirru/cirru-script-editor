@@ -26,10 +26,6 @@ $ ->
       off
   pop_point = (elems) ->
     elems.removeAttr(editable).removeAttr('class')
-    while elems.text() in empty
-      up = elems.parent()
-      elems.remove()
-      elems = up
     click_choose elems
     elems
   set_point = (elems) ->
@@ -128,8 +124,13 @@ $ ->
           up = $('.point').parent()
           if e.ctrlKey and up[0].tagName is 'SECTION'
             up.after cursor
-            pop_point $('.point').first()
-            console.log $('.point')
+            elems = pop_point $('.point').first()
+            while elems.text() in empty
+              unless elems.parent().has $('.point')
+                up = elems.parent()
+                elems.remove()
+                elems = up
+              else break
             paste = up[0].outerHTML or ''
             up.remove()
             focus()

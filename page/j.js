@@ -34,13 +34,7 @@ $(function() {
     };
   };
   pop_point = function(elems) {
-    var up, _ref;
     elems.removeAttr(editable).removeAttr('class');
-    while (_ref = elems.text(), __indexOf.call(empty, _ref) >= 0) {
-      up = elems.parent();
-      elems.remove();
-      elems = up;
-    }
     click_choose(elems);
     return elems;
   };
@@ -62,7 +56,7 @@ $(function() {
     return in_sight = false;
   });
   $(document).keydown(function(e) {
-    var next, old, prev, up, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+    var elems, next, old, prev, up, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6;
     console.log(e.keyCode);
     if (in_sight) {
       switch (e.keyCode) {
@@ -167,8 +161,16 @@ $(function() {
           up = $('.point').parent();
           if (e.ctrlKey && up[0].tagName === 'SECTION') {
             up.after(cursor);
-            pop_point($('.point').first());
-            console.log($('.point'));
+            elems = pop_point($('.point').first());
+            while (_ref6 = elems.text(), __indexOf.call(empty, _ref6) >= 0) {
+              if (!elems.parent().has($('.point'))) {
+                up = elems.parent();
+                elems.remove();
+                elems = up;
+              } else {
+                break;
+              }
+            }
             paste = up[0].outerHTML || '';
             up.remove();
             focus();
