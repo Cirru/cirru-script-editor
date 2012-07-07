@@ -34,7 +34,13 @@ $(function() {
     };
   };
   pop_point = function(elems) {
+    var up, _ref;
     elems.removeAttr(editable).removeAttr('class');
+    while (_ref = elems.text(), __indexOf.call(empty, _ref) >= 0) {
+      up = elems.parent();
+      elems.remove();
+      elems = up;
+    }
     click_choose(elems);
     return elems;
   };
@@ -162,7 +168,8 @@ $(function() {
           if (e.ctrlKey && up[0].tagName === 'SECTION') {
             up.after(cursor);
             pop_point($('.point').first());
-            paste = up[0].outerHTML;
+            console.log($('.point'));
+            paste = up[0].outerHTML || '';
             up.remove();
             focus();
           }

@@ -26,6 +26,10 @@ $ ->
       off
   pop_point = (elems) ->
     elems.removeAttr(editable).removeAttr('class')
+    while elems.text() in empty
+      up = elems.parent()
+      elems.remove()
+      elems = up
     click_choose elems
     elems
   set_point = (elems) ->
@@ -125,7 +129,8 @@ $ ->
           if e.ctrlKey and up[0].tagName is 'SECTION'
             up.after cursor
             pop_point $('.point').first()
-            paste = up[0].outerHTML
+            console.log $('.point')
+            paste = up[0].outerHTML or ''
             up.remove()
             focus()
         when 85 # ctrl + u
