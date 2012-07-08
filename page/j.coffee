@@ -1,91 +1,77 @@
   
 $ ->
   editable = 'contenteditable'
-  cursor = "<div class='point' #{editable}='true'></div>"
-  empty = ['', '<br>']
-
-  ed = $('#editor')
-  ed.append cursor
-  $('.point').focus()
-  ed.click ->
-    do -> $('.point').focus()
+  cursor = "<code id='target' #{editable}='true'/>"
+  blank = ['', '<br>']
   paste = ''
 
-  click_choose = (elems) ->
-    elems[0].onclick = ->
-      old = $('.point').removeAttr(editable).removeAttr('class')
-      click_choose old
-      if old.html().length is 0
+  p = -> $ '#point'
+  t = -> $ '#target'
+
+  empty = (elem) -> elem.html() in blank
+  branch = (elem) ->
+    unless elem.parent().attr('id') is 'editor' then yes
+    else no
+  exist = (elem) -> elem.length > 0
+  leaf = (elem) -> elem[0].tagName is 'CODE'
+
+  target = (elem) ->
+    elem.attr('id', 'point').attr(editable, 'true')
+
+  point = (refocus = yes) ->
+    old = p().removeAttr('id').removeAttr editable
+    if exist old
+      old[0].onclick = (e) ->
+        old.attr('id', 'target').attr(editable, 'true')
+        @onclick = {}
+        point off
+        e.preventDefault()
+        off
+      while (empty old) and (branch old)
         up = old.parent()
         old.remove()
-        while up.html() in empty
-          old = up
-          up = up.parent()
-          old.remove()
-      set_point elems
-      off
-  pop_point = (elems) ->
-    elems.removeAttr(editable).removeAttr('class')
-    click_choose elems
-    elems
-  set_point = (elems) ->
-    elems.attr(editable, 'true').attr('class', 'point').focus()
-    elems
+        old = up
+    target t()
+    if refocus then focus()
 
   focus = ->
     sel = window.getSelection()
-    sel.collapse $('.point')[0], 1
-    $('section').addClass 'inline'
-    $('.inline:has(section)').removeClass 'inline'
-    $('.point').focus()
+    sel.collapse p()[0], 1
+    $('div').addClass 'inline'
+    $('div:has(div)').removeClass 'inline'
+    p().focus()
+
+  $('#editor').append cursor
+  t().attr 'id', 'point'
+  focus()
+  $('#editor').click ->
+    console.log 'called'
+    # focus()
 
   in_sight = yes
   $('#editor').bind 'focus', -> in_sight = yes
   $('#editor').bind 'blur', -> in_sight = no
-  $(document).keydown (e) ->
+
+  $('#editor').keydown (e) ->
     console.log e.keyCode
     if in_sight
       switch e.keyCode
-        when 13
-          old = pop_point $('.point')
-          old.after "<section>#{cursor}</section>"
-          focus()
-          if old.html() in empty then old.first().remove()
-        when 9
-          if $('.point').html().length > 0
-            if e.shiftKey
-              $('.point').before cursor
-              old = $('.point').last()
-            else
-              $('.point').after cursor
-              old = $('.point').first()
-            pop_point old
-            focus()
+        when 13 then p().after "<div>#{cursor}</div>"
+        when 9 then p().after cursor
         when 46 # key delete
-          if $('.point').next().length > 0
-            next = $('.point').next()
-            old = pop_point $('.point')
-            old.remove()
-            if next[0].tagName is 'DIV'
-              set_point next
-            else if next[0].tagName is 'SECTION'
-              next.prepend cursor
-          else if $('.point').prev().length > 0 
-            prev = $('.point').prev()
-            old = pop_point $('.point')
-            old.remove()
-            if prev[0].tagName is 'DIV'
-              set_point prev
-            else
-              prev.append cursor
-          else unless $('.point').text() in empty
-            $('.point').text ''
-          else
-            if $('.point').parent()[0].tagName isnt 'SECTION'
-              $('.point').text('')
-            else
-              $('.point').parent()[0].outerHTML = cursor
-          focus()
+          if exist p().prev()
+            it = p().prev()
+            if leaf it then it.attr 'id', 'target'
+            else it.append cursor
+          else if exist p().next()
+            it = p().next()
+            if leaf it then it.attr 'id', 'target'
+            else it.prepend cursor
+          else if branch p()
+            p().parent().after(cursor).remove()
+          else unless p().html() in blank then p().after cursor
+          else return on
+          p().remove()
         when 38 # up
           unless $('.point').html() in empty
             old = pop_point $('.point')
@@ -164,7 +150,8 @@ $ ->
                 up.remove()
           focus()
         else return on
-      off
+      point()
+    off
   window.parse = ->
     map = (item) ->
       if item.tagName is 'DIV'

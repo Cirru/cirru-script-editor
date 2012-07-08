@@ -2,54 +2,76 @@
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 $(function() {
-  var click_choose, cursor, ed, editable, empty, focus, in_sight, paste, pop_point, set_point;
+  var blank, branch, cursor, editable, empty, exist, focus, in_sight, leaf, p, paste, point, t, target;
   editable = 'contenteditable';
-  cursor = "<div class='point' " + editable + "='true'></div>";
-  empty = ['', '<br>'];
-  ed = $('#editor');
-  ed.append(cursor);
-  $('.point').focus();
-  ed.click(function() {
-    return (function() {
-      return $('.point').focus();
-    })();
-  });
+  cursor = "<code id='target' " + editable + "='true'/>";
+  blank = ['', '<br>'];
   paste = '';
-  click_choose = function(elems) {
-    return elems[0].onclick = function() {
-      var old, up, _ref;
-      old = $('.point').removeAttr(editable).removeAttr('class');
-      click_choose(old);
-      if (old.html().length === 0) {
+  p = function() {
+    return $('#point');
+  };
+  t = function() {
+    return $('#target');
+  };
+  empty = function(elem) {
+    var _ref;
+    return _ref = elem.html(), __indexOf.call(blank, _ref) >= 0;
+  };
+  branch = function(elem) {
+    if (elem.parent().attr('id') !== 'editor') {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  exist = function(elem) {
+    return elem.length > 0;
+  };
+  leaf = function(elem) {
+    return elem[0].tagName === 'CODE';
+  };
+  target = function(elem) {
+    return elem.attr('id', 'point').attr(editable, 'true');
+  };
+  point = function(refocus) {
+    var old, up;
+    if (refocus == null) {
+      refocus = true;
+    }
+    old = p().removeAttr('id').removeAttr(editable);
+    if (exist(old)) {
+      old[0].onclick = function(e) {
+        old.attr('id', 'target').attr(editable, 'true');
+        this.onclick = {};
+        point(false);
+        e.preventDefault();
+        return false;
+      };
+      while ((empty(old)) && (branch(old))) {
         up = old.parent();
         old.remove();
-        while (_ref = up.html(), __indexOf.call(empty, _ref) >= 0) {
-          old = up;
-          up = up.parent();
-          old.remove();
-        }
+        old = up;
       }
-      set_point(elems);
-      return false;
-    };
-  };
-  pop_point = function(elems) {
-    elems.removeAttr(editable).removeAttr('class');
-    click_choose(elems);
-    return elems;
-  };
-  set_point = function(elems) {
-    elems.attr(editable, 'true').attr('class', 'point').focus();
-    return elems;
+    }
+    target(t());
+    if (refocus) {
+      return focus();
+    }
   };
   focus = function() {
     var sel;
     sel = window.getSelection();
-    sel.collapse($('.point')[0], 1);
-    $('section').addClass('inline');
-    $('.inline:has(section)').removeClass('inline');
-    return $('.point').focus();
+    sel.collapse(p()[0], 1);
+    $('div').addClass('inline');
+    $('div:has(div)').removeClass('inline');
+    return p().focus();
   };
+  $('#editor').append(cursor);
+  t().attr('id', 'point');
+  focus();
+  $('#editor').click(function() {
+    return console.log('called');
+  });
   in_sight = true;
   $('#editor').bind('focus', function() {
     return in_sight = true;
@@ -57,64 +79,43 @@ $(function() {
   $('#editor').bind('blur', function() {
     return in_sight = false;
   });
-  $(document).keydown(function(e) {
-    var elems, next, old, prev, up, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8;
+  $('#editor').keydown(function(e) {
+    var elems, it, next, old, prev, up, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
     console.log(e.keyCode);
     if (in_sight) {
       switch (e.keyCode) {
         case 13:
-          old = pop_point($('.point'));
-          old.after("<section>" + cursor + "</section>");
-          focus();
-          if (_ref = old.html(), __indexOf.call(empty, _ref) >= 0) {
-            old.first().remove();
-          }
+          p().after("<div>" + cursor + "</div>");
           break;
         case 9:
-          if ($('.point').html().length > 0) {
-            if (e.shiftKey) {
-              $('.point').before(cursor);
-              old = $('.point').last();
-            } else {
-              $('.point').after(cursor);
-              old = $('.point').first();
-            }
-            pop_point(old);
-            focus();
-          }
+          p().after(cursor);
           break;
         case 46:
-          if ($('.point').next().length > 0) {
-            next = $('.point').next();
-            old = pop_point($('.point'));
-            old.remove();
-            if (next[0].tagName === 'DIV') {
-              set_point(next);
-            } else if (next[0].tagName === 'SECTION') {
-              next.prepend(cursor);
-            }
-          } else if ($('.point').prev().length > 0) {
-            prev = $('.point').prev();
-            old = pop_point($('.point'));
-            old.remove();
-            if (prev[0].tagName === 'DIV') {
-              set_point(prev);
+          if (exist(p().prev())) {
+            it = p().prev();
+            if (leaf(it)) {
+              it.attr('id', 'target');
             } else {
-              prev.append(cursor);
+              it.append(cursor);
             }
-          } else if (_ref1 = $('.point').text(), __indexOf.call(empty, _ref1) < 0) {
-            $('.point').text('');
+          } else if (exist(p().next())) {
+            it = p().next();
+            if (leaf(it)) {
+              it.attr('id', 'target');
+            } else {
+              it.prepend(cursor);
+            }
+          } else if (branch(p())) {
+            p().parent().after(cursor).remove();
+          } else if (_ref = p().html(), __indexOf.call(blank, _ref) < 0) {
+            p().after(cursor);
           } else {
-            if ($('.point').parent()[0].tagName !== 'SECTION') {
-              $('.point').text('');
-            } else {
-              $('.point').parent()[0].outerHTML = cursor;
-            }
+            return true;
           }
-          focus();
+          p().remove();
           break;
         case 38:
-          if (_ref2 = $('.point').html(), __indexOf.call(empty, _ref2) < 0) {
+          if (_ref1 = $('.point').html(), __indexOf.call(empty, _ref1) < 0) {
             old = pop_point($('.point'));
             old.before(cursor);
           } else if ($('.point').prev().length > 0) {
@@ -130,14 +131,14 @@ $(function() {
             old = $('.point').last();
             up = old.parent();
             old.remove();
-            if (_ref3 = up.html(), __indexOf.call(empty, _ref3) >= 0) {
+            if (_ref2 = up.html(), __indexOf.call(empty, _ref2) >= 0) {
               up.remove();
             }
           }
           focus();
           break;
         case 40:
-          if (_ref4 = $('.point').html(), __indexOf.call(empty, _ref4) < 0) {
+          if (_ref3 = $('.point').html(), __indexOf.call(empty, _ref3) < 0) {
             old = pop_point($('.point'));
             old.after(cursor);
           } else if ($('.point').next().length > 0) {
@@ -153,7 +154,7 @@ $(function() {
             old = $('.point').first();
             up = old.parent();
             old.remove();
-            if (_ref5 = up.html(), __indexOf.call(empty, _ref5) >= 0) {
+            if (_ref4 = up.html(), __indexOf.call(empty, _ref4) >= 0) {
               up.remove();
             }
           }
@@ -164,7 +165,7 @@ $(function() {
           if (e.ctrlKey && up[0].tagName === 'SECTION') {
             up.after(cursor);
             elems = pop_point($('.point').first());
-            while (_ref6 = elems.text(), __indexOf.call(empty, _ref6) >= 0) {
+            while (_ref5 = elems.text(), __indexOf.call(empty, _ref5) >= 0) {
               if (!elems.parent().has($('.point'))) {
                 up = elems.parent();
                 elems.remove();
@@ -193,7 +194,7 @@ $(function() {
           if (up.attr('id') !== 'editor') {
             up.before(cursor);
             pop_point(old);
-            if (_ref7 = old.html(), __indexOf.call(empty, _ref7) >= 0) {
+            if (_ref6 = old.html(), __indexOf.call(empty, _ref6) >= 0) {
               old.remove();
               if (up.children().length === 0) {
                 up.remove();
@@ -208,7 +209,7 @@ $(function() {
           if (up.attr('id') !== 'editor') {
             up.after(cursor);
             pop_point(old);
-            if (_ref8 = old.html(), __indexOf.call(empty, _ref8) >= 0) {
+            if (_ref7 = old.html(), __indexOf.call(empty, _ref7) >= 0) {
               old.remove();
               if (up.children().length === 0) {
                 up.remove();
@@ -220,8 +221,9 @@ $(function() {
         default:
           return true;
       }
-      return false;
+      point();
     }
+    return false;
   });
   return window.parse = function() {
     var map, res;
