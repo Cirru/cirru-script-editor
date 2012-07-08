@@ -35,6 +35,8 @@ $ ->
   focus = ->
     sel = window.getSelection()
     sel.collapse $('.point')[0], 1
+    $('section').addClass 'inline'
+    $('.inline:has(section)').removeClass 'inline'
     $('.point').focus()
 
   in_sight = yes
@@ -68,7 +70,7 @@ $ ->
               set_point next
             else if next[0].tagName is 'SECTION'
               next.prepend cursor
-          else if $('.point').prev().length > 0
+          else if $('.point').prev().length > 0 
             prev = $('.point').prev()
             old = pop_point $('.point')
             old.remove()
@@ -134,9 +136,11 @@ $ ->
             paste = up[0].outerHTML or ''
             up.remove()
             focus()
+          else return on
         when 85 # ctrl + u
           if e.ctrlKey and paste.length > 0
             $('.point').before paste
+          else return on
         else return on
       off
   window.parse = ->

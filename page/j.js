@@ -46,6 +46,8 @@ $(function() {
     var sel;
     sel = window.getSelection();
     sel.collapse($('.point')[0], 1);
+    $('section').addClass('inline');
+    $('.inline:has(section)').removeClass('inline');
     return $('.point').focus();
   };
   in_sight = true;
@@ -174,11 +176,15 @@ $(function() {
             paste = up[0].outerHTML || '';
             up.remove();
             focus();
+          } else {
+            return true;
           }
           break;
         case 85:
           if (e.ctrlKey && paste.length > 0) {
             $('.point').before(paste);
+          } else {
+            return true;
           }
           break;
         default:
