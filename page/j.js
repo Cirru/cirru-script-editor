@@ -2,7 +2,7 @@
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 $(function() {
-  var blank, capet, editable, empty, exist, focus, in_sight, leaf, p, paste, point, root, t, target;
+  var blank, capet, editable, empty, exist, focus, in_sight, leaf, p, parse, paste, point, root, t, target;
   editable = 'contenteditable';
   capet = "<code id='target' " + editable + "='true'/>";
   blank = ['', '<br>'];
@@ -36,6 +36,7 @@ $(function() {
     }
     old = p().removeAttr('id').removeAttr(editable);
     if (exist(old)) {
+      old.html(old.html().replace(/\<br\>/g, ''));
       old[0].onclick = function(e) {
         old.attr('id', 'target').attr(editable, 'true');
         point(false);
@@ -70,9 +71,9 @@ $(function() {
   t().attr('id', 'point');
   focus();
   $('#editor')[0].onclick = function(e) {
-    console.log('called');
     focus();
-    return e.stopPropagation();
+    e.stopPropagation();
+    return parse();
   };
   in_sight = true;
   $('#editor').bind('focus', function() {
@@ -83,7 +84,6 @@ $(function() {
   });
   $('#editor').keydown(function(e) {
     var it, next, prev, up, _ref, _ref1, _ref2;
-    console.log(e.keyCode);
     if (in_sight) {
       switch (e.keyCode) {
         case 13:
@@ -188,14 +188,14 @@ $(function() {
       }
       point();
     }
+    e.stopPropagation();
     return false;
   });
-  return window.parse = function() {
+  return parse = function() {
     var map, res;
-    map = function(item) {
-      console.log(item);
-      if (leaf(item)) {
-        return item[0].innerText.replace('\n', '');
+    map = function(item, b) {
+      if (leaf([item])) {
+        return item.innerText;
       } else {
         return [
           $.map(item.children, function(x) {

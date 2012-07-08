@@ -9,27 +9,40 @@
   color: #fff;
   overflow: scroll;
   box-shadow: 0px 0px 8px #808080;
+  line-height: 20px;
 }
 #editor code {
   margin: 2px 4px;
-  padding: 2px;
+  padding: 0px 2px;
   box-shadow: 0px 1px 0px #0ac20a;
+  -webkit-transition-duration: 0.6s;
+}
+#editor code:hover {
+  margin: 2px 6px;
+}
+#editor code:focus {
+  text-shadow: 0px 0px 8px #fff;
 }
 #editor div {
   box-shadow: -1px 0px 0px #bbbbfb;
-  margin: 4px 0px 4px 10px;
-  padding: 0px 0px 1px 8px;
+  margin: 2px 0px 2px 10px;
+  padding: 0px 8px;
   white-space: nowrap;
   border-radius: 4px;
 }
 #editor #point {
-  outline: 1px;
+  outline: 0px;
+  text-shadow: 0px 0px 8px #fff;
 }
 #editor .inline {
+  margin: 0px 10px;
   display: inline-block;
   border-style: solid;
-  border-width: 0px 1px;
-  border-color: #cfcffc;
+  border-width: 0px 1px 0px 0px;
+  border-color: #bbbbfb;
+}
+#editor code#point:empty {
+  margin: 0px -2px;
 }
 ::-webkit-scrollbar {
   width: 4px;

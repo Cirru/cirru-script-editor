@@ -19,6 +19,7 @@ $ ->
   point = (refocus = yes) ->
     old = p().removeAttr('id').removeAttr editable
     if exist old
+      old.html (old.html().replace /\<br\>/g, '')
       old[0].onclick = (e) ->
         old.attr('id', 'target').attr(editable, 'true')
         point off
@@ -44,16 +45,16 @@ $ ->
   t().attr 'id', 'point'
   focus()
   $('#editor')[0].onclick = (e) ->
-    console.log 'called'
     focus()
     e.stopPropagation()
+    parse()
 
   in_sight = yes
   $('#editor').bind 'focus', -> in_sight = yes
   $('#editor').bind 'blur', -> in_sight = no
 
   $('#editor').keydown (e) ->
-    console.log e.keyCode
+    # console.log e.keyCode
     if in_sight
       switch e.keyCode
         when 13
@@ -115,11 +116,12 @@ $ ->
           else return on
         else return on
       point()
+    e.stopPropagation()
     off
-  window.parse = ->
-    map = (item) ->
-      console.log item
-      if leaf item then item[0].innerText.replace '\n', ''
+
+  parse = ->
+    map = (item, b) ->
+      if leaf [item] then item.innerText
       else [$.map item.children, (x) -> map x]
     res = $.map $('#editor')[0].children, map
     console.log 'res:', res
