@@ -58,7 +58,7 @@ $(function() {
     return in_sight = false;
   });
   $(document).keydown(function(e) {
-    var elems, next, old, prev, up, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6;
+    var elems, next, old, prev, up, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8;
     console.log(e.keyCode);
     if (in_sight) {
       switch (e.keyCode) {
@@ -186,6 +186,36 @@ $(function() {
           } else {
             return true;
           }
+          break;
+        case 33:
+          old = $('.point');
+          up = old.parent();
+          if (up.attr('id') !== 'editor') {
+            up.before(cursor);
+            pop_point(old);
+            if (_ref7 = old.html(), __indexOf.call(empty, _ref7) >= 0) {
+              old.remove();
+              if (up.children().length === 0) {
+                up.remove();
+              }
+            }
+          }
+          focus();
+          break;
+        case 34:
+          old = $('.point');
+          up = old.parent();
+          if (up.attr('id') !== 'editor') {
+            up.after(cursor);
+            pop_point(old);
+            if (_ref8 = old.html(), __indexOf.call(empty, _ref8) >= 0) {
+              old.remove();
+              if (up.children().length === 0) {
+                up.remove();
+              }
+            }
+          }
+          focus();
           break;
         default:
           return true;

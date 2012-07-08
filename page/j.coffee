@@ -141,6 +141,28 @@ $ ->
           if e.ctrlKey and paste.length > 0
             $('.point').before paste
           else return on
+        when 33 # pgup
+          old = $('.point')
+          up = old.parent()
+          if up.attr('id') isnt 'editor'
+            up.before cursor
+            pop_point old
+            if old.html() in empty
+              old.remove()
+              if up.children().length is 0
+                up.remove()
+          focus()
+        when 34 # pgdown
+          old = $('.point')
+          up = old.parent()
+          if up.attr('id') isnt 'editor'
+            up.after cursor
+            pop_point old
+            if old.html() in empty
+              old.remove()
+              if up.children().length is 0
+                up.remove()
+          focus()
         else return on
       off
   window.parse = ->
