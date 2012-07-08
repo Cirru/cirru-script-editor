@@ -1,7 +1,7 @@
   
 $ ->
   editable = 'contenteditable'
-  cursor = "<code id='target' #{editable}='true'/>"
+  capet = "<code id='target' #{editable}='true'/>"
   blank = ['', '<br>']
   paste = ''
 
@@ -9,9 +9,7 @@ $ ->
   t = -> $ '#target'
 
   empty = (elem) -> elem.html() in blank
-  branch = (elem) ->
-    unless elem.parent().attr('id') is 'editor' then yes
-    else no
+  root = (elem) -> elem.parent().attr('id') is 'editor'
   exist = (elem) -> elem.length > 0
   leaf = (elem) -> elem[0].tagName is 'CODE'
 
@@ -27,10 +25,13 @@ $ ->
         point off
         e.preventDefault()
         off
-      while (empty old) and (branch old)
+      while empty old
         up = old.parent()
         old.remove()
         old = up
+        if root old
+          if empty old then old.remove()
+          break
     target t()
     if refocus then focus()
 
@@ -41,12 +42,12 @@ $ ->
     $('div:has(div)').removeClass 'inline'
     p().focus()
 
-  $('#editor').append cursor
+  $('#editor').append capet
   t().attr 'id', 'point'
   focus()
   $('#editor').click ->
     console.log 'called'
-    # focus()
+    focus()
 
   in_sight = yes
   $('#editor').bind 'focus', -> in_sight = yes
@@ -56,99 +57,56 @@ $ ->
     console.log e.keyCode
     if in_sight
       switch e.keyCode
-        when 13 then p().after "<div>#{cursor}</div>"
-        when 9 then p().after cursor
+        when 13 then p().after "<div>#{capet}</div>"
+        when 9 then p().after capet
         when 46 # key delete
           if exist p().prev()
             it = p().prev()
             if leaf it then it.attr 'id', 'target'
-            else it.append cursor
+            else it.append capet
           else if exist p().next()
             it = p().next()
             if leaf it then it.attr 'id', 'target'
-            else it.prepend cursor
-          else if branch p()
-            p().parent().after(cursor).remove()
-          else unless p().html() in blank then p().after cursor
+            else it.prepend capet
+          else unless root p()
+            p().parent().after(capet).remove()
+          else unless p().html() in blank then p().after capet
           else return on
           p().remove()
         when 38 # up
-          unless $('.point').html() in empty
-            old = pop_point $('.point')
-            old.before cursor
-          else if $('.point').prev().length > 0
-            prev = $('.point').prev()
-            if prev[0].tagName is 'DIV'
-              set_point $('.point').prev()
-            else if prev[0].tagName is 'SECTION'
-              prev.append cursor
-            $('.point')[1].outerHTML = ''
-          else if $('.point').parent().attr('id') isnt 'editor'
-            $('.point').parent().before(cursor)
-            old = $('.point').last()
-            up = old.parent()
-            old.remove()
-            if up.html() in empty then up.remove()
-          focus()
+          unless p().html() in blank then p().before capet
+          else if exist p().prev()
+            prev = p().prev()
+            if leaf prev then prev.attr 'id', 'target'
+            else prev.append capet  
+          else unless root p() then p().parent().before capet
+          else return off
         when 40 # down
-          unless $('.point').html() in empty
-            old = pop_point $('.point')
-            old.after cursor
-          else if $('.point').next().length > 0
-            next = $('.point').next()
-            if next[0].tagName is 'DIV'
-              set_point $('.point').next()
-            else if next[0].tagName is 'SECTION'
-              next.prepend cursor
-            $('.point').first().remove()
-          else if $('.point').parent().attr('id') isnt 'editor'
-            $('.point').parent().after(cursor)
-            old = $('.point').first()
-            up = old.parent()
-            old.remove()
-            if up.html() in empty then up.remove()
-          focus()
+          unless p().html() in blank then p().after capet
+          else if exist p().next()
+            next = p().next()
+            if leaf next then next.attr 'id', 'target'
+            else next.prepend capet  
+          else unless root p() then p().parent().after capet
+          else return off
         when 89 # ctrl + y
-          up = $('.point').parent()
-          if e.ctrlKey and up[0].tagName is 'SECTION'
-            up.after cursor
-            elems = pop_point $('.point').first()
-            while elems.text() in empty
-              unless elems.parent().has $('.point')
-                up = elems.parent()
-                elems.remove()
-                elems = up
-              else break
+          if e.ctrlKey and (not (root p()))
+            up = p().parent()
+            up.after capet
+            point()
             paste = up[0].outerHTML or ''
             up.remove()
-            focus()
-          else return on
+          return on
         when 85 # ctrl + u
           if e.ctrlKey and paste.length > 0
-            $('.point').before paste
-          else return on
+            p().before paste
+          return on
         when 33 # pgup
-          old = $('.point')
-          up = old.parent()
-          if up.attr('id') isnt 'editor'
-            up.before cursor
-            pop_point old
-            if old.html() in empty
-              old.remove()
-              if up.children().length is 0
-                up.remove()
-          focus()
+          unless root p() then p().parent().before capet
+          else return on
         when 34 # pgdown
-          old = $('.point')
-          up = old.parent()
-          if up.attr('id') isnt 'editor'
-            up.after cursor
-            pop_point old
-            if old.html() in empty
-              old.remove()
-              if up.children().length is 0
-                up.remove()
-          focus()
+          unless root p() then p().parent().after capet
+          else return on
         else return on
       point()
     off

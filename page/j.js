@@ -2,9 +2,9 @@
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 $(function() {
-  var blank, branch, cursor, editable, empty, exist, focus, in_sight, leaf, p, paste, point, t, target;
+  var blank, capet, editable, empty, exist, focus, in_sight, leaf, p, paste, point, root, t, target;
   editable = 'contenteditable';
-  cursor = "<code id='target' " + editable + "='true'/>";
+  capet = "<code id='target' " + editable + "='true'/>";
   blank = ['', '<br>'];
   paste = '';
   p = function() {
@@ -17,12 +17,8 @@ $(function() {
     var _ref;
     return _ref = elem.html(), __indexOf.call(blank, _ref) >= 0;
   };
-  branch = function(elem) {
-    if (elem.parent().attr('id') !== 'editor') {
-      return true;
-    } else {
-      return false;
-    }
+  root = function(elem) {
+    return elem.parent().attr('id') === 'editor';
   };
   exist = function(elem) {
     return elem.length > 0;
@@ -47,10 +43,16 @@ $(function() {
         e.preventDefault();
         return false;
       };
-      while ((empty(old)) && (branch(old))) {
+      while (empty(old)) {
         up = old.parent();
         old.remove();
         old = up;
+        if (root(old)) {
+          if (empty(old)) {
+            old.remove();
+          }
+          break;
+        }
       }
     }
     target(t());
@@ -66,11 +68,12 @@ $(function() {
     $('div:has(div)').removeClass('inline');
     return p().focus();
   };
-  $('#editor').append(cursor);
+  $('#editor').append(capet);
   t().attr('id', 'point');
   focus();
   $('#editor').click(function() {
-    return console.log('called');
+    console.log('called');
+    return focus();
   });
   in_sight = true;
   $('#editor').bind('focus', function() {
@@ -80,15 +83,15 @@ $(function() {
     return in_sight = false;
   });
   $('#editor').keydown(function(e) {
-    var elems, it, next, old, prev, up, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7;
+    var it, next, prev, up, _ref, _ref1, _ref2;
     console.log(e.keyCode);
     if (in_sight) {
       switch (e.keyCode) {
         case 13:
-          p().after("<div>" + cursor + "</div>");
+          p().after("<div>" + capet + "</div>");
           break;
         case 9:
-          p().after(cursor);
+          p().after(capet);
           break;
         case 46:
           if (exist(p().prev())) {
@@ -96,127 +99,83 @@ $(function() {
             if (leaf(it)) {
               it.attr('id', 'target');
             } else {
-              it.append(cursor);
+              it.append(capet);
             }
           } else if (exist(p().next())) {
             it = p().next();
             if (leaf(it)) {
               it.attr('id', 'target');
             } else {
-              it.prepend(cursor);
+              it.prepend(capet);
             }
-          } else if (branch(p())) {
-            p().parent().after(cursor).remove();
+          } else if (!root(p())) {
+            p().parent().after(capet).remove();
           } else if (_ref = p().html(), __indexOf.call(blank, _ref) < 0) {
-            p().after(cursor);
+            p().after(capet);
           } else {
             return true;
           }
           p().remove();
           break;
         case 38:
-          if (_ref1 = $('.point').html(), __indexOf.call(empty, _ref1) < 0) {
-            old = pop_point($('.point'));
-            old.before(cursor);
-          } else if ($('.point').prev().length > 0) {
-            prev = $('.point').prev();
-            if (prev[0].tagName === 'DIV') {
-              set_point($('.point').prev());
-            } else if (prev[0].tagName === 'SECTION') {
-              prev.append(cursor);
+          if (_ref1 = p().html(), __indexOf.call(blank, _ref1) < 0) {
+            p().before(capet);
+          } else if (exist(p().prev())) {
+            prev = p().prev();
+            if (leaf(prev)) {
+              prev.attr('id', 'target');
+            } else {
+              prev.append(capet);
             }
-            $('.point')[1].outerHTML = '';
-          } else if ($('.point').parent().attr('id') !== 'editor') {
-            $('.point').parent().before(cursor);
-            old = $('.point').last();
-            up = old.parent();
-            old.remove();
-            if (_ref2 = up.html(), __indexOf.call(empty, _ref2) >= 0) {
-              up.remove();
-            }
+          } else if (!root(p())) {
+            p().parent().before(capet);
+          } else {
+            return false;
           }
-          focus();
           break;
         case 40:
-          if (_ref3 = $('.point').html(), __indexOf.call(empty, _ref3) < 0) {
-            old = pop_point($('.point'));
-            old.after(cursor);
-          } else if ($('.point').next().length > 0) {
-            next = $('.point').next();
-            if (next[0].tagName === 'DIV') {
-              set_point($('.point').next());
-            } else if (next[0].tagName === 'SECTION') {
-              next.prepend(cursor);
+          if (_ref2 = p().html(), __indexOf.call(blank, _ref2) < 0) {
+            p().after(capet);
+          } else if (exist(p().next())) {
+            next = p().next();
+            if (leaf(next)) {
+              next.attr('id', 'target');
+            } else {
+              next.prepend(capet);
             }
-            $('.point').first().remove();
-          } else if ($('.point').parent().attr('id') !== 'editor') {
-            $('.point').parent().after(cursor);
-            old = $('.point').first();
-            up = old.parent();
-            old.remove();
-            if (_ref4 = up.html(), __indexOf.call(empty, _ref4) >= 0) {
-              up.remove();
-            }
+          } else if (!root(p())) {
+            p().parent().after(capet);
+          } else {
+            return false;
           }
-          focus();
           break;
         case 89:
-          up = $('.point').parent();
-          if (e.ctrlKey && up[0].tagName === 'SECTION') {
-            up.after(cursor);
-            elems = pop_point($('.point').first());
-            while (_ref5 = elems.text(), __indexOf.call(empty, _ref5) >= 0) {
-              if (!elems.parent().has($('.point'))) {
-                up = elems.parent();
-                elems.remove();
-                elems = up;
-              } else {
-                break;
-              }
-            }
+          if (e.ctrlKey && (!(root(p())))) {
+            up = p().parent();
+            up.after(capet);
+            point();
             paste = up[0].outerHTML || '';
             up.remove();
-            focus();
-          } else {
-            return true;
           }
-          break;
+          return true;
         case 85:
           if (e.ctrlKey && paste.length > 0) {
-            $('.point').before(paste);
+            p().before(paste);
+          }
+          return true;
+        case 33:
+          if (!root(p())) {
+            p().parent().before(capet);
           } else {
             return true;
           }
           break;
-        case 33:
-          old = $('.point');
-          up = old.parent();
-          if (up.attr('id') !== 'editor') {
-            up.before(cursor);
-            pop_point(old);
-            if (_ref6 = old.html(), __indexOf.call(empty, _ref6) >= 0) {
-              old.remove();
-              if (up.children().length === 0) {
-                up.remove();
-              }
-            }
-          }
-          focus();
-          break;
         case 34:
-          old = $('.point');
-          up = old.parent();
-          if (up.attr('id') !== 'editor') {
-            up.after(cursor);
-            pop_point(old);
-            if (_ref7 = old.html(), __indexOf.call(empty, _ref7) >= 0) {
-              old.remove();
-              if (up.children().length === 0) {
-                up.remove();
-              }
-            }
+          if (!root(p())) {
+            p().parent().after(capet);
+          } else {
+            return true;
           }
-          focus();
           break;
         default:
           return true;
