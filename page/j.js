@@ -38,10 +38,8 @@ $(function() {
     if (exist(old)) {
       old[0].onclick = function(e) {
         old.attr('id', 'target').attr(editable, 'true');
-        this.onclick = {};
         point(false);
-        e.preventDefault();
-        return false;
+        return e.stopPropagation();
       };
       while (empty(old)) {
         up = old.parent();
@@ -71,10 +69,11 @@ $(function() {
   $('#editor').append(capet);
   t().attr('id', 'point');
   focus();
-  $('#editor').click(function() {
+  $('#editor')[0].onclick = function(e) {
     console.log('called');
-    return focus();
-  });
+    focus();
+    return e.stopPropagation();
+  };
   in_sight = true;
   $('#editor').bind('focus', function() {
     return in_sight = true;
@@ -89,6 +88,12 @@ $(function() {
       switch (e.keyCode) {
         case 13:
           p().after("<div>" + capet + "</div>");
+          next = p().next();
+          next[0].onclick = function(e) {
+            next.append(capet);
+            point();
+            return e.stopPropagation();
+          };
           break;
         case 9:
           p().after(capet);
@@ -149,16 +154,17 @@ $(function() {
             return false;
           }
           break;
-        case 89:
+        case 219:
           if (e.ctrlKey && (!(root(p())))) {
             up = p().parent();
             up.after(capet);
             point();
-            paste = up[0].outerHTML || '';
+            console.log(up.parent());
+            paste = up[0].innerHTML || '';
             up.remove();
           }
           return true;
-        case 85:
+        case 221:
           if (e.ctrlKey && paste.length > 0) {
             p().before(paste);
           }
@@ -187,15 +193,15 @@ $(function() {
   return window.parse = function() {
     var map, res;
     map = function(item) {
-      var res;
-      if (item.tagName === 'DIV') {
-        return item.innerText;
-      } else if (item.tagName === 'SECTION') {
-        console.log(item.children);
-        res = $.map(item.children, function(x) {
-          return map(x);
-        });
-        return [res];
+      console.log(item);
+      if (leaf(item)) {
+        return item[0].innerText.replace('\n', '');
+      } else {
+        return [
+          $.map(item.children, function(x) {
+            return map(x);
+          })
+        ];
       }
     };
     res = $.map($('#editor')[0].children, map);

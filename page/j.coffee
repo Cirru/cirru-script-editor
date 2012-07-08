@@ -21,10 +21,8 @@ $ ->
     if exist old
       old[0].onclick = (e) ->
         old.attr('id', 'target').attr(editable, 'true')
-        @onclick = {}
         point off
-        e.preventDefault()
-        off
+        e.stopPropagation()
       while empty old
         up = old.parent()
         old.remove()
@@ -45,9 +43,10 @@ $ ->
   $('#editor').append capet
   t().attr 'id', 'point'
   focus()
-  $('#editor').click ->
+  $('#editor')[0].onclick = (e) ->
     console.log 'called'
     focus()
+    e.stopPropagation()
 
   in_sight = yes
   $('#editor').bind 'focus', -> in_sight = yes
@@ -57,7 +56,13 @@ $ ->
     console.log e.keyCode
     if in_sight
       switch e.keyCode
-        when 13 then p().after "<div>#{capet}</div>"
+        when 13
+          p().after "<div>#{capet}</div>"
+          next = p().next()
+          next[0].onclick = (e) ->
+            next.append capet
+            point()
+            e.stopPropagation()
         when 9 then p().after capet
         when 46 # key delete
           if exist p().prev()
@@ -89,15 +94,16 @@ $ ->
             else next.prepend capet  
           else unless root p() then p().parent().after capet
           else return off
-        when 89 # ctrl + y
+        when 219 # ctrl + [
           if e.ctrlKey and (not (root p()))
             up = p().parent()
             up.after capet
             point()
-            paste = up[0].outerHTML or ''
+            console.log up.parent()
+            paste = up[0].innerHTML or ''
             up.remove()
           return on
-        when 85 # ctrl + u
+        when 221 # ctrl + ]
           if e.ctrlKey and paste.length > 0
             p().before paste
           return on
@@ -112,12 +118,8 @@ $ ->
     off
   window.parse = ->
     map = (item) ->
-      if item.tagName is 'DIV'
-        item.innerText
-      else if item.tagName is 'SECTION'
-        console.log item.children
-        res = $.map item.children, (x) ->
-          map x
-        [res]
+      console.log item
+      if leaf item then item[0].innerText.replace '\n', ''
+      else [$.map item.children, (x) -> map x]
     res = $.map $('#editor')[0].children, map
     console.log 'res:', res
