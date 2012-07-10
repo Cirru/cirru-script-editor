@@ -3,14 +3,12 @@ var cirru,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 cirru = function() {
-  var aval, blank, caret, editable, empty, exist, focus, in_sight, leaf, menu, paste, piece, point, put, root, words;
+  var blank, caret, editable, empty, exist, focus, in_sight, leaf, menu, paste, piece, point, put, root, text;
   editable = 'contenteditable';
   caret = "<code id='target' " + editable + "='true'/>";
   menu = '<footer id="menu"></footer>';
   blank = ['', '<br>'];
   paste = '';
-  words = [];
-  aval = [];
   window.p = function() {
     return $('#point');
   };
@@ -36,15 +34,18 @@ cirru = function() {
   leaf = function(elem) {
     return elem[0].tagName === 'CODE';
   };
+  text = function(elem) {
+    return elem.html().replace(/<br>/g, '');
+  };
   point = function(refocus) {
-    var old, up;
+    var aval, old, up;
     if (refocus == null) {
       refocus = true;
     }
     aval = [];
     old = p().removeAttr('id').removeAttr(editable);
     if (exist(old)) {
-      old.html(old.html().replace(/\<br\>/g, ''));
+      old.html(text(old));
       old[0].onclick = function(e) {
         old.attr('id', 'target').attr(editable, 'true');
         point(false);
@@ -74,8 +75,7 @@ cirru = function() {
     sel.collapse(p()[0], 1);
     $('div').addClass('inline');
     $('div:has(div)').removeClass('inline');
-    p().focus();
-    return piece();
+    return p().focus();
   };
   in_sight = true;
   $('#editor').bind('focus', function() {
@@ -86,9 +86,13 @@ cirru = function() {
   });
   $('#editor').keydown(function(e) {
     var it, next, prev, up, _ref, _ref1, _ref2;
+    console.log(e.keyCode);
     if (in_sight) {
       switch (e.keyCode) {
         case 13:
+          if (exist(s())) {
+            p().html(text(s()));
+          }
           p().after("<div>" + caret + "</div>");
           next = p().next();
           next[0].onclick = function(e) {
@@ -98,6 +102,9 @@ cirru = function() {
           };
           break;
         case 9:
+          if (exist(s())) {
+            p().html(text(s()));
+          }
           p().after(caret);
           break;
         case 46:
@@ -125,59 +132,35 @@ cirru = function() {
           p().remove();
           break;
         case 38:
-          if (exist(aval)) {
-            if (exist(s())) {
-              if (exist(s().prev())) {
-                s().removeAttr('id').prev().attr('id', 'sel');
-              } else {
-                s().removeAttr('id');
-                m().empty();
-                aval = [];
-              }
-            }
-            return false;
-          } else {
-            if (_ref1 = p().html(), __indexOf.call(blank, _ref1) < 0) {
-              p().before(caret);
-            } else if (exist(p().prev())) {
-              prev = p().prev();
-              if (leaf(prev)) {
-                prev.attr('id', 'target');
-              } else {
-                prev.append(caret);
-              }
-            } else if (!root(p())) {
-              p().parent().before(caret);
+          if (_ref1 = p().html(), __indexOf.call(blank, _ref1) < 0) {
+            p().before(caret);
+          } else if (exist(p().prev())) {
+            prev = p().prev();
+            if (leaf(prev)) {
+              prev.attr('id', 'target');
             } else {
-              return false;
+              prev.append(caret);
             }
+          } else if (!root(p())) {
+            p().parent().before(caret);
+          } else {
+            return false;
           }
           break;
         case 40:
-          if (exist(aval)) {
-            if (exist(s())) {
-              if (exist(s().next())) {
-                s().removeAttr('id').next().attr('id', 'sel');
-              }
+          if (_ref2 = p().html(), __indexOf.call(blank, _ref2) < 0) {
+            p().after(caret);
+          } else if (exist(p().next())) {
+            next = p().next();
+            if (leaf(next)) {
+              next.attr('id', 'target');
             } else {
-              m().children().first().attr('id', 'sel');
+              next.prepend(caret);
             }
-            return false;
+          } else if (!root(p())) {
+            p().parent().after(caret);
           } else {
-            if (_ref2 = p().html(), __indexOf.call(blank, _ref2) < 0) {
-              p().after(caret);
-            } else if (exist(p().next())) {
-              next = p().next();
-              if (leaf(next)) {
-                next.attr('id', 'target');
-              } else {
-                next.prepend(caret);
-              }
-            } else if (!root(p())) {
-              p().parent().after(caret);
-            } else {
-              return false;
-            }
+            return false;
           }
           break;
         case 219:
@@ -196,19 +179,26 @@ cirru = function() {
           }
           return true;
         case 33:
-          if (!root(p())) {
-            p().parent().before(caret);
+          if (exist(s().prev())) {
+            s().removeAttr('id').prev().attr('id', 'sel');
           } else {
-            return true;
+            s().removeAttr('id');
           }
-          break;
+          return false;
         case 34:
-          if (!root(p())) {
-            p().parent().after(caret);
-          } else {
-            return true;
+          if (exist(s())) {
+            if (exist(s().next())) {
+              s().removeAttr('id').next().attr('id', 'sel');
+            }
+          } else if (exist(m().children())) {
+            m().children().first().attr('id', 'sel');
           }
-          break;
+          return false;
+        case 27:
+          if (exist(m().children())) {
+            m().empty();
+          }
+          return false;
         default:
           return true;
       }
@@ -233,19 +223,20 @@ cirru = function() {
     return res;
   };
   piece = function() {
-    var all, platten;
+    var all, platten, words;
     all = cirru.parse();
     words = [];
     platten = function(item) {
       return item.forEach(function(i) {
         if (Array.isArray(i)) {
           return platten(i);
-        } else if (!(i === '' || __indexOf.call(words, i) >= 0)) {
+        } else if (!((i === '') || (__indexOf.call(words, i) >= 0))) {
           return words.push(i);
         }
       });
     };
-    return platten(all);
+    platten(all);
+    return words;
   };
   put = function() {
     var left, top, _ref;
@@ -255,27 +246,36 @@ cirru = function() {
       top: top + 20
     });
     m().empty();
-    return p()[0].oninput = function() {
-      var exp, input, x;
+    p()[0].oninput = function() {
+      var aval, exp, input, x;
       x = '.*';
-      input = p().html().replace(/<br>/g, '');
+      input = text(p());
       exp = new RegExp('^' + input.split('').join(x));
-      aval = words.filter(function(item) {
-        return exp.test(item);
+      aval = piece().filter(function(item) {
+        return (exp.test(item)) && (item !== input);
       });
       m().empty();
-      if (input !== '') {
-        return aval.forEach(function(item) {
-          return m().append("<span>" + item + "<br></span>");
-        });
-      }
+      return aval.slice(0, 11).forEach(function(item) {
+        var sel;
+        m().append("<span>" + item + "<br></span>");
+        sel = m().children().last();
+        return sel[0].onclick = function() {
+          p().html(text(sel));
+          p().after(caret);
+          return point();
+        };
+      });
     };
+    return p()[0].oninput();
   };
   $('#editor').append(caret).after(menu);
   t().attr('id', 'point');
   focus();
-  return $('#editor')[0].onclick = function(e) {
+  $('#editor')[0].onclick = function(e) {
     return focus();
+  };
+  return $('#editor')[0].onscroll = function() {
+    return put();
   };
 };
 

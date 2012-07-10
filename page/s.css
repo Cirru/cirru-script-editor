@@ -1,11 +1,12 @@
 #editor {
+  box-sizing: border-box;
   background: #7575f0;
   height: 500px;
-  width: 800px;
+  width: 400px;
   font-family: 'wenquanyi micro hei mono';
   font-size: 14px;
   letter-spacing: 1px;
-  padding: 6px;
+  padding: 6px 6px 400px 6px;
   color: #fff;
   overflow: scroll;
   box-shadow: 0px 0px 8px #808080;
@@ -46,22 +47,24 @@
 }
 #editor + #menu {
   position: absolute;
-  max-height: 200px;
-  overflow-y: scroll;
   font-family: 'wenquanyi micro hei mono';
   font-size: 14px;
   letter-spacing: 1px;
   padding: 0px 4px;
   color: #fff;
+  width: 0px;
+  overflow-y: visible;
 }
 #editor + #menu span {
   background: rgba(134,134,254,0.7);
   color: #fff;
-  padding: 2px 4px;
   margin: 1px 0px 1px 0px;
   border-radius: 4px;
   box-shadow: 0px 0px 4px #fff;
   line-height: 26px;
+}
+#editor + #menu #sel {
+  background: rgba(35,35,251,0.7);
 }
 ::-webkit-scrollbar {
   width: 2px;
