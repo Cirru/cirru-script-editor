@@ -92,14 +92,18 @@ cirru = function() {
         case 13:
           if (exist(s())) {
             p().html(text(s()));
+            s().removeAttr('id');
+            focus();
+            return false;
+          } else {
+            p().after("<div>" + caret + "</div>");
+            next = p().next();
+            next[0].onclick = function(e) {
+              next.append(caret);
+              point();
+              return e.stopPropagation();
+            };
           }
-          p().after("<div>" + caret + "</div>");
-          next = p().next();
-          next[0].onclick = function(e) {
-            next.append(caret);
-            point();
-            return e.stopPropagation();
-          };
           break;
         case 9:
           if (exist(s())) {
@@ -179,7 +183,7 @@ cirru = function() {
           }
           return true;
         case 33:
-          if (exist(s())) {
+          if (!exist(s())) {
             m().children().last().attr('id', 'sel');
           } else {
             if (exist(s().prev().prev())) {
@@ -260,16 +264,19 @@ cirru = function() {
         return (exp.test(item)) && (item !== input);
       });
       m().empty();
-      return aval.slice(0, 11).forEach(function(item) {
+      aval.slice(0, 11).forEach(function(item) {
         var sel;
         m().append("<span>" + item + "</span><br>");
-        sel = m().children().last();
+        sel = m().children().last().prev();
         return sel[0].onclick = function() {
           p().html(text(sel));
-          p().after(caret);
-          return point();
+          s().removeAttr('id');
+          return focus();
         };
       });
+      if (exist(m().children())) {
+        return m().children().first().attr('id', 'sel');
+      }
     };
     return p()[0].oninput();
   };

@@ -53,13 +53,18 @@ cirru = ->
     if in_sight
       switch e.keyCode
         when 13 # key enter
-          if exist s() then p().html (text s())
-          p().after "<div>#{caret}</div>"
-          next = p().next()
-          next[0].onclick = (e) ->
-            next.append caret
-            point()
-            e.stopPropagation()
+          if exist s()
+            p().html (text s())
+            s().removeAttr 'id'
+            focus()
+            return off
+          else
+            p().after "<div>#{caret}</div>"
+            next = p().next()
+            next[0].onclick = (e) ->
+              next.append caret
+              point()
+              e.stopPropagation()
         when 9 # key tab
           if exist s() then p().html (text s())
           p().after caret
@@ -107,7 +112,7 @@ cirru = ->
             p().before paste
           return on
         when 33 # pgup
-          if exist s()
+          unless exist s()
             m().children().last().attr 'id', 'sel'
           else
             if exist s().prev().prev()
@@ -158,11 +163,12 @@ cirru = ->
       m().empty()
       aval[0..10].forEach (item) ->
         m().append "<span>#{item}</span><br>"
-        sel = m().children().last()
+        sel = m().children().last().prev()
         sel[0].onclick = ->
           p().html (text sel)
-          p().after caret
-          point()
+          s().removeAttr 'id'
+          focus()
+      if exist m().children() then m().children().first().attr 'id', 'sel'
     p()[0].oninput()
 
   $('#editor').append(caret).after(menu)
