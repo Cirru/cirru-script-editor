@@ -20,8 +20,12 @@ clr(a,b,c,d)
   code
     margin 2px 4px
     padding 0px 2px
-    box-shadow 0px 1px 0px hsl(120,90,40)
-    -webkit-transition-duration 0.6s
+    background hsla(240, 98, 90, 0.8)
+    color hsl(240,90,60)
+    border-radius 4px
+    padding 2px 4px
+    white-space nowrap
+    line-height 24px
 
     &:hover
       margin 2px 6px
@@ -30,11 +34,11 @@ clr(a,b,c,d)
       text-shadow 0px 0px 8px white
 
   div
-    box-shadow -1px 0px 0px hsl(240,90,86)
+    box-shadow -2px 0px 0px hsl(240,90,86)
     margin 2px 0px 2px 10px
     padding 0px 8px
     white-space nowrap
-    border-radius: 4px;
+    border-radius 8px
 
   #point
     outline 0px
@@ -44,7 +48,7 @@ clr(a,b,c,d)
     margin 0px 10px
     display: inline-block;
     border-style solid
-    border-width 0px 1px 0px 0px
+    border-width 0px 2px 0px 0px
     border-color hsl(240,90,86)
 
   code#point:empty
@@ -61,12 +65,13 @@ clr(a,b,c,d)
     overflow-y visible
 
     span
-      background hsla(240, 98, 76, 0.7)
-      color white
-      margin 1px 0px 1px 0px
+      background hsl(240,90,70)
+      color hsl(240, 98, 90)
       border-radius 4px
-      box-shadow 0px 0px 4px white
-      line-height 26px
+      line-height 24px
+      padding 2px 4px
+      white-space nowrap
+      box-shadow 0px 0px 8px white
 
     #sel
       background hsla(240,96,56,0.7)

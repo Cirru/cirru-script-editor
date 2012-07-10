@@ -179,16 +179,21 @@ cirru = function() {
           }
           return true;
         case 33:
-          if (exist(s().prev())) {
-            s().removeAttr('id').prev().attr('id', 'sel');
+          if (exist(s())) {
+            m().children().last().attr('id', 'sel');
           } else {
-            s().removeAttr('id');
+            if (exist(s().prev().prev())) {
+              s().removeAttr('id').prev().prev().attr('id', 'sel');
+            } else {
+              s().removeAttr('id');
+            }
+            return false;
           }
-          return false;
+          break;
         case 34:
           if (exist(s())) {
-            if (exist(s().next())) {
-              s().removeAttr('id').next().attr('id', 'sel');
+            if (exist(s().next().next())) {
+              s().removeAttr('id').next().next().attr('id', 'sel');
             }
           } else if (exist(m().children())) {
             m().children().first().attr('id', 'sel');
@@ -257,7 +262,7 @@ cirru = function() {
       m().empty();
       return aval.slice(0, 11).forEach(function(item) {
         var sel;
-        m().append("<span>" + item + "<br></span>");
+        m().append("<span>" + item + "</span><br>");
         sel = m().children().last();
         return sel[0].onclick = function() {
           p().html(text(sel));

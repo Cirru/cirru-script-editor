@@ -15,8 +15,12 @@
 #editor code {
   margin: 2px 4px;
   padding: 0px 2px;
-  box-shadow: 0px 1px 0px #0ac20a;
-  -webkit-transition-duration: 0.6s;
+  background: rgba(205,205,254,0.8);
+  color: #3d3df5;
+  border-radius: 4px;
+  padding: 2px 4px;
+  white-space: nowrap;
+  line-height: 24px;
 }
 #editor code:hover {
   margin: 2px 6px;
@@ -25,11 +29,11 @@
   text-shadow: 0px 0px 8px #fff;
 }
 #editor div {
-  box-shadow: -1px 0px 0px #bbbbfb;
+  box-shadow: -2px 0px 0px #bbbbfb;
   margin: 2px 0px 2px 10px;
   padding: 0px 8px;
   white-space: nowrap;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 #editor #point {
   outline: 0px;
@@ -39,7 +43,7 @@
   margin: 0px 10px;
   display: inline-block;
   border-style: solid;
-  border-width: 0px 1px 0px 0px;
+  border-width: 0px 2px 0px 0px;
   border-color: #bbbbfb;
 }
 #editor code#point:empty {
@@ -56,12 +60,13 @@
   overflow-y: visible;
 }
 #editor + #menu span {
-  background: rgba(134,134,254,0.7);
-  color: #fff;
-  margin: 1px 0px 1px 0px;
+  background: #6e6ef7;
+  color: #cdcdfe;
   border-radius: 4px;
-  box-shadow: 0px 0px 4px #fff;
-  line-height: 26px;
+  line-height: 24px;
+  padding: 2px 4px;
+  white-space: nowrap;
+  box-shadow: 0px 0px 8px #fff;
 }
 #editor + #menu #sel {
   background: rgba(35,35,251,0.7);

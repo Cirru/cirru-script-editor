@@ -107,14 +107,17 @@ cirru = ->
             p().before paste
           return on
         when 33 # pgup
-          if exist s().prev()
-            s().removeAttr('id').prev().attr 'id', 'sel'
-          else s().removeAttr 'id'
-          return off
+          if exist s()
+            m().children().last().attr 'id', 'sel'
+          else
+            if exist s().prev().prev()
+              s().removeAttr('id').prev().prev().attr 'id', 'sel'
+            else s().removeAttr 'id'
+            return off
         when 34 # pgdown
           if exist s()
-            if exist s().next()
-              s().removeAttr('id').next().attr 'id', 'sel'
+            if exist s().next().next()
+              s().removeAttr('id').next().next().attr 'id', 'sel'
           else if exist m().children()
             m().children().first().attr 'id', 'sel'
           return off
@@ -154,7 +157,7 @@ cirru = ->
       aval = piece().filter (item) -> (exp.test item) and (item isnt input)
       m().empty()
       aval[0..10].forEach (item) ->
-        m().append "<span>#{item}<br></span>"
+        m().append "<span>#{item}</span><br>"
         sel = m().children().last()
         sel[0].onclick = ->
           p().html (text sel)
