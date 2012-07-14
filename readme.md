@@ -7,9 +7,10 @@
 http://jiyinyiyong.github.com/cirru-editor/page/p.html  
 另外我把代码分离成文件了, 可以在其他的网页引用.  
 
-    <header id="editor"></header>
+    <header id="cirru"></header>
     <script src='http://code.jquery.com/jquery-1.7.1.js'></script>
-    <script src'http://jiyinyiyong.github.com/cirru-editor/page/editor.js'></script>
+    <script src='http://jiyinyiyong.github.com/cirru-editor/page/editor.js'></script>
+    <link rel='stylesheet' href='http://jiyinyiyong.github.com/cirru-editor/page/s.css'>
     <script>
       cirru();
     </script>
