@@ -2,7 +2,7 @@
 var breath, live;
 
 live = function() {
-  var children, evaluate, new_scope, origin, run;
+  var children, evaluate, new_scope, origin;
   origin = {};
   origin.has = {
     set: function(key) {
@@ -31,6 +31,11 @@ live = function() {
       } else {
         return arr.map(Number);
       }
+    },
+    '+': function(arr) {
+      return (arr.map(Number)).reduce(function(x, y) {
+        return x + y;
+      });
     }
   };
   new_scope = function(scope) {
@@ -39,23 +44,22 @@ live = function() {
     child.parent = scope;
     return child.has = {};
   };
-  run = function(arr) {};
-  evaluate = function(elem) {
+  evaluate = function(scope, elem) {
     var list;
     list = elem.children();
     list = $.map(list, function(item) {
       if (item.tagName === 'CODE') {
         return $(item).text();
       } else {
-        return [evaluate($(item))];
+        return [evaluate(scope, $(item))];
       }
     });
-    return run(list);
+    return run(origin, list);
   };
   children = $('#cirru').children();
   return $.each(children, function(i) {
     var list;
-    list = evaluate($(children[i]));
+    list = evaluate(origin, $(children[i]));
     return console.log(list);
   });
 };

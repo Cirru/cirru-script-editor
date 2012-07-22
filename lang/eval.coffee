@@ -14,26 +14,24 @@ live =  ->
     number: (arr) ->
       if arr.length is 1 then Number arr[0]
       else arr.map Number
+    '+': (arr) -> (arr.map Number).reduce (x, y) -> x + y
 
   new_scope = (scope) ->
     child = {}
     child.parent = scope
     child.has = {}
 
-  run = (arr) ->
-    
-
-  evaluate = (elem) ->
+  evaluate = (scope, elem) ->
     list = elem.children()
     list = $.map list, (item) ->
       # item = list[item]
       if item.tagName is 'CODE' then $(item).text()
-      else [evaluate $(item)]
-    run list
+      else [evaluate scope, $(item)]
+    run origin, list
 
   children = $('#cirru').children()
   $.each children, (i) ->
-    list = evaluate $(children[i])
+    list = evaluate origin, $(children[i])
     console.log list
 
 breath = live
