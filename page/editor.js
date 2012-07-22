@@ -81,7 +81,8 @@ cirru = function() {
     sel.collapse(p()[0], 1);
     $('div').addClass('inline');
     $('div:has(div)').removeClass('inline');
-    return p().focus();
+    p().focus();
+    return localStorage.cirru = c().html();
   };
   in_sight = true;
   c().bind('focus', function() {
@@ -289,13 +290,20 @@ cirru = function() {
       }
     };
   };
-  c().append(caret).after(menu);
+  if (localStorage.cirru != null) {
+    c().html(localStorage.cirru);
+  } else if (!exist(p())) {
+    c().append(caret).after(menu);
+  }
   t().attr('id', 'point');
   focus();
   c()[0].onclick = function(e) {
     return focus();
   };
-  return c()[0].onscroll = function() {
+  c()[0].onscroll = function() {
     return put();
   };
+  return c().bind('input', function() {
+    return localStorage.cirru = c().html();
+  });
 };

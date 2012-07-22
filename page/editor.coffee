@@ -46,6 +46,7 @@ cirru = ->
     $('div').addClass 'inline'
     $('div:has(div)').removeClass 'inline'
     p().focus()
+    localStorage.cirru = c().html()
 
   in_sight = yes
   c().bind 'focus', -> in_sight = yes
@@ -175,8 +176,10 @@ cirru = ->
           focus()
       if exist m().children() then m().children().first().attr 'id', 'sel'
 
-  c().append(caret).after(menu)
+  if localStorage.cirru? then c().html localStorage.cirru
+  else unless exist p() then c().append(caret).after(menu)
   t().attr 'id', 'point'
   focus()
   c()[0].onclick = (e) -> focus()
   c()[0].onscroll = -> put()
+  c().bind 'input', -> localStorage.cirru = c().html()
