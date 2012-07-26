@@ -2,9 +2,10 @@
 var breath, live;
 
 live = function() {
-  var children, evaluate, new_scope, origin;
+  var children, evaluate, new_scope, origin, run;
   origin = {};
-  origin.has = {
+  origin.children = {};
+  origin.children.bin = {
     set: function(key) {
       return function(value) {
         return key = value;
@@ -38,11 +39,41 @@ live = function() {
       });
     }
   };
+  origin.search = function(key) {
+    if (origin.children.bin[key] != null) {
+      return origin.children.bin;
+    } else if (origin.children[key] != null) {
+      return origin.children;
+    } else {
+      return void 0;
+    }
+  };
   new_scope = function(scope) {
-    var child;
-    child = {};
-    child.parent = scope;
-    return child.has = {};
+    var here;
+    here = {};
+    here.parent = scope;
+    here.children = {};
+    return here.search = function(key) {
+      if (origin.children.bin[key] != null) {
+        return origin.children.bin;
+      } else if (here[key] != null) {
+        return here;
+      } else if (here.parent.children[key] != null) {
+        return here.parent.children;
+      } else {
+        return void 0;
+      }
+    };
+  };
+  run = function(scope, arr) {
+    var key, pls;
+    key = arr[0];
+    pls = scope.search(key);
+    if (pls != null) {
+      return pls[key](arr.slice(1));
+    } else {
+      throw new Error('not found');
+    }
   };
   evaluate = function(scope, elem) {
     var list;
