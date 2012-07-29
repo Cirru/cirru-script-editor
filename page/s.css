@@ -3,7 +3,6 @@
   background: #7575f0;
   height: 500px;
   width: 700px;
-  font-family: 'wenquanyi micro hei mono';
   font-size: 14px;
   letter-spacing: 1px;
   padding: 6px 6px 400px 6px;
@@ -13,41 +12,31 @@
   line-height: 20px;
 }
 #cirru code {
-  margin: 2px 4px;
-  padding: 0px 2px;
-  background: rgba(205,205,254,0.8);
-  color: #3d3df5;
-  border-radius: 4px;
-  padding: 2px 4px;
+  margin: 0px 6px;
+  color: #fff;
+  font-family: 'wenquanyi micro hei mono';
   white-space: nowrap;
-  line-height: 24px;
-  -webkit-transition-duration: 0.6s;
+  -webkit-transition-duration: 1s;
 }
-#cirru code:hover {
-  margin: 2px 6px;
-}
-#cirru code:focus {
-  text-shadow: 0px 0px 8px #fff;
+#cirru code:empty {
+  margin: 0px -1px;
+  padding: 0px 1px;
+  background: #fff;
 }
 #cirru div {
-  box-shadow: -2px 0px 0px #bbbbfb;
+  box-shadow: -1px 0px 0px rgba(163,245,163,0.4);
   margin: 2px 0px 2px 10px;
-  padding: 0px 8px;
+  padding: 0px 0px 0px 8px;
   white-space: nowrap;
-  border-radius: 8px;
 }
 #cirru #point {
   outline: 0px;
 }
 #cirru .inline {
-  margin: 0px 10px;
+  margin: 0px 0px 0px 2px;
+  padding: 0px;
   display: inline-block;
-  border-style: solid;
-  border-width: 0px 2px 0px 0px;
-  border-color: #bbbbfb;
-}
-#cirru code#point:empty {
-  margin: 0px -2px;
+  box-shadow: 0px 1px 0px rgba(163,245,163,0.4);
 }
 #cirru + #menu {
   position: absolute;
@@ -60,16 +49,20 @@
   overflow-y: visible;
 }
 #cirru + #menu span {
-  background: #6e6ef7;
+  background: #5a5af6;
   color: #cdcdfe;
-  border-radius: 4px;
   line-height: 24px;
   padding: 2px 4px;
   white-space: nowrap;
-  box-shadow: 0px 0px 8px #fff;
 }
 #cirru + #menu #sel {
-  background: rgba(35,35,251,0.7);
+  background: rgba(55,55,251,0.7);
+}
+#cirru > div.inline {
+  display: block;
+  box-shadow: -1px 0px 0px rgba(163,245,163,0.4);
+  margin: 2px 0px 2px 10px;
+  padding: 0px 0px 0px 8px;
 }
 ::-webkit-scrollbar {
   width: 2px;

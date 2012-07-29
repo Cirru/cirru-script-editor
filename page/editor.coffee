@@ -4,6 +4,7 @@ cirru = ->
 
   editable = 'contenteditable'
   caret = "<code id='target' #{editable}='true'/>"
+  block = "<div>#{caret}</div>"
   menu = '<footer id="menu"></footer>'
   blank = ['', '<br>']
   paste = ''
@@ -38,6 +39,7 @@ cirru = ->
           break
     t().attr('id', 'point').attr(editable, 'true')
     if refocus then focus()
+    if (text p()) is '' then p().html ''
     put()
 
   focus = ->
@@ -57,22 +59,37 @@ cirru = ->
     if in_sight
       switch e.keyCode
         when 13 # key enter
-          if exist s()
+          if e.ctrlKey and not (root p())
+            if e.shiftKey then p().parent().before block
+            else p().parent().after block
+          else if exist s()
             p().html (text s())
             s().removeAttr 'id'
             focus()
             return off
           else
-            p().after "<div>#{caret}</div>"
+            p().after block
             next = p().next()
             next[0].onclick = (e) ->
               next.append caret
-              point()
-              e.stopPropagation()
         when 9 # key tab
+          if e.shiftKey then p().before caret
+          else p().after caret
+        when 32 # key space
           if exist s() then p().html (text s())
           if e.shiftKey then p().before caret
           else p().after caret
+        when 8 # key backpace
+          it = if e.shiftKey then p().next() else p().prev()
+          if (text p()).length is 0
+            if exist it
+              if leaf it then it.attr 'id', 'target'
+              else if e.shiftKey then it.prepend caret else it.append caret
+            else unless root p()
+              if e.shiftKey then p().parent().after caret
+              else p().parent().before caret
+            else return on
+          else return on
         when 46 # key delete
           if exist p().prev()
             it = p().prev()
@@ -136,6 +153,8 @@ cirru = ->
           return off
         else return on
     point()
+    e.preventDefault()
+    e.stopPropagation()
     off
   
   cirru.parse = ->
@@ -170,14 +189,33 @@ cirru = ->
       aval[0..10].forEach (item) ->
         m().append "<span>#{item}</span><br>"
         sel = m().children().last().prev()
-        sel[0].onclick = ->
-          p().html (text sel)
-          s().removeAttr 'id'
-          focus()
+        # console.log sel
+        # sel[0].onclick = ->
+        #   p().html (text sel)
+        #   s().removeAttr 'id'
+        #   focus()
       if exist m().children() then m().children().first().attr 'id', 'sel'
 
-  if localStorage.cirru? then c().html localStorage.cirru
-  else unless exist p() then c().append(caret).after(menu)
+  if localStorage.cirru?
+    c().html(localStorage.cirru).after menu
+    for item in $('#cirru div')
+      do ->
+        elem = $ item
+        elem[0].onclick = (e) ->
+          elem.append caret
+          point()
+          e.stopPropagation()
+          return off
+    for item in $('#cirru code')
+      do ->
+        elem = $ item
+        # console.log elem
+        elem[0].onclick = (e) -> if elem isnt p()
+          elem.attr 'id', 'target'
+          point off
+          e.stopPropagation()
+          return off
+  else unless exist p() then c().append(caret).after menu
   t().attr 'id', 'point'
   focus()
   c()[0].onclick = (e) -> focus()
