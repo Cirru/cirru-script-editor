@@ -20,24 +20,28 @@
     -webkit-transition-duration 1s
 
     &:empty
+      display inline-block
       margin 0px -1px
       padding 0px 1px
-      background white
+      background hsl(240,80,80)
+
+    &:after
+      content attr(value)
+      color hsl(240,80,75)
 
   div
-    box-shadow -1px 0px 0px hsla(120,80,80,0.4)
+    box-shadow -1px 0px 0px hsl(240,80,80)
     margin 2px 0px 2px 10px
     padding 0px 0px 0px 8px
     white-space nowrap
+    border-radius 12px
+
+    &:after
+      content attr(value)
+      color hsl(240,80,75)
 
   #point
     outline 0px
-
-  .inline
-    margin 0px 0px 0px 2px
-    padding 0px
-    display: inline-block
-    box-shadow 0px 1px 0px hsla(120,80,80,0.4)
 
   + #menu
     position absolute
@@ -58,12 +62,6 @@
 
     #sel
       background hsla(240,96,60,0.7)
-
-#cirru > div.inline
-  display block
-  box-shadow -1px 0px 0px hsla(120,80,80,0.4)
-  margin 2px 0px 2px 10px
-  padding 0px 0px 0px 8px
 
 ::-webkit-scrollbar
   width 2px

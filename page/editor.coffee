@@ -21,6 +21,14 @@ cirru = ->
   leaf = (elem) -> elem[0].tagName is 'CODE'
   text = (elem) -> elem.html().replace /<br>/g, ''
 
+  center = (elem) ->
+    h = c().innerHeight()
+    base = c().offset().top
+    aim = elem.offset().top
+    scrollTop = c().scrollTop()
+    # console.log aim, base, scrollTop, h
+    c().animate scrollTop: (aim - base + scrollTop - h / 2), 100
+
   point = (refocus = yes) ->
     aval = []
     old = p().removeAttr('id').removeAttr editable
@@ -40,13 +48,14 @@ cirru = ->
     t().attr('id', 'point').attr(editable, 'true')
     if refocus then focus()
     if (text p()) is '' then p().html ''
+    center p()
     put()
 
   focus = ->
     sel = window.getSelection()
     sel.collapse p()[0], 1
-    $('div').addClass 'inline'
-    $('div:has(div)').removeClass 'inline'
+    # $('div').addClass 'inline'
+    # $('div:has(div)').removeClass 'inline'
     p().focus()
     localStorage.cirru = c().html()
 
@@ -76,6 +85,7 @@ cirru = ->
           if e.shiftKey then p().before caret
           else p().after caret
         when 32 # key space
+          do breath if breath?
           if exist s() then p().html (text s())
           if e.shiftKey then p().before caret
           else p().after caret
@@ -157,16 +167,16 @@ cirru = ->
     e.stopPropagation()
     off
   
-  cirru.parse = ->
+  cirru.parse = (elem) ->
     map = (item, b) ->
       if leaf [item] then item.innerText
       else [$.map item.children, (x) -> map x]
-    res = $.map c()[0].children, map
+    res = $.map elem[0].children, map
     # console.log 'res:', res
     res
 
   piece = ->
-    all = cirru.parse()
+    all = cirru.parse c()
     words = []
     platten = (item) ->
       item.forEach (i) ->

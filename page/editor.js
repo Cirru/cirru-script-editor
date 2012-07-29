@@ -2,7 +2,7 @@ var cirru,
   __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 cirru = function() {
-  var blank, block, caret, editable, empty, exist, focus, in_sight, item, leaf, menu, paste, piece, point, put, root, text, _fn, _fn2, _i, _j, _len, _len2, _ref, _ref2;
+  var blank, block, caret, center, editable, empty, exist, focus, in_sight, item, leaf, menu, paste, piece, point, put, root, text, _fn, _fn2, _i, _j, _len, _len2, _ref, _ref2;
   if (typeof $ === "undefined" || $ === null) alert('Where s my jQuery!?');
   editable = 'contenteditable';
   caret = "<code id='target' " + editable + "='true'/>";
@@ -41,6 +41,16 @@ cirru = function() {
   text = function(elem) {
     return elem.html().replace(/<br>/g, '');
   };
+  center = function(elem) {
+    var aim, base, h, scrollTop;
+    h = c().innerHeight();
+    base = c().offset().top;
+    aim = elem.offset().top;
+    scrollTop = c().scrollTop();
+    return c().animate({
+      scrollTop: aim - base + scrollTop - h / 2
+    }, 100);
+  };
   point = function(refocus) {
     var aval, old, up;
     if (refocus == null) refocus = true;
@@ -66,14 +76,13 @@ cirru = function() {
     t().attr('id', 'point').attr(editable, 'true');
     if (refocus) focus();
     if ((text(p())) === '') p().html('');
+    center(p());
     return put();
   };
   focus = function() {
     var sel;
     sel = window.getSelection();
     sel.collapse(p()[0], 1);
-    $('div').addClass('inline');
-    $('div:has(div)').removeClass('inline');
     p().focus();
     return localStorage.cirru = c().html();
   };
@@ -117,6 +126,7 @@ cirru = function() {
           }
           break;
         case 32:
+          if (typeof breath !== "undefined" && breath !== null) breath();
           if (exist(s())) p().html(text(s()));
           if (e.shiftKey) {
             p().before(caret);
@@ -250,7 +260,7 @@ cirru = function() {
     e.stopPropagation();
     return false;
   });
-  cirru.parse = function() {
+  cirru.parse = function(elem) {
     var map, res;
     map = function(item, b) {
       if (leaf([item])) {
@@ -263,12 +273,12 @@ cirru = function() {
         ];
       }
     };
-    res = $.map(c()[0].children, map);
+    res = $.map(elem[0].children, map);
     return res;
   };
   piece = function() {
     var all, platten, words;
-    all = cirru.parse();
+    all = cirru.parse(c());
     words = [];
     platten = function(item) {
       return item.forEach(function(i) {
