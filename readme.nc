@@ -29,3 +29,5 @@ http://www.tudou.com/programs/view/1lUnTZvgsrk/?phd=99
 gh-pages 上的例子我加了一层计算器的 live-coding
 因为解释器不会写和 DOM 操作不熟悉的缘故较长时间不再更新
 其中的空格键阻断键盘事件不太有效, 有办法的话尝试更改一下
+一个测试的视频发在了土豆上, 大致可以看下
+http://www.tudou.com/programs/view/SWKnhfmduos/
