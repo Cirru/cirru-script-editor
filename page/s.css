@@ -22,22 +22,17 @@
   display: inline-block;
   margin: 0px -1px;
   padding: 0px 1px;
-  background: #a3a3f5;
-}
-#cirru code:after {
-  content: attr(value);
-  color: #8c8cf2;
 }
 #cirru div {
   box-shadow: -1px 0px 0px #a3a3f5;
   margin: 2px 0px 2px 10px;
   padding: 0px 0px 0px 8px;
-  white-space: nowrap;
   border-radius: 12px;
 }
-#cirru div:after {
+#cirru div:after,
+#cirru code:after {
   content: attr(value);
-  color: #8c8cf2;
+  color: #f5a3a3;
 }
 #cirru #point {
   outline: 0px;

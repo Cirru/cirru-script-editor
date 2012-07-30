@@ -1,13 +1,12 @@
+editable = 'contenteditable'
+caret = "<code id='target' #{editable}='true'/>"
+block = "<div>#{caret}</div>"
+menu = '<footer id="menu"></footer>'
+blank = ['', '<br>']
+paste = ''
   
 cirru = ->
   unless $? then alert 'Where s my jQuery!?'
-
-  editable = 'contenteditable'
-  caret = "<code id='target' #{editable}='true'/>"
-  block = "<div>#{caret}</div>"
-  menu = '<footer id="menu"></footer>'
-  blank = ['', '<br>']
-  paste = ''
 
   window.p = -> $ '#point'
   window.t = -> $ '#target'
@@ -64,7 +63,7 @@ cirru = ->
   c().bind 'blur', -> in_sight = no
 
   c().keydown (e) ->
-    console.log e.keyCode
+    # console.log e.keyCode
     if in_sight
       switch e.keyCode
         when 13 # key enter
@@ -85,10 +84,10 @@ cirru = ->
           if e.shiftKey then p().before caret
           else p().after caret
         when 32 # key space
-          do breath if breath?
           if exist s() then p().html (text s())
           if e.shiftKey then p().before caret
           else p().after caret
+          do breath if breath?
         when 8 # key backpace
           it = if e.shiftKey then p().next() else p().prev()
           if (text p()).length is 0
@@ -192,9 +191,11 @@ cirru = ->
     p()[0].oninput = ->
       x = '.*'
       input = text p()
-      exp = new RegExp ('^' + input.split('').join(x))
+      test = (item) ->
+        len = input.length
+        item[...len] is input[...len]
       aval = piece().filter (item) ->
-        (exp.test item) and (item isnt input) and input isnt ''
+        (test item) and (input isnt '') and (item isnt input)
       m().empty()
       aval[0..10].forEach (item) ->
         m().append "<span>#{item}</span><br>"

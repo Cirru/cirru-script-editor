@@ -1,15 +1,21 @@
-var cirru,
+var blank, block, caret, cirru, editable, menu, paste,
   __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
+editable = 'contenteditable';
+
+caret = "<code id='target' " + editable + "='true'/>";
+
+block = "<div>" + caret + "</div>";
+
+menu = '<footer id="menu"></footer>';
+
+blank = ['', '<br>'];
+
+paste = '';
+
 cirru = function() {
-  var blank, block, caret, center, editable, empty, exist, focus, in_sight, item, leaf, menu, paste, piece, point, put, root, text, _fn, _fn2, _i, _j, _len, _len2, _ref, _ref2;
+  var center, empty, exist, focus, in_sight, item, leaf, piece, point, put, root, text, _fn, _fn2, _i, _j, _len, _len2, _ref, _ref2;
   if (typeof $ === "undefined" || $ === null) alert('Where s my jQuery!?');
-  editable = 'contenteditable';
-  caret = "<code id='target' " + editable + "='true'/>";
-  block = "<div>" + caret + "</div>";
-  menu = '<footer id="menu"></footer>';
-  blank = ['', '<br>'];
-  paste = '';
   window.p = function() {
     return $('#point');
   };
@@ -95,7 +101,6 @@ cirru = function() {
   });
   c().keydown(function(e) {
     var it, next, prev, up, _ref, _ref2, _ref3;
-    console.log(e.keyCode);
     if (in_sight) {
       switch (e.keyCode) {
         case 13:
@@ -126,13 +131,13 @@ cirru = function() {
           }
           break;
         case 32:
-          if (typeof breath !== "undefined" && breath !== null) breath();
           if (exist(s())) p().html(text(s()));
           if (e.shiftKey) {
             p().before(caret);
           } else {
             p().after(caret);
           }
+          if (typeof breath !== "undefined" && breath !== null) breath();
           break;
         case 8:
           it = e.shiftKey ? p().next() : p().prev();
@@ -301,12 +306,16 @@ cirru = function() {
     });
     m().empty();
     return p()[0].oninput = function() {
-      var aval, exp, input, x;
+      var aval, input, test, x;
       x = '.*';
       input = text(p());
-      exp = new RegExp('^' + input.split('').join(x));
+      test = function(item) {
+        var len;
+        len = input.length;
+        return item.slice(0, len) === input.slice(0, len);
+      };
       aval = piece().filter(function(item) {
-        return (exp.test(item)) && (item !== input) && input !== '';
+        return (test(item)) && (input !== '') && (item !== input);
       });
       m().empty();
       aval.slice(0, 11).forEach(function(item) {

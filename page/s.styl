@@ -23,22 +23,16 @@
       display inline-block
       margin 0px -1px
       padding 0px 1px
-      background hsl(240,80,80)
-
-    &:after
-      content attr(value)
-      color hsl(240,80,75)
 
   div
     box-shadow -1px 0px 0px hsl(240,80,80)
     margin 2px 0px 2px 10px
     padding 0px 0px 0px 8px
-    white-space nowrap
     border-radius 12px
 
-    &:after
-      content attr(value)
-      color hsl(240,80,75)
+  div:after, code:after
+    content attr(value)
+    color hsl(0,80,80)
 
   #point
     outline 0px

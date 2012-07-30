@@ -25,3 +25,7 @@ http://www.tudou.com/programs/view/1lUnTZvgsrk/?phd=99
 * `ESC` 临时去掉候选词
 * `Delete` 删除字串
 另外受候选词菜单影响, `Tab` 使用候选词, `Enter` 则是选中. 方向键不影响.
+
+gh-pages 上的例子我加了一层计算器的 live-coding
+因为解释器不会写和 DOM 操作不熟悉的缘故较长时间不再更新
+其中的空格键阻断键盘事件不太有效, 有办法的话尝试更改一下
