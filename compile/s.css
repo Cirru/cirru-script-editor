@@ -1,10 +1,13 @@
 
 div {
-  margin: 2px 20px;
+  margin: 6px 20px;
 }
 
 span {
+  font-family: monospace;
+  font-size: 14px;
   padding: 0px 4px;
-  margin: 0px 4px;
-  background: hsl(0,60%,80%)
+  margin: 0px 8px;
+  background: hsl(0,90%,95%);
+  box-radius: 4px;
 }
