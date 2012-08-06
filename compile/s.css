@@ -1,0 +1,10 @@
+
+div {
+  margin: 2px 20px;
+}
+
+span {
+  padding: 0px 4px;
+  margin: 0px 4px;
+  background: hsl(0,60%,80%)
+}
