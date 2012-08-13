@@ -1,4 +1,8 @@
 
+l = '\u00d1'
+r = '\u00d2'
+s = '\u00d3'
+
 indent = (item) ->
   spaces = item.match /^\s*/
   spaces[0].length
@@ -37,9 +41,25 @@ folding = (step) ->
 
 fill = (x) -> x.length > 0
 
+mask = (str) ->
+  str = str.replace /\\\(/g, 'Ñ'
+  str = str.replace /\\\)/g, 'Ò'
+  str = str.replace /\\\s/g, 'Ø'
+  str
+
+unmask = (str) ->
+  show str
+  str = str.replace /Ñ/g, '('
+  str = str.replace /Ò/g, ')'
+  str = str.replace /Ø/g, ' '
+  str
+
 divide = (str) ->
+  str = mask str
+  put str
   p = str.indexOf '('
-  if p < 0 then str.split(' ').filter(fill) else
+  if p < 0 then str.split(' ').filter(fill).map(unmask)
+  else
     sub = str[p+1..]
     q = 0
     c = 1
@@ -52,6 +72,7 @@ divide = (str) ->
         if c is 0 then break
     if c > 0 then throw new Error 'pair not close'
     s1 = str[...p]
+    s1 = unmask s1
     s2 = str[p+1...p+q]
     s3 = str[p+q+1..]
     res = []
