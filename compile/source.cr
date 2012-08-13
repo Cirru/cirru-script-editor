@@ -1,1 +1,5 @@
-(str  dfgd  dfg\(dfg \) \ sdf)
+
+" 2 3 4 (1 2 3)
+  3 4 5
+// 33.com (mail re)
+  | 2 4 '''

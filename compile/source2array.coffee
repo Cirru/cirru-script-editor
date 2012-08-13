@@ -7,11 +7,6 @@ indent = (item) ->
   spaces = item.match /^\s*/
   spaces[0].length
 
-insert = (parent, child) ->
-  end = parent.length - 1
-  if typeof parent[end] is 'tring'
-    parent.push []
-
 group = (lines) ->
   res = []
   for item in lines
@@ -55,31 +50,34 @@ unmask = (str) ->
   str
 
 divide = (str) ->
-  str = mask str
-  put str
-  p = str.indexOf '('
-  if p < 0 then str.split(' ').filter(fill).map(unmask)
-  else
-    sub = str[p+1..]
-    q = 0
-    c = 1
-    for item, index in sub
-      q += 1
-      if item is '(' then c += 1
-      else if item is ')'
-        c -= 1
-        show 'show c:', c
-        if c is 0 then break
-    if c > 0 then throw new Error 'pair not close'
-    s1 = str[...p]
-    s1 = unmask s1
-    s2 = str[p+1...p+q]
-    s3 = str[p+q+1..]
-    res = []
-    res.push s for s in (s1.split ' ').filter(fill)
-    res.push (divide s2)
-    res.push s for s in (divide s3)
-    res
+  if str[..2] is '// ' then ['//', str[3..].trim()]
+  else if str[..1] is '| ' then [str[2..].trim()]
+  else 
+    str = mask str
+    put str
+    p = str.indexOf '('
+    if p < 0 then str.split(' ').filter(fill).map(unmask)
+    else
+      sub = str[p+1..]
+      q = 0
+      c = 1
+      for item, index in sub
+        q += 1
+        if item is '(' then c += 1
+        else if item is ')'
+          c -= 1
+          show 'show c:', c
+          if c is 0 then break
+      if c > 0 then throw new Error 'pair not close'
+      s1 = str[...p]
+      s1 = unmask s1
+      s2 = str[p+1...p+q]
+      s3 = str[p+q+1..]
+      res = []
+      res.push s for s in (s1.split ' ').filter(fill)
+      res.push (divide s2)
+      res.push s for s in (divide s3)
+      res
 
 walk = (arr) -> # to divide string
   res = []
