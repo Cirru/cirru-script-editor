@@ -27,6 +27,9 @@ folding = (step) ->
       if n is 0 then res.push item
       else if n >= 2
         end = res.length - 1
+        unless res[end].push?
+          end += 1
+          res.push []
         res[end].push [item[0][2..]]
       else throw new Error 'odd indent::', item
   res = res.map (x) ->
@@ -43,18 +46,21 @@ mask = (str) ->
   str
 
 unmask = (str) ->
-  show str
   str = str.replace /Ñ/g, '('
   str = str.replace /Ò/g, ')'
   str = str.replace /Ø/g, ' '
   str
 
 divide = (str) ->
-  if str[..2] is '// ' then ['//', str[3..].trim()]
+  if str[..2] is '// '
+    body = str[3..].trim()
+    ret = ['//']
+    p = body.indexOf ' '
+    if p < 1 then ['//', '', ''] else
+      ['//', body[...p], body[p+1..]]
   else if str[..1] is '| ' then [str[2..].trim()]
   else 
     str = mask str
-    put str
     p = str.indexOf '('
     if p < 0 then str.split(' ').filter(fill).map(unmask)
     else
@@ -66,7 +72,6 @@ divide = (str) ->
         if item is '(' then c += 1
         else if item is ')'
           c -= 1
-          show 'show c:', c
           if c is 0 then break
       if c > 0 then throw new Error 'pair not close'
       s1 = str[...p]

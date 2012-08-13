@@ -1,3 +1,2 @@
 
-exports.to_tree = (arr) ->
-  console.log 'array2tree'
+exports.to_tree = (arr) -> arr
