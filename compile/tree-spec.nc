@@ -21,7 +21,7 @@ compare:
   is inst and or not
 
 if:
-  if (condition) (then) (else)
+  if (condition) ((then1) (then2) (then3)) (or1 or2 or3)
 
 switch:
   switch
@@ -34,9 +34,6 @@ run function:
 
 define function:
   fn (x y z) (do a) (do b) (do c)
-
-for:
-  for (do a) (do b) (do c) (do A) (do B)
 
 while:
   while (cond) (do a) (do b) (do c)
