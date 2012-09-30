@@ -5,4 +5,4 @@ all+= alpha
 all+= alpha.toUpperCase()
 all+= '[]\\{}|;:"\',./<>?'
 
-exports.all = alpha.split ''
+exports.all = all.split ''

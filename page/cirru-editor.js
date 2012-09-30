@@ -2,7 +2,7 @@
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 exports.editor = function(elem) {
-  var check, choice, create_block, ctrl_c, ctrl_p, ctrl_v, do_render, focused, insert_blank, insert_char, key, list, move_down, move_left, move_right, move_up, on_update, render, ret, tool, _ref;
+  var alphabet, check, choice, create_block, ctrl_c, ctrl_p, ctrl_v, do_render, focused, insert_blank, insert_char, key, list, move_down, move_left, move_right, move_up, on_update, render, ret, tool, _ref;
   tool = {
     err: function(info) {
       throw new Error(info);
@@ -53,11 +53,12 @@ exports.editor = function(elem) {
     return focused = false;
   });
   _ref = require('./functions.js'), insert_char = _ref.insert_char, insert_blank = _ref.insert_blank, move_left = _ref.move_left, move_right = _ref.move_right, move_up = _ref.move_up, move_down = _ref.move_down, create_block = _ref.create_block, ctrl_c = _ref.ctrl_c, ctrl_v = _ref.ctrl_v, ctrl_p = _ref.ctrl_p;
+  alphabet = require('./alphabet.js').all;
   $('body').keypress(function(e) {
     var char;
     if (focused) {
       char = String.fromCharCode(e.keyCode);
-      if (__indexOf.call(require('./alphabet.js').all, char) >= 0) {
+      if (__indexOf.call(alphabet, char) >= 0) {
         list = insert_char(list, char);
         return do_render();
       }

@@ -1,7 +1,7 @@
 
 .cirru-editor
   padding 6px
-  background hsl(240,60,88)
+  background hsl(240,60,82)
   box-shadow 0px 0px 20px hsla(240,20,30,0.4)
   opacity 0.6
   font-family monospace
@@ -9,16 +9,15 @@
   overflow scroll
 
   code
-    box-shadow 0px 1px 0px hsl(0, 100, 100)
-    padding 0px 2px
+    box-shadow 0px 1px 0px hsl(0, 100, 90)
+    padding 3px 0px
+    margin 0px 4px
+    line-height 24px
 
   #caret
-    padding 0px 1px
-    margin 0px -1px
+    padding 0px
+    margin 0px
     background white
-    // box-shadow 0px 0px 4px white
-    width 2px
-    height 20px
 
   *
     box-sizing border-box
@@ -26,6 +25,17 @@
 
   pre
     margin 0px
+    padding 2px 4px
+    box-shadow -1px 0px 0px hsl(0,0,90)
+    border-radius 6px
+
+    pre
+      margin-left 12px
+
+  .inline
+    display inline-block
+    box-shadow 0px 0px 4px hsl(0,100,100)
+    margin -4px 4px
 
 ::-webkit-scrollbar
   width 4px

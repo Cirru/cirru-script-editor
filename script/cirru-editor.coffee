@@ -52,13 +52,15 @@ exports.editor = (elem) ->
     ctrl_p
   } = require './functions.js'
 
+  alphabet = require('./alphabet.js').all
+
   $('body').keypress (e) ->
     # show focused, e.keyCode
     # char = String.fromCharCode e.keyCode
     # show 'char from press -', char
     if focused
       char = String.fromCharCode e.keyCode
-      if char in require('./alphabet.js').all
+      if char in alphabet
         list = insert_char list, char
         do_render()
 
