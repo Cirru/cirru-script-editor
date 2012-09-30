@@ -39,6 +39,21 @@ inTail = (item) ->
   if isArr item
     if (last item) is caret then return yes
   no
+has_caret = (item) ->
+  if isStr item then point item
+  else if isArr item
+    for x in item
+      if (has_caret x) then return yes
+    no
+rm_caret = (item) ->
+  if isStr item then (clear item)
+  else if isArr item
+    ret = []
+    item.forEach (x) ->
+      piece = (rm_caret x)
+      if found piece
+        ret.push piece
+    ret
 
 exports.insert_char = insert_char = (list, char) ->
   ret = []
@@ -96,10 +111,71 @@ exports.spacebar = spacebar = (list) ->
        ret.push item
   ret
 
-exports.page_up = (list) -> list
-exports.page_down = (list) -> list
-exports.move_end = (list) -> list
-exports.move_home = (list) -> list
+exports.page_down = page_down =  (list) ->
+  ret = []
+  mark = off
+  list.forEach (item) ->
+    if mark
+      if isArr item
+        item.unshift caret
+        ret.push item
+      else if isStr item
+        ret.push (caret.concat item)
+      mark = off
+    else if has_caret item
+      mark = on
+      piece = (rm_caret item)
+      if found piece then ret.push piece
+    else ret.push item
+  if mark then ret.push [caret]
+  ret
+
+exports.page_up = (list) ->
+  list = page_down list.reverse()
+  list.reverse()
+
+exports.move_home = move_home = (list) ->
+  ret = []
+  list.forEach (item) ->
+    if isStr item
+      if item is caret then ret.unshift caret
+      else if atHead item
+        ret.push caret
+        if found item[1..] then ret.push item[1..]
+      else if point item
+        ret.push (caret.concat (clear item))
+      else ret.push item
+    else if isArr item
+      if inHead item
+        ret.push caret
+        if found item[1..] then ret.push item[1..]
+      else if caret in item
+        piece = clear item
+        piece.unshift caret
+        ret.push piece
+      else ret.push (move_home item)
+  ret
+
+exports.move_end = move_end = (list) ->
+  ret = []
+  mark = off
+  list.forEach (item) ->
+    if isStr item
+      if item is caret then mark = on
+      else if atTail item then ret.push (clear item), caret
+      else if point item then ret.push (clear item).concat(caret)
+      else ret.push item
+    else if isArr item
+      if inTail item
+        ret.push (clear item) if found (clear item)
+        ret.push caret
+      else if caret in item
+        piece = clear item
+        piece.push caret
+        ret.push piece
+      else ret.push (move_end item)
+  if mark then ret.push caret
+  ret
 
 exports.move_left = move_left = (list) ->
   ret = []
