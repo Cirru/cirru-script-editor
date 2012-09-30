@@ -1,0 +1,46 @@
+.cirru-editor {
+  padding: 6px;
+  background: #cecef3;
+  box-shadow: 0px 0px 20px rgba(61,61,92,0.4);
+  opacity: 0.6;
+  font-family: monospace;
+  color: #fff;
+  overflow: scroll;
+}
+.cirru-editor code {
+  box-shadow: 0px 1px 0px #fff;
+  padding: 0px 2px;
+}
+.cirru-editor #caret {
+  padding: 0px 1px;
+  margin: 0px -1px;
+  background: #fff;
+  width: 2px;
+  height: 20px;
+}
+.cirru-editor * {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.cirru-editor pre {
+  margin: 0px;
+}
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+  background: #e0e0eb;
+}
+::-webkit-scrollbar-track {
+  width: 4px;
+  background: #e0e0eb;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(204,102,102,0.5);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-corner {
+  background: rgba(242,217,217,0.4);
+  border-radius: 0px 0px 4px 0px;
+}

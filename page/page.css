@@ -1,0 +1,18 @@
+body {
+  background: #e2e2fd;
+}
+#editor {
+  margin: 40px;
+  width: 800px;
+  height: 400px;
+  display: inline-block;
+}
+#another {
+  vertical-align: top;
+  margin-top: 40px;
+  width: 200px;
+  height: 300px;
+  background: rgba(214,92,92,0.7);
+  display: inline-block;
+  box-shadow: 0px 0px 10px #808080;
+}
