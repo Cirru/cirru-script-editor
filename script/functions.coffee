@@ -9,7 +9,11 @@ empty = (item) -> item.length is 0
 point = (item) ->
   (isStr item) and (item.indexOf caret) > -1
 show = (args...) -> console.log.apply console, args
-clear = (item) -> item.replace /\t/, ''
+clear = (item) ->
+  if isStr item
+    item.replace /\t/, ''
+  else if isArr
+    item.filter (x) -> x isnt caret
 isCell = (item) ->
   if isArr item
     if item.length is 1
@@ -148,14 +152,57 @@ exports.move_right = move_right = (list) ->
         ret.push item
         mark = off
       else if inTail item
-        ret.push item[...(item.length-1)]
+        piece = item[...(item.length-1)]
+        if found piece then ret.push piece 
         ret.push caret
       else ret.push (move_right item)
   if mark then ret.push caret
   ret
 
-exports.move_up = (list) -> list
-exports.move_down = (list) -> list
+exports.move_up = move_up = (list) ->
+  ret = []
+  list.forEach (item) ->
+    if isStr item
+      if item is caret
+        tail = ret.pop()
+        if tail?
+          if isArr tail
+            tail.push caret
+            ret.push tail
+          else if isStr tail
+            ret.push caret, tail
+        else ret.push caret
+      else if point item
+        ret.push caret
+        if found (clear item) then ret.push (clear item)
+      else ret.push item
+    else if isArr item
+      if inHead item
+        ret.push caret
+        if found (clear item) then ret.push (clear item)
+      else ret.push (move_up item)
+  ret
+
+exports.move_down = move_down = (list) ->
+  ret = []
+  mark = off
+  list.forEach (item) ->
+    if isStr item
+      if item is caret then mark = on
+      else if point item
+        if found (clear item) then ret.push (clear item)
+        ret.push caret
+      else ret.push item
+    else if isArr item
+      if mark
+        item.unshift caret
+        ret.push item
+        mark = off
+      else if inTail item then ret.push (clear item), caret
+      else ret.push (move_down item)
+  if mark then ret.push caret
+  ret
+
 exports.key_insert = (list) ->
   str = prompt() or ''
   insert_char list, str
