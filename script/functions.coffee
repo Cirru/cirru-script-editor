@@ -299,7 +299,7 @@ exports.key_delete = key_delete = (list) ->
     else ret.push item
   ret
 
-exports.ctrl_m = ctrl_x = (list) ->
+exports.ctrl_x = ctrl_x = (list) ->
   ret = []
   list.forEach (item) ->
     if isStr item

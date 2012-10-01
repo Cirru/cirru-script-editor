@@ -483,7 +483,7 @@ exports.key_delete = key_delete = function(list) {
   return ret;
 };
 
-exports.ctrl_m = ctrl_x = function(list) {
+exports.ctrl_x = ctrl_x = function(list) {
   var ret;
   ret = [];
   list.forEach(function(item) {
