@@ -34,5 +34,15 @@ draw = function(list) {
 };
 
 exports.render = function(list, elem) {
-  return elem.html(draw(list));
+  var base, height, scrollTop, top;
+  elem.html(draw(list));
+  top = $('#caret').offset().top;
+  height = elem.innerHeight();
+  base = elem.offset().top;
+  scrollTop = elem.scrollTop();
+  if (!((top > base) && (top < base + height))) {
+    return elem.animate({
+      scrollTop: scrollTop + top - base - height / 2
+    }, 200);
+  }
 };

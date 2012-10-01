@@ -125,7 +125,6 @@ exports.editor = function(elem) {
     return false;
   });
   key.down('ctrl z', function() {
-    show('z:', history);
     list = ctrl_z(history);
     do_render();
     return false;

@@ -345,15 +345,15 @@ exports.ctrl_z = (his) ->
   if his.now > 0 then his.now -= 1
   # show 'z:', his
   ret = his.all[his.now]
-  show 'ret: ', ret, his.now
+  # show 'ret: ', ret, his.now
   ret
 
 exports.ctrl_y = (his) ->
   len = his.all.length
   if len > (his.now + 1) then his.now += 1
-  show 'y:', his
+  # show 'y:', his
   ret = his.all[his.now]
-  show ret
+  # show ret
   ret
 
 exports.add_history = (his, list) ->
@@ -361,6 +361,9 @@ exports.add_history = (his, list) ->
   his.now += 1
   # show 'add:', his
   his.all = his.all[..his.now]
+  if his.all.length > 1000
+    his.all.shift()
+    his.now -= 1
   his
 
 exports.reset_history = (his, list) ->

@@ -122,7 +122,7 @@ exports.editor = (elem) ->
     do_render()
     off
   key.down 'ctrl z', ->
-    show 'z:', history
+    # show 'z:', history
     list = ctrl_z history
     do_render()
     off
@@ -130,4 +130,5 @@ exports.editor = (elem) ->
     list = ctrl_y history
     do_render()
     off
+    
   ret

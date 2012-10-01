@@ -27,3 +27,10 @@ draw = (list) ->
 exports.render = (list, elem) ->
   # console.log list
   elem.html (draw list)
+  top = $('#caret').offset().top
+  height = elem.innerHeight()
+  base = elem.offset().top
+  scrollTop = elem.scrollTop()
+  # show 'height:', top, height, base, scrollTop
+  unless (top > base) and (top < base + height)
+    elem.animate scrollTop: (scrollTop + top - base - height/2), 200

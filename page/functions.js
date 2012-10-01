@@ -554,7 +554,6 @@ exports.ctrl_z = function(his) {
     his.now -= 1;
   }
   ret = his.all[his.now];
-  show('ret: ', ret, his.now);
   return ret;
 };
 
@@ -564,9 +563,7 @@ exports.ctrl_y = function(his) {
   if (len > (his.now + 1)) {
     his.now += 1;
   }
-  show('y:', his);
   ret = his.all[his.now];
-  show(ret);
   return ret;
 };
 
@@ -574,6 +571,10 @@ exports.add_history = function(his, list) {
   his.all.push(list);
   his.now += 1;
   his.all = his.all.slice(0, his.now + 1 || 9e9);
+  if (his.all.length > 1000) {
+    his.all.shift();
+    his.now -= 1;
+  }
   return his;
 };
 
