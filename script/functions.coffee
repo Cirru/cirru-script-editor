@@ -299,7 +299,7 @@ exports.key_delete = key_delete = (list) ->
     else ret.push item
   ret
 
-exports.ctrl_m = ctrl_m = (list) ->
+exports.ctrl_m = ctrl_x = (list) ->
   ret = []
   list.forEach (item) ->
     if isStr item
@@ -311,10 +311,10 @@ exports.ctrl_m = ctrl_m = (list) ->
       if caret in item
         window.cirru_copyboard = item
         ret.push caret
-      else ret.push (ctrl_m item)
+      else ret.push (ctrl_x item)
   ret
 
-exports.ctrl_y = ctrl_y = (list) ->
+exports.ctrl_y = ctrl_c = (list) ->
   list.forEach (item) ->
     if isStr item
       # show item
@@ -323,10 +323,10 @@ exports.ctrl_y = ctrl_y = (list) ->
     else if isArr item
       if caret in item
         window.cirru_copyboard = item
-      else ctrl_y item
+      else ctrl_c item
   list
 
-exports.ctrl_p = ctrl_p = (list) ->
+exports.ctrl_p = ctrl_v = (list) ->
   ret = []
   list.forEach (item) ->
     if isStr item
@@ -337,5 +337,33 @@ exports.ctrl_p = ctrl_p = (list) ->
         else ret.push item
       else ret.push item
     else if isArr item
-      ret.push (ctrl_p item)
+      ret.push (ctrl_v item)
   ret
+
+exports.ctrl_z = (his) ->
+  len = his.all.length
+  if his.now > 0 then his.now -= 1
+  # show 'z:', his
+  ret = his.all[his.now]
+  show 'ret: ', ret, his.now
+  ret
+
+exports.ctrl_y = (his) ->
+  len = his.all.length
+  if len > (his.now + 1) then his.now += 1
+  show 'y:', his
+  ret = his.all[his.now]
+  show ret
+  ret
+
+exports.add_history = (his, list) ->
+  his.all.push list
+  his.now += 1
+  # show 'add:', his
+  his.all = his.all[..his.now]
+  his
+
+exports.reset_history = (his, list) ->
+  his.all = [list]
+  his.now = 0
+  his

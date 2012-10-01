@@ -19,6 +19,7 @@ $(function() {
   }), ['\t']);
   editor.val(list);
   editor.render();
+  editor.reset_history(list);
   editor.update(function() {
     return ls.list = JSON.stringify({
       value: editor.val()

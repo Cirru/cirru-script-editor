@@ -17,6 +17,7 @@ $ ->
 
   editor.val list
   editor.render()
+  editor.reset_history list
 
   editor.update ->
     # show 'saved'

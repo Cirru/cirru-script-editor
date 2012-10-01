@@ -1,5 +1,24 @@
+input = '<input id="input"/>'
+copy = (json) -> JSON.parse (JSON.stringify json)
 
 exports.editor = (elem) ->
+
+  {
+    insert_char
+    insert_blank
+    move_left
+    move_right
+    move_up
+    move_down
+    create_block
+    ctrl_x
+    ctrl_c
+    ctrl_v
+    ctrl_z
+    ctrl_y
+    add_history
+    reset_history
+  } = require './functions.js'
 
   tool =
     err: (info) -> throw new Error info
@@ -9,12 +28,16 @@ exports.editor = (elem) ->
     unless elem? then tool.err 'need a elem!'
 
   ret = {}
-  input = '<input id="input"/>'
 
-  list = ['\t']
+  list = [['\t']]
   elem = $(elem)
-
   focused = no
+  history =
+    all: [['\t']]
+    now: 0
+
+  ret.reset_history = (list) ->
+    history = reset_history history, list
 
   ret.val = (value) ->
     if value? then list = value
@@ -27,6 +50,7 @@ exports.editor = (elem) ->
 
   ret.render = do_render = ->
     # show 'do_render', on_update
+    # show 'li:', list
     render list, elem
     on_update.forEach (f) -> f()
 
@@ -40,19 +64,6 @@ exports.editor = (elem) ->
     elem.css opacity: 0.4
     focused = no
 
-  {
-    insert_char
-    insert_blank
-    move_left
-    move_right
-    move_up
-    move_down
-    create_block
-    ctrl_m
-    ctrl_y
-    ctrl_p
-  } = require './functions.js'
-
   alphabet = require('./alphabet.js').all
 
   $('body').keypress (e) ->
@@ -63,6 +74,7 @@ exports.editor = (elem) ->
       char = String.fromCharCode e.keyCode
       if char in alphabet
         list = insert_char list, char
+        history = add_history (copy history), (copy list)
         do_render()
 
   choice = require('./control.js').choice
@@ -73,6 +85,7 @@ exports.editor = (elem) ->
       # show code
       if choice[code]?
         list = choice[code] list
+        history = add_history (copy history), (copy list)
         do_render()
         e.preventDefault()
 
@@ -96,16 +109,25 @@ exports.editor = (elem) ->
           off
       off
 
-  key.down 'ctrl m', ->
-    list = ctrl_m list
+  key.down 'ctrl x', ->
+    list = ctrl_x list
+    do_render()
+    off
+  key.down 'ctrl c', ->
+    list = ctrl_c list
+    do_render()
+    off
+  key.down 'ctrl v', ->
+    list = ctrl_v list
+    do_render()
+    off
+  key.down 'ctrl z', ->
+    show 'z:', history
+    list = ctrl_z history
     do_render()
     off
   key.down 'ctrl y', ->
-    list = ctrl_y list
-    do_render()
-    off
-  key.down 'ctrl p', ->
-    list = ctrl_p list
+    list = ctrl_y history
     do_render()
     off
   ret
