@@ -18,7 +18,7 @@ choice[39] = fn.move_right
 choice[38] = fn.move_up
 choice[40] = fn.move_down
 
-choice[45] = fn.key_insert
+# choice[45] = fn.key_insert
 choice[46] = fn.key_delete
 
 exports.choice = choice

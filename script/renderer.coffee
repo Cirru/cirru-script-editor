@@ -25,5 +25,5 @@ draw = (list) ->
   "<pre#{inline}>#{html}</pre>"
 
 exports.render = (list, elem) ->
-  console.log list
+  # console.log list
   elem.html (draw list)

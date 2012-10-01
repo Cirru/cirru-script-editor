@@ -1,6 +1,5 @@
 
 caret = '\t'
-input = '<input value="sdfsdf"/>'
 
 isArr = Array.isArray
 isStr = (item) -> (typeof item) is 'string'
@@ -274,14 +273,12 @@ exports.move_down = move_down = (list) ->
         item.unshift caret
         ret.push item
         mark = off
-      else if inTail item then ret.push (clear item), caret
+      else if inTail item
+        if found (clear item) then ret.push (clear item)
+        ret.push caret
       else ret.push (move_down item)
   if mark then ret.push caret
   ret
-
-exports.key_insert = (list) ->
-  str = prompt() or ''
-  insert_char list, str
 
 exports.key_delete = key_delete = (list) ->
   ret = []
@@ -302,6 +299,43 @@ exports.key_delete = key_delete = (list) ->
     else ret.push item
   ret
 
-exports.ctrl_m = (list) -> list
-exports.ctrl_y = (list) -> list
-exports.ctrl_p = (list) -> list
+exports.ctrl_m = ctrl_m = (list) ->
+  ret = []
+  list.forEach (item) ->
+    if isStr item
+      if point item
+        window.cirru_copyboard = item
+        ret.push caret
+      else ret.push item
+    else if isArr item
+      if caret in item
+        window.cirru_copyboard = item
+        ret.push caret
+      else ret.push (ctrl_m item)
+  ret
+
+exports.ctrl_y = ctrl_y = (list) ->
+  list.forEach (item) ->
+    if isStr item
+      # show item
+      if point item
+        window.cirru_copyboard = item
+    else if isArr item
+      if caret in item
+        window.cirru_copyboard = item
+      else ctrl_y item
+  list
+
+exports.ctrl_p = ctrl_p = (list) ->
+  ret = []
+  list.forEach (item) ->
+    if isStr item
+      if point item
+        if window.cirru_copyboard?
+          if found (clear item) then ret.push (clear item)
+          ret.push window.cirru_copyboard
+        else ret.push item
+      else ret.push item
+    else if isArr item
+      ret.push (ctrl_p item)
+  ret

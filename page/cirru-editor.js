@@ -2,7 +2,7 @@
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 exports.editor = function(elem) {
-  var alphabet, check, choice, create_block, ctrl_c, ctrl_p, ctrl_v, do_render, focused, insert_blank, insert_char, key, list, move_down, move_left, move_right, move_up, on_update, render, ret, tool, _ref;
+  var alphabet, check, choice, create_block, ctrl_m, ctrl_p, ctrl_y, do_render, focused, input, insert_blank, insert_char, key, list, move_down, move_left, move_right, move_up, on_update, render, ret, tool, _ref;
   tool = {
     err: function(info) {
       throw new Error(info);
@@ -17,6 +17,7 @@ exports.editor = function(elem) {
     }
   })();
   ret = {};
+  input = '<input id="input"/>';
   list = ['\t'];
   elem = $(elem);
   focused = false;
@@ -52,7 +53,7 @@ exports.editor = function(elem) {
     });
     return focused = false;
   });
-  _ref = require('./functions.js'), insert_char = _ref.insert_char, insert_blank = _ref.insert_blank, move_left = _ref.move_left, move_right = _ref.move_right, move_up = _ref.move_up, move_down = _ref.move_down, create_block = _ref.create_block, ctrl_c = _ref.ctrl_c, ctrl_v = _ref.ctrl_v, ctrl_p = _ref.ctrl_p;
+  _ref = require('./functions.js'), insert_char = _ref.insert_char, insert_blank = _ref.insert_blank, move_left = _ref.move_left, move_right = _ref.move_right, move_up = _ref.move_up, move_down = _ref.move_down, create_block = _ref.create_block, ctrl_m = _ref.ctrl_m, ctrl_y = _ref.ctrl_y, ctrl_p = _ref.ctrl_p;
   alphabet = require('./alphabet.js').all;
   $('body').keypress(function(e) {
     var char;
@@ -77,14 +78,36 @@ exports.editor = function(elem) {
     }
   });
   key = new Kibo;
+  key.down('ctrl i', function() {
+    if (focused) {
+      $('#caret').after(input).remove();
+      focused = false;
+      $('#input').focus().keydown(function(e) {
+        if (e.keyCode === 13) {
+          focused = true;
+          list = insert_char(list, $('#input').val());
+          do_render();
+          e.preventDefault();
+          return false;
+        }
+      });
+      return false;
+    }
+  });
   key.down('ctrl m', function() {
-    return ctrl_m(list);
+    list = ctrl_m(list);
+    do_render();
+    return false;
   });
   key.down('ctrl y', function() {
-    return ctrl_y(list);
+    list = ctrl_y(list);
+    do_render();
+    return false;
   });
   key.down('ctrl p', function() {
-    return ctrl_p(list);
+    list = ctrl_p(list);
+    do_render();
+    return false;
   });
   return ret;
 };

@@ -9,11 +9,12 @@ exports.editor = (elem) ->
     unless elem? then tool.err 'need a elem!'
 
   ret = {}
+  input = '<input id="input"/>'
 
   list = ['\t']
   elem = $(elem)
 
-  focused = false
+  focused = no
 
   ret.val = (value) ->
     if value? then list = value
@@ -47,8 +48,8 @@ exports.editor = (elem) ->
     move_up
     move_down
     create_block
-    ctrl_c
-    ctrl_v
+    ctrl_m
+    ctrl_y
     ctrl_p
   } = require './functions.js'
 
@@ -76,8 +77,35 @@ exports.editor = (elem) ->
         e.preventDefault()
 
   key = new Kibo
-  key.down 'ctrl m', -> ctrl_m list
-  key.down 'ctrl y', -> ctrl_y list
-  key.down 'ctrl p', -> ctrl_p list
 
+  key.down 'ctrl i', ->
+    # str = prompt() or ''
+    # insert_char list, str
+    if focused
+      $('#caret').after(input).remove()
+      # show focused
+      focused = no
+      $('#input').focus().keydown (e) ->
+        if e.keyCode is 13
+          focused = yes
+          # show '13', focused
+          list = insert_char list, $('#input').val()
+          do_render()
+          e.preventDefault()
+          # show list
+          off
+      off
+
+  key.down 'ctrl m', ->
+    list = ctrl_m list
+    do_render()
+    off
+  key.down 'ctrl y', ->
+    list = ctrl_y list
+    do_render()
+    off
+  key.down 'ctrl p', ->
+    list = ctrl_p list
+    do_render()
+    off
   ret

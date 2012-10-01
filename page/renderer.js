@@ -34,6 +34,5 @@ draw = function(list) {
 };
 
 exports.render = function(list, elem) {
-  console.log(list);
   return elem.html(draw(list));
 };
