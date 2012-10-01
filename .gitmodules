@@ -4,3 +4,6 @@
 [submodule "lib/require"]
 	path = lib/require
 	url = git://gist.github.com/2602521.git
+[submodule "lib/kib"]
+	path = lib/kib
+	url = git://github.com/marquete/kibo.git
