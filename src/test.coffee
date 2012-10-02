@@ -1,11 +1,12 @@
 
-show = (args...) -> console.log.apply console, args
+define (require, exports) ->
 
-ls = localStorage
+  show = (args...) -> console.log.apply console, args
+  ls = localStorage
 
-$ ->
+  $ = require 'jquery'
 
-  cirru = require('./cirru-editor.js')
+  cirru = require('../script/cirru-editor.coffee')
   
   editor = cirru.editor $('#editor')
 
@@ -24,3 +25,5 @@ $ ->
     ls.list = JSON.stringify value: editor.val()
 
   $('#editor').click()
+
+  return
