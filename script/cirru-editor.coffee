@@ -23,6 +23,7 @@ define (require, exports) ->
       ctrl_y
       add_history
       reset_history
+      rm_caret
     } = require './functions.coffee'
 
     tool =
@@ -47,6 +48,8 @@ define (require, exports) ->
     ret.val = (value) ->
       if value? then list = value
       else list
+
+    ret.value = -> rm_caret list
 
     render = require('./renderer.coffee').render
 

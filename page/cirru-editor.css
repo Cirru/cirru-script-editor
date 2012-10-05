@@ -46,6 +46,7 @@
   background: #cfcffc;
   color: #fff;
   margin: 0px;
+  font-family: monospace;
 }
 ::-webkit-scrollbar {
   width: 4px;

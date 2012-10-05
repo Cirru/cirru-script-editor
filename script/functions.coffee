@@ -46,7 +46,7 @@ define (require, exports) ->
       for x in item
         if (has_caret x) then return yes
       no
-  rm_caret = (item) ->
+  exports.rm_caret  = rm_caret = (item) ->
     if isStr item then (clear item)
     else if isArr item
       ret = []
