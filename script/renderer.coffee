@@ -11,7 +11,7 @@ define (require, exports) ->
 
   caret = '<span id="caret"> </span>'
 
-  draw = (list) ->
+  exports.draw = draw = (list) ->
 
     html = ''
     inline = ''
@@ -25,7 +25,6 @@ define (require, exports) ->
 
     if list.every notArr then inline = ' class="inline"'
 
-    if inline then 
     "<pre#{inline}>#{html}</pre>"
 
   exports.render = (list, elem) ->
