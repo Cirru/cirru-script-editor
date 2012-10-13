@@ -7,6 +7,7 @@
   color: #fff;
   overflow: scroll;
   box-sizing: border-box;
+  height: 0px;
 }
 .cirru-editor code,
 .cirru-code code {
@@ -55,6 +56,12 @@
   color: #fff;
   margin: 0px;
   font-family: monospace;
+}
+.cirru-editor>pre>pre,
+.cirru-code>pre>pre,
+.cirru-editor>pre>.inline,
+.cirru-code>pre>.inline {
+  display: block;
 }
 .cirru-focused {
   background: #b6b6ed;
