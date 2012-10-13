@@ -62,6 +62,7 @@
 .cirru-editor>pre>.inline,
 .cirru-code>pre>.inline {
   display: block;
+  box-shadow: -1px 0px 0px #e6e6e6;
 }
 .cirru-focused {
   background: #2626d9;
