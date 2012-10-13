@@ -1,7 +1,7 @@
 
 define (require, exports) ->
 
-  $ = require 'jquery'
+  $ = require '../lib/jquery/1.8.1/jquery.js'
 
   input = '<input id="input"/>'
   copy = (json) -> JSON.parse (JSON.stringify json)

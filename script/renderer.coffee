@@ -1,7 +1,7 @@
 
 define (require, exports) ->
 
-  $ = require 'jquery'
+  $ = require '../lib/jquery/1.8.1/jquery.js'
 
   isArr = Array.isArray
   isStr = (item) -> (typeof item) is 'string'

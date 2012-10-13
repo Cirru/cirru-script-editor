@@ -4,7 +4,7 @@ define (require, exports) ->
   show = (args...) -> console.log.apply console, args
   ls = localStorage
 
-  $ = require 'jquery'
+  $ = require '../lib/jquery/1.8.1/jquery.js'
 
   cirru = require('../script/cirru-editor.coffee')
   
