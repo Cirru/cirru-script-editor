@@ -316,7 +316,7 @@ define (require, exports) ->
         else ret.push (ctrl_x item)
     ret
 
-  exports.ctrl_y = ctrl_c = (list) ->
+  exports.ctrl_c = ctrl_c = (list) ->
     list.forEach (item) ->
       if isStr item
         # show item
