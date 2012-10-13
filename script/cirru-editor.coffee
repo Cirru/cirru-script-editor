@@ -108,7 +108,7 @@ define (require, exports) ->
 
     key = new Kibo
 
-    key.down 'ctrl i', ->
+    key.down 'ctrl p', ->
       # str = prompt() or ''
       # insert_char list, str
       if focused
