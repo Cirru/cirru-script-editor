@@ -2,11 +2,14 @@
 define (require, exports) ->
 
   $ = require '../lib/jquery/1.8.1/jquery.js'
+  show = (args...) -> console.log.apply console, args
 
   input = '<input id="input"/>'
   copy = (json) -> JSON.parse (JSON.stringify json)
 
-  exports.editor = (elem) ->
+  exports.editor = (id) ->
+
+    elem = $ "##{id}"
 
     {
       insert_char
@@ -36,11 +39,15 @@ define (require, exports) ->
     ret = {}
 
     list = [['\t']]
-    elem = $(elem)
     focused = no
     history =
       all: [['\t']]
       now: 0
+
+    set_local = (str) ->
+      localStorage["cirru.#{id}"] = str
+    get_local = ->
+      localStorage["cirru.#{id}"]
 
     ret.reset_history = (list) ->
       history = reset_history history, list
@@ -53,24 +60,21 @@ define (require, exports) ->
 
     render = require('./renderer.coffee').render
 
-    on_update = []
-    ret.update = (f) -> on_update.push f
-
     ret.render = do_render = ->
       # show 'do_render', on_update
       # show 'li:', list
       render list, elem
-      on_update.forEach (f) -> f()
+      set_local (JSON.stringify value: list)
 
     elem.click (e) ->
       focused = yes
-      elem.css opacity: 1
       e.preventDefault()
+      elem.addClass 'cirru-focused'
       off
 
     $(window).click ->
-      elem.css opacity: 0.4
       focused = no
+      elem.removeClass 'cirru-focused'
 
     alpha = 'qwertyuiopasdfghjklzxcvbnm'
     all = '`1234567890-=~!@#$%^&*()_+ '
@@ -143,6 +147,17 @@ define (require, exports) ->
       list = ctrl_y history
       do_render()
       off
+
+    list =
+      if get_local()? then (JSON.parse get_local()).value
+      else
+        set_local (JSON.stringify value: ['\t'])
+        ['\t']
+
+    ret.render()
+    ret.reset_history list
+
+    elem.click()
       
     ret
 
