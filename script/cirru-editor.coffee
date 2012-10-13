@@ -72,7 +72,12 @@ define (require, exports) ->
       elem.css opacity: 0.4
       focused = no
 
-    alphabet = require('./alphabet.coffee').all
+    alpha = 'qwertyuiopasdfghjklzxcvbnm'
+    all = '`1234567890-=~!@#$%^&*()_+ '
+    all+= alpha
+    all+= alpha.toUpperCase()
+    all+= '[]\\{}|;:"\',./<>?'
+    all = all.split ''
 
     $('body').keypress (e) ->
       # show focused, e.keyCode
@@ -80,7 +85,7 @@ define (require, exports) ->
       # show 'char from press -', char
       if focused
         char = String.fromCharCode e.keyCode
-        if char in alphabet
+        if char in all
           list = insert_char list, char
           history = add_history (copy history), (copy list)
           do_render()
