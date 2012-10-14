@@ -20,7 +20,7 @@ define (require, exports) ->
 
     list.forEach (item) ->
       compact_child = (list.length < 7)
-      console.log  'compact?:', item, compact
+      # console.log  'compact?:', item, compact
 
       html +=
         if isArr item then draw item, compact_child
