@@ -11,19 +11,22 @@ define (require, exports) ->
 
   caret = '<span id="caret"> </span>'
 
-  exports.draw = draw = (list) ->
+  exports.draw = draw = (list, compact) ->
 
     html = ''
-    inline = ''
+    inline =
+      unless (list.every notArr) and compact then ''
+      else ' class="inline"'
 
     list.forEach (item) ->
+      compact_child = (list.length < 7)
+      console.log  'compact?:', item, compact
+
       html +=
-        if isArr item then draw item
+        if isArr item then draw item, compact_child
         else if isStr item
           "<code>#{item.replace /\t/, caret}</code>"
         else "<code>#{escape item}</code>"
-
-    if list.every notArr then inline = ' class="inline"'
 
     "<pre#{inline}>#{html}</pre>"
 

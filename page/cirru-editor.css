@@ -57,13 +57,6 @@
   margin: 0px;
   font-family: monospace;
 }
-.cirru-editor>pre>pre,
-.cirru-code>pre>pre,
-.cirru-editor>pre>.inline,
-.cirru-code>pre>.inline {
-  display: block;
-  box-shadow: -1px 0px 0px #e6e6e6;
-}
 .cirru-focused {
   background: #2626d9;
   box-shadow: 0px 0px 20px rgba(61,61,92,0.4);
