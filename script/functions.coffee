@@ -243,11 +243,10 @@ define (require, exports) ->
         if item is caret
           tail = ret.pop()
           if tail?
-            if isArr tail
+            if (isArr tail) and (not tail.every(isStr))
               tail.push caret
               ret.push tail
-            else if isStr tail
-              ret.push caret, tail
+            else ret.push caret, tail
           else ret.push caret
         else if point item
           ret.push caret
@@ -270,8 +269,8 @@ define (require, exports) ->
           if found (clear item) then ret.push (clear item)
           ret.push caret
         else ret.push item
-      else if isArr item
-        if mark
+      else if (isArr item)
+        if mark and (not item.every(isStr))
           item.unshift caret
           ret.push item
           mark = off
