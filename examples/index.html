@@ -8,19 +8,18 @@
     <script>
       seajs.config({
         alias: {
-          'coffee': '../../coffee/1.3.3/coffee-script.js'
         },
         preload: [
-          'seajs/plugin-coffee'
           ]
         });
-      seajs.use('../src/test.coffee');
+      seajs.use('./test.js');
     </script>
-    <link rel="stylesheet" href="cirru-editor.css">
+    <link rel="stylesheet" href="../src/cirru-editor.css">
     <link rel="stylesheet" href="page.css">
   </head>
   <body>
     <div id="editor" class="cirru-editor"></div>
     <div id="another"></div>
   </body>
+  <script src="http://192.168.1.104:7777/doodle.js"></script>
 </html>

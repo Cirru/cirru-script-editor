@@ -1,7 +1,7 @@
 
 define (require, exports) ->
 
-  fn = require './functions.coffee'
+  fn = require './functions'
 
   choice = []
 

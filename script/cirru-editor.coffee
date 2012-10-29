@@ -1,7 +1,7 @@
 
 define (require, exports) ->
 
-  $ = require '../lib/jquery/1.8.1/jquery.js'
+  # $ = require '../lib/jquery/1.8.1/jquery.js'
   show = (args...) -> console.log.apply console, args
 
   input = '<input id="input"/>'
@@ -9,7 +9,7 @@ define (require, exports) ->
 
   exports.editor = (id) ->
 
-    elem = $ "##{id}"
+    elem = document.querySelector "##{id}"
 
     {
       insert_char
@@ -27,14 +27,10 @@ define (require, exports) ->
       add_history
       reset_history
       rm_caret
-    } = require './functions.coffee'
+    } = require './functions'
 
     tool =
       err: (info) -> throw new Error info
-
-    do check = ->
-      unless $? then tool.err 'I need jQuery!'
-      unless elem? then tool.err 'need a elem!'
 
     ret = {}
 
@@ -58,7 +54,7 @@ define (require, exports) ->
 
     ret.value = -> rm_caret list
 
-    render = require('./renderer.coffee').render
+    render = require('./renderer').render
 
     ret.render = do_render = ->
       # show 'do_render', on_update
@@ -66,15 +62,18 @@ define (require, exports) ->
       render list, elem
       set_local (JSON.stringify value: list)
 
-    elem.click (e) ->
+    elem.onclick = (e) ->
       focused = yes
-      e.preventDefault()
-      elem.addClass 'cirru-focused'
-      off
+      fd = 'cirru-focused'
+      if elem.className.indexOf(fd) < 0
+        elem.className = elem.className + ' ' + fd
+      e.stopPropagation()
 
-    $(window).click ->
+    window.onclick = ->
       focused = no
-      elem.removeClass 'cirru-focused'
+      fd = 'cirru-focused'
+      if elem.className.indexOf(fd) >= 0
+        elem.className = elem.className.replace(fd, '').replace /\s+$/, ''
 
     alpha = 'qwertyuiopasdfghjklzxcvbnm'
     all = '`1234567890-=~!@#$%^&*()_+ '
@@ -83,7 +82,7 @@ define (require, exports) ->
     all+= '[]\\{}|;:"\',./<>?'
     all = all.split ''
 
-    $('body').keypress (e) ->
+    document.body.onkeypress = (e) ->
       # show focused, e.keyCode
       # char = String.fromCharCode e.keyCode
       # show 'char from press -', char
@@ -94,9 +93,9 @@ define (require, exports) ->
           history = add_history (copy history), (copy list)
           do_render()
 
-    choice = require('./control.coffee').choice
+    choice = require('./control').choice
 
-    $('body').keydown (e) ->
+    document.body.onkeydown = (e) ->
       if focused
         code = e.keyCode
         # show code
@@ -112,14 +111,14 @@ define (require, exports) ->
       # str = prompt() or ''
       # insert_char list, str
       if focused
-        $('#caret').after(input).remove()
+        document.querySelector('#caret').after(input).remove()
         # show focused
         focused = no
-        $('#input').focus().keydown (e) ->
+        document.querySelector('#input').focus().onkeydown = (e) ->
           if e.keyCode is 13
             focused = yes
             # show '13', focused
-            list = insert_char list, $('#input').val()
+            list = insert_char list, document.querySelector('#input').value
             do_render()
             e.preventDefault()
             # show list

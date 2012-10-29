@@ -1,7 +1,7 @@
 
 define (require, exports) ->
 
-  $ = require '../lib/jquery/1.8.1/jquery.js'
+  # $ = require '../lib/jquery/1.8.1/jquery.js'
 
   isArr = Array.isArray
   isStr = (item) -> (typeof item) is 'string'
@@ -32,13 +32,13 @@ define (require, exports) ->
 
   exports.render = (list, elem) ->
     # console.log list
-    elem.html (draw list)
-    top = $('#caret').offset().top
-    height = elem.innerHeight()
-    base = elem.offset().top
-    scrollTop = elem.scrollTop()
-    # show 'height:', top, height, base, scrollTop
-    unless (top > base) and (top < base + height)
-      elem.animate scrollTop: (scrollTop + top - base - height/2), 200
+    elem.innerHTML = (draw list)
+    caret_elem = document.querySelector('#caret')
+    top = caret_elem.offsetTop - elem.offsetTop
+    height = elem.offsetHeight
+    scrollTop = elem.scrollTop
+    console.log scrollTop, top, height/2
+    unless (top > scrollTop) and (top < scrollTop + height)
+      elem.scrollTop = top - height/2
 
   return
