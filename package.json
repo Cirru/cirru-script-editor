@@ -1,0 +1,23 @@
+{
+    "name": "cirru-editor",
+    "version": "1.0.0",
+    "root": "#",
+    "description": "",
+    "homepage": "",
+    "author": "",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "bugs": {
+        "url": "https://github.com/jiyinyiyong/cirru-editor"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "seajs": "latest"
+    },
+    "tests": ["cirru-editor"],
+    "output": {
+        "cirru-editor.js": "."
+    }
+}
