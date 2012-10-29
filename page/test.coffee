@@ -7,4 +7,7 @@ define (require, exports) ->
   
   editor = cirru.editor 'editor'
 
+  document.querySelector('#another').onclick = ->
+    show editor.value, editor.val()
+
   return

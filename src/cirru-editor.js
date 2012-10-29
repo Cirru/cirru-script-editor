@@ -14,7 +14,7 @@ define(function(require, exports) {
     return JSON.parse(JSON.stringify(json));
   };
   exports.editor = function(id) {
-    var add_history, all, alpha, choice, create_block, ctrl_c, ctrl_v, ctrl_x, ctrl_y, ctrl_z, do_render, elem, focused, get_local, history, insert_blank, insert_char, key, list, move_down, move_left, move_right, move_up, render, reset_history, ret, rm_caret, set_local, tool, _ref;
+    var add_history, all, alpha, choice, create_block, ctrl_c, ctrl_v, ctrl_x, ctrl_y, ctrl_z, do_render, elem, focused, get_local, history, insert_blank, insert_char, key_ctrl_c, key_ctrl_p, key_ctrl_v, key_ctrl_x, key_ctrl_y, key_ctrl_z, list, move_down, move_left, move_right, move_up, render, reset_history, ret, rm_caret, set_local, tool, _ref;
     elem = document.querySelector("#" + id);
     _ref = require('./functions'), insert_char = _ref.insert_char, insert_blank = _ref.insert_blank, move_left = _ref.move_left, move_right = _ref.move_right, move_up = _ref.move_up, move_down = _ref.move_down, create_block = _ref.create_block, ctrl_x = _ref.ctrl_x, ctrl_c = _ref.ctrl_c, ctrl_v = _ref.ctrl_v, ctrl_z = _ref.ctrl_z, ctrl_y = _ref.ctrl_y, add_history = _ref.add_history, reset_history = _ref.reset_history, rm_caret = _ref.rm_caret;
     tool = {
@@ -45,9 +45,9 @@ define(function(require, exports) {
         return list;
       }
     };
-    ret.value = function() {
+    ret.__defineGetter__('value', function() {
       return rm_caret(list);
-    };
+    });
     render = require('./renderer').render;
     ret.render = do_render = function() {
       render(list, elem);
@@ -94,16 +94,32 @@ define(function(require, exports) {
       var code;
       if (focused) {
         code = e.keyCode;
-        if (choice[code] != null) {
-          list = choice[code](list);
-          history = add_history(copy(history), copy(list));
-          do_render();
-          return e.preventDefault();
+        show(code, e);
+        if (!e.ctrlKey) {
+          if (choice[code] != null) {
+            list = choice[code](list);
+            history = add_history(copy(history), copy(list));
+            do_render();
+            return e.preventDefault();
+          }
+        } else {
+          if (code === 80) {
+            return key_ctrl_p();
+          } else if (code === 88) {
+            return key_ctrl_x();
+          } else if (code === 67) {
+            return key_ctrl_c();
+          } else if (code === 86) {
+            return key_ctrl_v();
+          } else if (code === 90) {
+            return key_ctrl_z();
+          } else if (code === 89) {
+            return key_ctrl_y();
+          }
         }
       }
     };
-    key = new Kibo;
-    key.down('ctrl p', function() {
+    key_ctrl_p = function() {
       if (focused) {
         document.querySelector('#caret').after(input).remove();
         focused = false;
@@ -118,32 +134,33 @@ define(function(require, exports) {
         };
         return false;
       }
-    });
-    key.down('ctrl x', function() {
+    };
+    key_ctrl_x = function() {
+      show('control x');
       list = ctrl_x(list);
       do_render();
       return false;
-    });
-    key.down('ctrl c', function() {
+    };
+    key_ctrl_c = function() {
       list = ctrl_c(list);
       do_render();
       return false;
-    });
-    key.down('ctrl v', function() {
+    };
+    key_ctrl_v = function() {
       list = ctrl_v(list);
       do_render();
       return false;
-    });
-    key.down('ctrl z', function() {
+    };
+    key_ctrl_z = function() {
       list = ctrl_z(history);
       do_render();
       return false;
-    });
-    key.down('ctrl y', function() {
+    };
+    key_ctrl_y = function() {
       list = ctrl_y(history);
       do_render();
       return false;
-    });
+    };
     list = get_local() != null ? (JSON.parse(get_local())).value : (set_local(JSON.stringify({
       value: ['\t']
     })), ['\t']);

@@ -1,6 +1,0 @@
-[submodule "lib/require"]
-	path = lib/require
-	url = git://gist.github.com/2602521.git
-[submodule "lib/kibo"]
-	path = lib/kibo
-	url = git://github.com/marquete/kibo.git

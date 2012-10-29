@@ -52,7 +52,7 @@ define (require, exports) ->
       if value? then list = value
       else list
 
-    ret.value = -> rm_caret list
+    ret.__defineGetter__ 'value', -> rm_caret list
 
     render = require('./renderer').render
 
@@ -98,16 +98,22 @@ define (require, exports) ->
     document.body.onkeydown = (e) ->
       if focused
         code = e.keyCode
-        # show code
-        if choice[code]?
-          list = choice[code] list
-          history = add_history (copy history), (copy list)
-          do_render()
-          e.preventDefault()
+        show code, e
+        unless e.ctrlKey
+          if choice[code]?
+            list = choice[code] list
+            history = add_history (copy history), (copy list)
+            do_render()
+            e.preventDefault()
+        else
+          if code is 80 then return key_ctrl_p()
+          else if code is 88 then return key_ctrl_x()
+          else if code is 67 then return key_ctrl_c()
+          else if code is 86 then return key_ctrl_v()
+          else if code is 90 then return key_ctrl_z()
+          else if code is 89 then return key_ctrl_y()
 
-    key = new Kibo
-
-    key.down 'ctrl p', ->
+    key_ctrl_p = ->
       # str = prompt() or ''
       # insert_char list, str
       if focused
@@ -125,24 +131,25 @@ define (require, exports) ->
             off
         off
 
-    key.down 'ctrl x', ->
+    key_ctrl_x = ->
+      show 'control x'
       list = ctrl_x list
       do_render()
       off
-    key.down 'ctrl c', ->
+    key_ctrl_c = ->
       list = ctrl_c list
       do_render()
       off
-    key.down 'ctrl v', ->
+    key_ctrl_v = ->
       list = ctrl_v list
       do_render()
       off
-    key.down 'ctrl z', ->
+    key_ctrl_z = ->
       # show 'z:', history
       list = ctrl_z history
       do_render()
       off
-    key.down 'ctrl y', ->
+    key_ctrl_y = ->
       list = ctrl_y history
       do_render()
       off

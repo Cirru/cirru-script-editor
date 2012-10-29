@@ -10,4 +10,7 @@ define(function(require, exports) {
   };
   cirru = require('../src/cirru-editor.js');
   editor = cirru.editor('editor');
+  document.querySelector('#another').onclick = function() {
+    return show(editor.value, editor.val());
+  };
 });
