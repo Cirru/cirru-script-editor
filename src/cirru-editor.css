@@ -3,11 +3,12 @@
   padding: 100px 6px 300px;
   background: #474785;
   opacity: 0.6;
-  font-family: monospace;
   color: #fff;
   overflow: scroll;
   box-sizing: border-box;
   height: 0px;
+  font-size: 14px;
+  font-family: monospace;
 }
 .cirru-editor code,
 .cirru-code code {

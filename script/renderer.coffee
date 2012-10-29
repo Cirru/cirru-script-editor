@@ -1,7 +1,8 @@
 
 define (require, exports) ->
 
-  # $ = require '../lib/jquery/1.8.1/jquery.js'
+  # show = (args...) -> console.log.apply console, args
+  show = ->
 
   isArr = Array.isArray
   isStr = (item) -> (typeof item) is 'string'
@@ -31,13 +32,12 @@ define (require, exports) ->
     "<pre#{inline}>#{html}</pre>"
 
   exports.render = (list, elem) ->
-    # console.log list
-    elem.innerHTML = (draw list)
-    caret_elem = document.querySelector('#caret')
+    elem.innerHTML = draw list
+    caret_elem = elem.querySelector('#caret')
     top = caret_elem.offsetTop - elem.offsetTop
     height = elem.offsetHeight
     scrollTop = elem.scrollTop
-    console.log scrollTop, top, height/2
+    show caret_elem.offsetTop, elem.offsetTop, scrollTop
     unless (top > scrollTop) and (top < scrollTop + height)
       elem.scrollTop = top - height/2
 
