@@ -7,34 +7,38 @@
   overflow scroll
   box-sizing border-box
   height 0px
-  font-size 14px
-  font-family monospace
 
   code
-    box-shadow 0px 1px 0px hsl(0, 100, 90)
     padding 1px 0px
     margin 0px 4px
-    line-height 24px
+    font-family Monaco, monospace
 
   #caret
     padding 0px
     margin 0px
-    background white
+    background hsla(0,0,90,0.7)
+    width 8px
+    margin-right -8px
+    display inline-block
+    position relative
+    left -4px
 
   *
     box-sizing border-box
     -moz-box-sizing  border-box
 
   pre
-    margin 2px 4px
-    padding 0px 12px
-    box-shadow -1px 0px 0px hsl(0,0,90)
-    border-radius 6px
+    margin 10px 4px
+    padding 0px 16px
+    box-shadow -1px 0px 0px hsla(0,0,90,0.5)
+    line-height 16px
+    font-size 16px
 
   .inline
+    margin 0px 4px
+    padding 2px 0px
     display inline-block
-    box-shadow 0px 0px 4px hsl(0,100,90)
-    margin 4px
+    box-shadow 0px 1px 0px hsla(0,0,90,0.5)
 
   &>pre, &>.inline
     margin 0px
@@ -47,12 +51,11 @@
     background hsl(240,90,66)
     color white
     margin 0px
-    font-family monospace
+    font-family Monaco, monospace
 
 .cirru-focused
   background hsl(240,70,50)
   box-shadow 0px 0px 20px hsla(240,20,30,0.4)
-
 
 ::-webkit-scrollbar
   width 4px

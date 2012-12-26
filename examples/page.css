@@ -2,14 +2,15 @@ body {
   background: #e2e2fd;
 }
 #editor {
-  margin: 40px;
-  width: 800px;
+  margin: 20px;
+  width: 1100px;
   display: inline-block;
+  height: 600px;
 }
 #another {
   vertical-align: top;
   margin-top: 40px;
-  width: 200px;
+  width: 100px;
   height: 300px;
   background: rgba(214,92,92,0.7);
   display: inline-block;

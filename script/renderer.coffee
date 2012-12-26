@@ -8,9 +8,19 @@ define (require, exports) ->
   isStr = (item) -> (typeof item) is 'string'
   notArr = (item) -> not (isArr item)
 
-  escape = (item) -> item.replace /\s/g, '&nbsp;'
-
   caret = '<span id="caret"> </span>'
+
+  escape = (item) ->
+    show "escape"
+    item.replace /\s/g, '&nbsp;'
+  visual = (item) ->
+    string = ""
+    item.split("").forEach (char) ->
+      switch char
+        when " " then string += "➭"
+        when "\t" then string += caret
+        else string += char
+    string
 
   exports.draw = draw = (list, compact) ->
 
@@ -23,10 +33,11 @@ define (require, exports) ->
       compact_child = (list.length < 7)
       # console.log  'compact?:', item, compact
 
+      show "item:", item
       html +=
         if isArr item then draw item, compact_child
         else if isStr item
-          "<code>#{item.replace /\t/, caret}</code>"
+          "<code>#{visual item}</code>"
         else "<code>#{escape item}</code>"
 
     "<pre#{inline}>#{html}</pre>"

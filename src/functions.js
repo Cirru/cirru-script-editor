@@ -147,7 +147,7 @@ define(function(require, exports) {
     return ret;
   };
   exports.insert_blank = function(list) {
-    return insert_char(list, ' ');
+    return insert_char(list, " ");
   };
   exports.create_block = create_block = function(list) {
     var ret;

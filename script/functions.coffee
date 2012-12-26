@@ -85,7 +85,7 @@ define (require, exports) ->
     ret
 
   exports.insert_blank = (list) ->
-    insert_char list, ' '
+    insert_char list, " "
 
   exports.create_block = create_block = (list) ->
     ret = []
