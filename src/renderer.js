@@ -33,10 +33,13 @@ define(function(require, exports) {
   exports.draw = draw = function(list, compact) {
     var html, inline;
     html = '';
-    inline = !((list.every(notArr)) && compact) ? '' : ' class="inline"';
+    inline = "";
+    if ((list.every(notArr)) && compact) {
+      inline = ' class="inline"';
+    }
     list.forEach(function(item) {
       var compact_child;
-      compact_child = list.length < 7;
+      compact_child = list.length < 6;
       show("item:", item);
       return html += isArr(item) ? draw(item, compact_child) : isStr(item) ? "<code>" + (visual(item)) + "</code>" : "<code>" + (escape(item)) + "</code>";
     });
@@ -44,7 +47,7 @@ define(function(require, exports) {
   };
   exports.render = function(list, elem) {
     var caret_elem, height, scrollTop, top;
-    elem.innerHTML = draw(list);
+    elem.innerHTML = draw(list, false);
     caret_elem = elem.querySelector('#caret');
     top = caret_elem.offsetTop - elem.offsetTop;
     height = elem.offsetHeight;

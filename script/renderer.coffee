@@ -25,12 +25,12 @@ define (require, exports) ->
   exports.draw = draw = (list, compact) ->
 
     html = ''
-    inline =
-      unless (list.every notArr) and compact then ''
-      else ' class="inline"'
+    inline = ""
+    if (list.every notArr) and compact
+      inline = ' class="inline"'
 
     list.forEach (item) ->
-      compact_child = (list.length < 7)
+      compact_child = list.length < 6
       # console.log  'compact?:', item, compact
 
       show "item:", item
@@ -43,7 +43,7 @@ define (require, exports) ->
     "<pre#{inline}>#{html}</pre>"
 
   exports.render = (list, elem) ->
-    elem.innerHTML = draw list
+    elem.innerHTML = draw list, no
     caret_elem = elem.querySelector('#caret')
     top = caret_elem.offsetTop - elem.offsetTop
     height = elem.offsetHeight
