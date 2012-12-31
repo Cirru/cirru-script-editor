@@ -1,6 +1,6 @@
 /**
  * @preserve SeaJS - A Module Loader for the Web
- * v1.3.0-dev | seajs.org | MIT Licensed
+ * v%VERSION% | seajs.org | MIT Licensed
  */
 
 
@@ -14,7 +14,7 @@ this.seajs = { _seajs: this.seajs }
  * The version of the framework. It will be replaced with "major.minor.patch"
  * when building.
  */
-seajs.version = '1.3.0-dev'
+seajs.version = '%VERSION%'
 
 
 /**
@@ -38,6 +38,7 @@ seajs._config = {
    */
   preload: []
 }
+
 
 /**
  * The minimal language enhancement
@@ -156,6 +157,7 @@ seajs._config = {
 
 })(seajs._util)
 
+
 /**
  * The tiny console
  */
@@ -198,6 +200,7 @@ seajs._config = {
   }
 
 })(seajs._util)
+
 
 /**
  * Path utilities
@@ -461,6 +464,7 @@ seajs._config = {
 
 })(seajs._util, seajs._config, this)
 
+
 /**
  * Utilities for fetching js and css files
  */
@@ -675,12 +679,13 @@ seajs._config = {
   /**
    * References:
    *  - http://unixpapa.com/js/dyna.html
-   *  - ../test/research/load-js-css/test.html
-   *  - ../test/issues/load-css/test.html
+   *  - ../tests/research/load-js-css/test.html
+   *  - ../tests/issues/load-css/test.html
    *  - http://www.blaze.io/technical/ies-premature-execution-problem/
    */
 
 })(seajs._util, seajs._config, this)
+
 
 /**
  * The parser for dependencies
@@ -692,9 +697,9 @@ seajs._config = {
 
   util.parseDependencies = function(code) {
     // Parse these `requires`:
-    //   var a = require('a');
-    //   someMethod(require('b'));
-    //   require('c');
+    //   var a = require('a-debug');
+    //   someMethod(require('b-debug'));
+    //   require('c-debug');
     //   ...
     // Doesn't parse:
     //   someInstance.require(...);
@@ -720,6 +725,7 @@ seajs._config = {
   }
 
 })(seajs._util)
+
 
 /**
  * The core of loader
@@ -951,7 +957,7 @@ seajs._config = {
         }
       }
 
-      var module = save(resolvedUri, meta)
+      var module = Module._save(resolvedUri, meta)
 
       // For IE:
       // Assigns the first module in package to cachedModules[derivedUrl]
@@ -1014,7 +1020,7 @@ seajs._config = {
   Module.STATUS = STATUS
   Module._resolve = util.id2Uri
   Module._fetch = util.fetch
-  Module.cache = cachedModules
+  Module._save = save
 
 
   // Helpers
@@ -1041,8 +1047,6 @@ seajs._config = {
     var requestUri = util.parseMap(uri)
 
     if (fetchedList[requestUri]) {
-      // See test/issues/debug-using-map
-      cachedModules[uri] = cachedModules[requestUri]
       callback()
       return
     }
@@ -1070,12 +1074,12 @@ seajs._config = {
 
           // Saves anonymous module meta data
           if (anonymousModuleMeta) {
-            save(uri, anonymousModuleMeta)
+            Module._save(uri, anonymousModuleMeta)
             anonymousModuleMeta = null
           }
 
           // Assigns the first module in package to cachedModules[uri]
-          // See: test/issues/un-correspondence
+          // See: tests/issues/un-correspondence
           if (firstModuleInPackage && module.status === STATUS.FETCHED) {
             cachedModules[uri] = firstModuleInPackage
             firstModuleInPackage.realUri = uri
@@ -1088,11 +1092,12 @@ seajs._config = {
           }
 
           // Calls callbackList
-          if (callbackList[requestUri]) {
-            util.forEach(callbackList[requestUri], function(fn) {
+          var fns = callbackList[requestUri]
+          if (fns) {
+            delete callbackList[requestUri]
+            util.forEach(fns, function(fn) {
               fn()
             })
-            delete callbackList[requestUri]
           }
 
         },
@@ -1153,7 +1158,7 @@ seajs._config = {
     return util.filter(module.dependencies, function(dep) {
       circularCheckStack = [uri]
 
-      var isCircular = isCircularWaiting(cachedModules[dep], uri)
+      var isCircular = isCircularWaiting(cachedModules[dep])
       if (isCircular) {
         circularCheckStack.push(uri)
         printCircularLog(circularCheckStack)
@@ -1163,7 +1168,7 @@ seajs._config = {
     })
   }
 
-  function isCircularWaiting(module, uri) {
+  function isCircularWaiting(module) {
     if (!module || module.status !== STATUS.SAVED) {
       return false
     }
@@ -1172,24 +1177,28 @@ seajs._config = {
     var deps = module.dependencies
 
     if (deps.length) {
-      if (util.indexOf(deps, uri) > -1) {
+      if (isOverlap(deps, circularCheckStack)) {
         return true
       }
 
       for (var i = 0; i < deps.length; i++) {
-        if (isCircularWaiting(cachedModules[deps[i]], uri)) {
+        if (isCircularWaiting(cachedModules[deps[i]])) {
           return true
         }
       }
-
-      return false
     }
 
+    circularCheckStack.pop()
     return false
   }
 
   function printCircularLog(stack, type) {
     util.log('Found circular dependencies:', stack.join(' --> '), type)
+  }
+
+  function isOverlap(arrA, arrB) {
+    var arrC = arrA.concat(arrB)
+    return arrC.length > util.unique(arrC).length
   }
 
   function preload(callback) {
@@ -1217,12 +1226,13 @@ seajs._config = {
 
   // For normal users
   seajs.define = Module._define
-  seajs.cache = Module.cache
+  seajs.cache = Module.cache = cachedModules
   seajs.find = Module._find
   seajs.modify = Module._modify
 
 
   // For plugin developers
+  Module.fetchedList = fetchedList
   seajs.pluginSDK = {
     Module: Module,
     util: util,
@@ -1230,6 +1240,7 @@ seajs._config = {
   }
 
 })(seajs, seajs._util, seajs._config)
+
 
 /**
  * The configuration
@@ -1257,7 +1268,7 @@ seajs._config = {
 
   // When src is "http://test.com/libs/seajs/1.0.0/sea.js", redirect base
   // to "http://test.com/libs/"
-  var match = base.match(/^(.+\/)seajs\/[\d\.]+\/$/)
+  var match = base.match(/^(.+\/)seajs\/[\.\d]+(?:-dev)?\/$/)
   if (match) base = match[1]
 
   config.base = base
@@ -1353,10 +1364,8 @@ seajs._config = {
 
 
   function debugSync() {
-    if (config.debug) {
-      // For convenient reference
-      seajs.debug = !!config.debug
-    }
+    // For convenient reference
+    seajs.debug = !!config.debug
   }
 
   debugSync()
@@ -1390,6 +1399,7 @@ seajs._config = {
   }
 
 })(seajs, seajs._util, seajs._config)
+
 
 /**
  * Prepare for bootstrapping
@@ -1445,6 +1455,8 @@ seajs._config = {
   }
 
 })(seajs, seajs._util, this)
+
+
 /**
  * The bootstrap and entrances
  */
@@ -1468,7 +1480,7 @@ seajs._config = {
 
 
     // Parses the pre-call of seajs.config/seajs.use/define.
-  // Ref: test/bootstrap/async-3.html
+  // Ref: tests/bootstrap/async-3.html
   ;(function(args) {
     if (args) {
       var hash = {
