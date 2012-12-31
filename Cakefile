@@ -10,12 +10,12 @@ split = (str) -> str.split " "
 d = __dirname
 
 queue = [
-  "stylus -o #{d}/examples/ -w #{d}/page/"
-  "stylus -o #{d}/src/ -w #{d}/script/"
-  "jade -O #{d}/examples/ -wP #{d}/page/"
-  "coffee -o #{d}/src/ -wbc #{d}/script/"
-  "coffee -o #{d}/examples/ -wbc #{d}/page/"
-  "doodle #{d}/examples/ #{d}/src/"
+  "stylus -o #{d}/page/ -w #{d}/page-src/"
+  "stylus -o #{d}/src/ -w #{d}/source/"
+  "jade -O #{d}/page/ -wP #{d}/page-src/"
+  "coffee -o #{d}/src/ -wbc #{d}/source/"
+  "coffee -o #{d}/page/ -wbc #{d}/page-src/"
+  "doodle #{d}/page/ #{d}/src/"
 ]
 
 task "dev", "watch and convert files", ->

@@ -37,13 +37,14 @@ define (require, exports) ->
       html +=
         if isArr item then draw item, compact_child
         else if isStr item
-          "<code>#{visual item}</code>"
+          if item is "\t" then caret
+          else "<code>#{visual item}</code>"
         else "<code>#{escape item}</code>"
 
     "<pre#{inline}>#{html}</pre>"
 
   exports.render = (list, elem) ->
-    elem.innerHTML = draw list, no
+    elem.innerHTML = draw list
     caret_elem = elem.querySelector('#caret')
     top = caret_elem.offsetTop - elem.offsetTop
     height = elem.offsetHeight

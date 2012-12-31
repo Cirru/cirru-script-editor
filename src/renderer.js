@@ -41,13 +41,13 @@ define(function(require, exports) {
       var compact_child;
       compact_child = list.length < 6;
       show("item:", item);
-      return html += isArr(item) ? draw(item, compact_child) : isStr(item) ? "<code>" + (visual(item)) + "</code>" : "<code>" + (escape(item)) + "</code>";
+      return html += isArr(item) ? draw(item, compact_child) : isStr(item) ? item === "\t" ? caret : "<code>" + (visual(item)) + "</code>" : "<code>" + (escape(item)) + "</code>";
     });
     return "<pre" + inline + ">" + html + "</pre>";
   };
   exports.render = function(list, elem) {
     var caret_elem, height, scrollTop, top;
-    elem.innerHTML = draw(list, false);
+    elem.innerHTML = draw(list);
     caret_elem = elem.querySelector('#caret');
     top = caret_elem.offsetTop - elem.offsetTop;
     height = elem.offsetHeight;

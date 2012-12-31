@@ -12,6 +12,7 @@
     padding 1px 0px
     margin 0px 4px
     font-family Monaco, monospace
+    color hsla(0,0,60,0.7)
 
   #caret
     padding 0px
@@ -34,11 +35,15 @@
     line-height 16px
     font-size 16px
 
-  .inline
-    margin 0px 4px
-    padding 2px 0px
-    display inline-block
-    box-shadow 0px 1px 0px hsla(0,0,90,0.5)
+    pre
+      code
+        color hsl(0,0,100)
+
+      .inline
+        margin 0px 4px
+        padding 0px 4px
+        display inline-block
+        box-shadow 0px 1px 0px hsla(0,0,90,0.5)
 
   &>pre, &>.inline
     margin 0px
