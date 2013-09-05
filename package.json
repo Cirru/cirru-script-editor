@@ -1,23 +1,29 @@
 {
-    "name": "cirru-editor",
-    "version": "1.0.0",
-    "root": "#",
-    "description": "",
-    "homepage": "",
-    "author": "",
-    "repository": {
-        "type": "git",
-        "url": ""
-    },
-    "bugs": {
-        "url": "https://github.com/jiyinyiyong/cirru-editor"
-    },
-    "license": "MIT",
-    "dependencies": {
-        "seajs": "latest"
-    },
-    "tests": ["cirru-editor"],
-    "output": {
-        "cirru-editor.js": "."
-    }
+  "name": "one-page",
+  "version": "0.0.1",
+  "description": "an one page app",
+  "main": "build/bundle.js",
+  "scripts": {
+    "test": "grunt dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jiyinyiyong/one-page.git"
+  },
+  "keywords": [
+    "one-page-app"
+  ],
+  "author": "jiyinyiyong",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/jiyinyiyong/one-page/issues"
+  },
+  "devDependencies": {
+    "coffeeify": "~0.5.1",
+    "grunt-contrib-jade": "~0.8.0",
+    "grunt-browserify": "~1.2.3",
+    "grunt": "~0.4.1",
+    "grunt-contrib-stylus": "~0.7.0",
+    "grunt-contrib-watch": "~0.5.2"
+  }
 }
