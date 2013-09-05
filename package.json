@@ -26,6 +26,8 @@
     "grunt": "~0.4.1",
     "grunt-contrib-stylus": "~0.7.0",
     "grunt-contrib-watch": "~0.5.2",
-    "proto-scope": "0.0.1"
+    "proto-scope": "0.0.2",
+    "zepto-browserify": "~1.0.0",
+    "proto-events": "0.0.1"
   }
 }

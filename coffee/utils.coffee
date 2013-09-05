@@ -7,3 +7,7 @@ exports.push = (x, xs) ->
 
 exports.delay = (t, f) ->
   setTimeout f, t
+
+exports.parseElement = (represent) ->
+  [_, base, query] = represent.match /^(\w+)(\s.*)$/
+  {base, query}
