@@ -4,7 +4,8 @@
   "description": "an one page app",
   "main": "build/bundle.js",
   "scripts": {
-    "test": "grunt dev"
+    "dev": "grunt watch",
+    "test": "grunt once"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
     "grunt-browserify": "~1.2.3",
     "grunt": "~0.4.1",
     "grunt-contrib-stylus": "~0.7.0",
-    "grunt-contrib-watch": "~0.5.2"
+    "grunt-contrib-watch": "~0.5.2",
+    "proto-scope": "0.0.1"
   }
 }

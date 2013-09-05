@@ -1,4 +1,9 @@
 
-exports.print = (args...) -> console.log args...
+exports.push = (x, xs) ->
+  new_list = [x]
+  for y in xs
+    new_list.push y unless y in new_list
+  new_list
 
-exports.$ = (query) -> document.querySelector query
+exports.delay = (t, f) ->
+  setTimeout f, t

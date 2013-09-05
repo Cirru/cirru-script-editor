@@ -2,14 +2,19 @@
 module.exports = (grunt) ->
   grunt.initConfig
     jade:
-      compile:
-        options:
-          data:
-            debug: no
-          pretty: yes
+      options:
+        data:
+          debug: no
         pretty: yes
+      compile:
         files:
           'build/index.html': 'jade/index.jade'
+      template:
+        cwd: 'jade/'
+        expand: yes
+        src: '*-template.jade'
+        dest: 'build/'
+        ext: '.html'
     stylus:
       options: {}
       compile:

@@ -1,4 +1,7 @@
 
-{print} = require './utils.coffee'
+dom = require './dom.coffee'
+{editor} = require './editor.coffee'
+utils = require './utils.coffee'
 
-print 'hello world'
+editor.init()
+dom.q('#entry').appendChild editor.el
