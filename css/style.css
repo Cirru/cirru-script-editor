@@ -1,0 +1,13 @@
+
+@import url('cirru-editor.css');
+
+body {
+    margin: 0;
+    background: #aaf;
+}
+
+.demo {
+    color: white;
+    font: 40px Optima;
+    padding: 100px;
+}

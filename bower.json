@@ -1,0 +1,19 @@
+{
+  "name": "cirru-editor",
+  "version": "0.0.0",
+  "homepage": "https://github.com/jiyinyiyong/cirru-editor",
+  "authors": [
+    "jiyinyiyong <jiyinyiyong@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.10"
+  }
+}
