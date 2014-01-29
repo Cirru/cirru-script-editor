@@ -37,13 +37,24 @@ define (require, exports) ->
     isExp: ->
       @type is 'Exp'
 
+    hasContent: ->
+      @list.length > 0
+
+    isEmpty: ->
+      @list.length is 0
+
+    toParent: (caretObj) ->
+      parent = @parent
+      if @isEmpty() and @hasParent()
+        @parent.splice @selfLocate(), 1
+        delete @parent
+        caretObj.index -= 1 if caretObj?
+      parent
+
   class Token extends Unit
     type: 'Token'
     constructor: (@parent) ->
       super()
-
-    hasContent: ->
-      @list.length > 0
 
   class Exp extends Unit
     type: 'Exp'
@@ -141,6 +152,12 @@ define (require, exports) ->
         when '32'
           @actionBlank()
           event.preventDefault()
+        when 'alt 37'
+          @actionWordLeft()
+          event.preventDefault()
+        when 'alt 39'
+          @actionWordRight()
+          event.preventDefault()
         
       console.info 'unhandled action:', name
 
@@ -167,7 +184,7 @@ define (require, exports) ->
         @index = 0
       else
         if @pointer.hasParent()
-          @pointer = @pointer.parent
+          @pointer = @pointer.toParent()
           @index = 0
 
     actionDown: ->
@@ -176,7 +193,7 @@ define (require, exports) ->
       else
         if @pointer.hasParent()
           @index = @pointer.parent.getLength()
-          @pointer = @pointer.parent
+          @pointer = @pointer.toParent()
 
     actionLeft: ->
       if @pointer.isToken()
@@ -184,7 +201,7 @@ define (require, exports) ->
           @index -= 1
         else
           @index = @pointer.selfLocate()
-          @pointer = @pointer.parent
+          @pointer = @pointer.toParent()
       else if @pointer.isExp()
         if @index > 0
           lastToken = @pointer.getItem (@index - 1)
@@ -193,7 +210,7 @@ define (require, exports) ->
         else
           if @pointer.hasParent()
             @index = @pointer.selfLocate()
-            @pointer = @pointer.parent
+            @pointer = @pointer.toParent()
 
     actionRight: ->
       if @pointer.isToken()
@@ -201,7 +218,7 @@ define (require, exports) ->
           @index += 1
         else
           @index = @pointer.selfLocate() + 1
-          @pointer = @pointer.parent
+          @pointer = @pointer.toParent(@)
       else if @pointer.isExp()
         if @index < @pointer.getLength()
           nextToken = @pointer.getItem @index
@@ -210,13 +227,16 @@ define (require, exports) ->
         else
           if @pointer.hasParent()
             @index = @pointer.selfLocate() + 1
-            @pointer = @pointer.parent
+            @pointer = @pointer.toParent(@)
 
     actionEnter: ->
       if @pointer.isToken()
         newExp = @pointer.parent.makeExp()
         entry = @pointer.selfLocate() + 1
-        @pointer.parent.splice entry, 0, newExp
+        if @pointer.hasContent()
+          @pointer.parent.splice entry, 0, newExp
+        else if @pointer.isEmpty()
+          @pointer.parent.splice entry, 1, newExp
         @pointer = newExp
         @index = 0
       else if @pointer.isExp()
@@ -238,5 +258,29 @@ define (require, exports) ->
         if @index > 0
           @index -= 1
           @pointer.splice @index, 1
+
+    actionWordLeft: ->
+      if @pointer.isToken()
+        @index = @pointer.selfLocate()
+        @pointer = @pointer.toParent()
+      else if @pointer.isExp()
+        if @index > 0
+          @index -= 1
+        else
+          if @pointer.hasParent()
+            @index = @pointer.selfLocate()
+            @pointer = @pointer.toParent()
+
+    actionWordRight: ->
+      if @pointer.isToken()
+        @index = @pointer.selfLocate() + 1
+        @pointer = @pointer.toParent(@)
+      else if @pointer.isExp()
+        if @index < @pointer.getLength()
+          @index += 1
+        else
+          if @pointer.hasParent()
+            @index = @pointer.selfLocate() + 1
+            @pointer = @pointer.toParent(@)
 
   {Editor}
