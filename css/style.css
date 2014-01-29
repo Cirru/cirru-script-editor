@@ -7,13 +7,16 @@ body {
 
 .cirru-editor {
     width: 600px;
-    height: 300px;
+    height: 600px;
     overflow: auto;
+    font-family: Monaco;
+    font-size: 14px;
+    position: relative;
 }
 
 .cirru-caret {
     display: inline-block;
-    background: white;
+    background: hsla(0, 100%, 100%, 0.46);
     height: 1em;
-    width: 0.5em;
+    width: 8px;
 }

@@ -11,6 +11,9 @@ define (require, exports) ->
     indexOf: (item) ->
       @list.indexOf item
 
+    getLength: ->
+      @list.length
+
     selfLocate: ->
       @parent.indexOf @
 
@@ -22,8 +25,7 @@ define (require, exports) ->
 
     drop: ->
       if @parent?
-        position = parent.locate @
-        @parent.splice position, 1
+        @parent.splice @selfLocate(), 1
         delete @parent
 
     hasParent: ->
@@ -51,6 +53,12 @@ define (require, exports) ->
     makeToken: ->
       new Token @
 
+    makeExp: ->
+      new Exp @
+
+    getItem: (index) ->
+      @list[index]
+
   class Editor
     constructor: ->
       @makeElement()
@@ -59,6 +67,7 @@ define (require, exports) ->
       @pointer = @tree.makeToken()
       @tree.push @pointer
       @index = 0
+      @render()
 
     makeElement: ->
       @el = $ '<div>'
@@ -88,14 +97,16 @@ define (require, exports) ->
           list.splice @index, 0, caret if @pointer is obj
           inner = list.join ''
           "<div class='cirru-exp'>#{inner}</div>"
-      console.debug @tree
+      console.debug @pointer, @index
       html = convert @tree
       @area.html html
+      @el.find('.cirru-caret').get(0).scrollIntoView()
 
     handlePress: (event) ->
       char = String.fromCharCode event.charCode
       @insertChar char
       @render()
+      event.preventDefault()
 
     handeKeyDown: (event) ->
       signiture = []
@@ -152,17 +163,80 @@ define (require, exports) ->
         @pointer = @pointer.parent
 
     actionUp: ->
+      if @index > 0
+        @index = 0
+      else
+        if @pointer.hasParent()
+          @pointer = @pointer.parent
+          @index = 0
 
     actionDown: ->
+      if @index < @pointer.getLength()
+        @index = @pointer.getLength()
+      else
+        if @pointer.hasParent()
+          @index = @pointer.parent.getLength()
+          @pointer = @pointer.parent
 
     actionLeft: ->
+      if @pointer.isToken()
+        if @index > 0
+          @index -= 1
+        else
+          @index = @pointer.selfLocate()
+          @pointer = @pointer.parent
+      else if @pointer.isExp()
+        if @index > 0
+          lastToken = @pointer.getItem (@index - 1)
+          @pointer = lastToken
+          @index = lastToken.getLength()
+        else
+          if @pointer.hasParent()
+            @index = @pointer.selfLocate()
+            @pointer = @pointer.parent
 
     actionRight: ->
-
-    removeChar: ->
+      if @pointer.isToken()
+        if @index < @pointer.getLength()
+          @index += 1
+        else
+          @index = @pointer.selfLocate() + 1
+          @pointer = @pointer.parent
+      else if @pointer.isExp()
+        if @index < @pointer.getLength()
+          nextToken = @pointer.getItem @index
+          @pointer = nextToken
+          @index = 0
+        else
+          if @pointer.hasParent()
+            @index = @pointer.selfLocate() + 1
+            @pointer = @pointer.parent
 
     actionEnter: ->
+      if @pointer.isToken()
+        newExp = @pointer.parent.makeExp()
+        entry = @pointer.selfLocate() + 1
+        @pointer.parent.splice entry, 0, newExp
+        @pointer = newExp
+        @index = 0
+      else if @pointer.isExp()
+        newExp = @pointer.makeExp()
+        @pointer.splice @index, 0, newExp
+        @pointer = newExp
+        @index = 0
 
     actionDelete: ->
+      if @pointer.isToken()
+        if @index > 0
+          @index -= 1
+          @pointer.splice @index, 1
+        else
+          @index = @pointer.selfLocate()
+          @pointer.parent.splice @index, 1
+          @pointer = @pointer.parent
+      else if @pointer.isExp()
+        if @index > 0
+          @index -= 1
+          @pointer.splice @index, 1
 
   {Editor}
