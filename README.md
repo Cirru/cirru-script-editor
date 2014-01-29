@@ -1,14 +1,19 @@
 
-# Cirru-editor
+Cirru Editor
+------
 
-Editor for Cirrru project.
+### Usage
 
-### About
+By now it's a RequireJS based project in early development,
+my plan is:
 
-An expriment... for I thinks I wrote too less personal code these days..
+* better code organizations
+* easier to use as an editor
+* add autocomplete menu
+* load code as a Polymer element
 
-### Resouces
+Live demo is not ready yet, but you may clone code and run with Bower.
 
-http://www.html5rocks.com/en/tutorials/webcomponents/template/
+### License
 
-http://robdodson.me/blog/2013/08/20/exploring-html-imports/
+MIT
