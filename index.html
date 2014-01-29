@@ -7,12 +7,15 @@
   <script type="text/javascript" src="bower_components/requirejs/require.js"></script>
   <script type="text/javascript">
   requirejs.config({
-    baseUrl: 'src/'
+    baseUrl: 'src/',
+    paths: {
+      jquery: '../bower_components/jquery/jquery'
+    }
   })
   require(['main'])
   </script>
 </head>
 <body>
-<p class="demo">Demo</p>
+<div id="entry"></div>
 </body>
 </html>

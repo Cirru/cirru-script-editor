@@ -1,0 +1,24 @@
+
+.cirru-editor {
+    background: #aaf;
+    color: white;
+}
+
+.cirru-area {
+    padding-top: 1em;
+    padding-bottom: 10em;
+}
+
+.cirru-exp {
+    display: block;
+}
+
+.cirru-token {
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.cirru-input {
+    pointer-events: none;
+    opacity: 0;
+}
