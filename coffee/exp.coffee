@@ -41,5 +41,15 @@ define (require, exports) ->
           @el.append item.el
         else
           @el.children().eq(start - 1).after item.el
+      @checkAllToken()
+
+    checkAllToken: ->
+      if @caret.pointer.isExp()
+        if @list.length is 0
+          allToken = yes
+        else
+          allToken = @list.every (item) ->
+            item.isToken()
+        @el.toggleClass 'all-token', allToken
 
   {Exp}
