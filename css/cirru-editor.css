@@ -15,6 +15,7 @@
     box-shadow: -1px 0px 0 hsla(0, 100%, 100%, 0.46);
     padding-left: 8px;
     margin-top: 5px;
+    cursor: pointer;
 }
 
 .cirru-token {

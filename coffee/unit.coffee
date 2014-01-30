@@ -2,20 +2,15 @@
 define (require, exports) ->
 
   class Unit
-    constructor: ->
+    constructor: (@parent, @caret) ->
       @list = []
+      @makeElement()
 
     getLength: ->
       @list.length
 
     selfLocate: ->
       @parent.list.indexOf @
-
-    push: (item) ->
-      @list.push item
-
-    splice: (args...) ->
-      @list.splice args...
 
     drop: ->
       if @parent?
@@ -37,29 +32,29 @@ define (require, exports) ->
     isEmpty: ->
       @list.length is 0
 
-    focusEnd: (caret) ->
-      caret.pointer = @
-      caret.index = @getLength()
+    focusEnd: ->
+      @caret.pointer = @
+      @caret.index = @getLength()
 
-    focusStart: (caret) ->
-      caret.pointer = @
-      caret.index = 0
+    focusStart: ->
+      @caret.pointer = @
+      @caret.index = 0
 
-    focusBefore: (caret) ->
+    focusBefore: ->
       if @hasParent()
-        caret.index = @selfLocate()
-        caret.pointer = @parent
+        @caret.index = @selfLocate()
+        @caret.pointer = @parent
         if @isEmpty()
-          caret.pointer.splice caret.index, 1
+          @caret.pointer.splice @caret.index, 1
 
-    focusAfter: (caret) ->
+    focusAfter: ->
       if @hasParent()
         if @isEmpty()
-          caret.index = @selfLocate() 
+          @caret.index = @selfLocate() 
           @parent.splice @selfLocate(), 1
-          caret.pointer = @parent
+          @caret.pointer = @parent
         else if @hasContent()
-          caret.index = @selfLocate() + 1
-          caret.pointer = @parent
+          @caret.index = @selfLocate() + 1
+          @caret.pointer = @parent
 
   {Unit}

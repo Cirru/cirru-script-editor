@@ -2,7 +2,7 @@
 define (require, exports) ->
 
   $ = require 'jquery'
-  caretHtml = '<div class="cirru-caret"></div>'
+  caretElement = $ '<div class="cirru-caret"></div>'
 
   {Exp} = require 'exp'
 
@@ -10,11 +10,12 @@ define (require, exports) ->
     constructor: ->
       @makeElement()
       @bindEvents()
-      @tree = new Exp
+      @tree = new Exp null, @
       @pointer = @tree.makeToken()
-      @tree.push @pointer
+      @tree.splice 0, 0, @pointer
       @index = 0
-      @render()
+      @area.append @tree.el
+      @moveCaret()
 
     makeElement: ->
       @el = $ '<div>'
@@ -26,9 +27,9 @@ define (require, exports) ->
       @el.append @input
 
     bindEvents: ->
-      @el.on 'click', =>
+      @el.on 'click', (event) =>
         @input.focus()
-        console.info 'focusing on editor!'
+        # console.info 'focusing on editor!'
       @input.on 'keypress', @handlePress.bind(@)
       @input.on 'keydown', @handeKeyDown.bind(@)
 
@@ -52,8 +53,8 @@ define (require, exports) ->
     handlePress: (event) ->
       char = String.fromCharCode event.charCode
       @insertChar char
-      @render()
       event.preventDefault()
+      @moveCaret()
 
     handeKeyDown: (event) ->
       signiture = []
@@ -64,7 +65,7 @@ define (require, exports) ->
       signiture.push event.keyCode
       identifier = signiture.join ' '
       @action identifier, event
-      @render()
+      @moveCaret()
 
     action: (name, event) ->
       switch name
@@ -101,7 +102,7 @@ define (require, exports) ->
           @actionDown()
           event.preventDefault()
         
-      console.info 'unhandled action:', name
+      # console.info 'unhandled action:', name
 
     insertChar: (char) ->
       if @pointer.isToken()
@@ -109,7 +110,7 @@ define (require, exports) ->
         @index += 1
       else if @pointer.isExp()
         newToken = @pointer.makeToken()
-        newToken.push char
+        newToken.splice 0, 0, char
         @pointer.splice @index, 0, newToken
         @pointer = newToken
         @index = 1
@@ -126,42 +127,42 @@ define (require, exports) ->
         @index = 0
       else
         if @pointer.hasParent()
-          @pointer.parent.focusStart @
+          @pointer.parent.focusStart()
 
     actionDown: ->
       if @index < @pointer.getLength()
         @index = @pointer.getLength()
       else
         if @pointer.hasParent()
-          @pointer.parent.focusEnd @
+          @pointer.parent.focusEnd()
 
     actionLeft: ->
       if @pointer.isToken()
         if @index > 0
           @index -= 1
         else
-          @pointer.focusBefore @
+          @pointer.focusBefore()
       else if @pointer.isExp()
         if @index > 0
           lastToken = @pointer.getItem (@index - 1)
           @pointer = lastToken
           @index = lastToken.getLength()
         else
-          @pointer.focusBefore @
+          @pointer.focusBefore()
 
     actionRight: ->
       if @pointer.isToken()
         if @index < @pointer.getLength()
           @index += 1
         else
-          @pointer.focusAfter @
+          @pointer.focusAfter()
       else if @pointer.isExp()
         if @index < @pointer.getLength()
           nextToken = @pointer.getItem @index
           @pointer = nextToken
           @index = 0
         else
-          @pointer.focusAfter @
+          @pointer.focusAfter()
 
     actionEnter: ->
       if @pointer.isToken()
@@ -195,24 +196,24 @@ define (require, exports) ->
 
     actionWordLeft: ->
       if @pointer.isToken()
-        @pointer.focusBefore @
+        @pointer.focusBefore()
       else if @pointer.isExp()
         if @index > 0
           @index -= 1
         else
-          @pointer.focusBefore @
+          @pointer.focusBefore()
 
     actionWordRight: ->
       if @pointer.isToken()
-        @pointer.focusAfter @
+        @pointer.focusAfter()
       else if @pointer.isExp()
         if @index < @pointer.getLength()
           @index += 1
         else
-          @pointer.focusAfter @
+          @pointer.focusAfter()
 
     actionLineUp: ->
-      {entry, start} = @pointer.getEntryStart @
+      {entry, start} = @pointer.getEntryStart()
       target = undefined
       while start > 0
         start -= 1
@@ -222,12 +223,12 @@ define (require, exports) ->
           break
 
       if target?
-        target.focusEnd @
+        target.focusEnd()
       else
-        entry.focusBefore @
+        entry.focusBefore()
 
     actionLineDown: ->
-      {entry, start} = @pointer.getEntryStart @
+      {entry, start} = @pointer.getEntryStart()
       target = undefined
       length = entry.getLength()
       console.log 'start, length:', start, length
@@ -238,8 +239,19 @@ define (require, exports) ->
           break
         start += 1
       if target?
-        target.focusStart @
+        target.focusStart()
       else
-        entry.focusAfter @
+        entry.focusAfter()
+
+    moveCaret: ->
+      caret = @el.find('.cirru-caret').detach()
+      caret = caretElement if caret.length is 0
+      if @index is 0
+        if @pointer.getLength() is 0
+          @pointer.el.append caret
+        else
+          @pointer.el.children().eq(@index).before caret
+      else
+        @pointer.el.children().eq(@index - 1).after caret
 
   {Editor}
