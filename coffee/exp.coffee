@@ -11,10 +11,10 @@ define (require, exports) ->
     makeElement: ->
       @el = $ '<div class="cirru-exp">'
       @el.on 'click', (event) =>
-        console.log 'click Exp'
         @focusEnd()
         @caret.moveCaret()
         event.stopPropagation()
+        @caret.el.find('.cirru-input').focus()
 
     makeToken: ->
       new Token @, @caret

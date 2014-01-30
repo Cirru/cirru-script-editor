@@ -14,6 +14,7 @@ define (require, exports) ->
       @el = $ '<div class="cirru-complete"></div>'
 
     updateTokens: ->
+      @cache = @editor.pointer.list
       list = []
       readExp = (obj) =>
         obj.list.map (item) =>
@@ -26,18 +27,18 @@ define (require, exports) ->
       list.map (item) =>
         word = item.list.join('')
         unless word in @tokens
-          if search word, @editor.pointer.list.join('')
-            @tokens.push word
-      @tokens
+          if @editor.pointer.isToken()
+            if search word, @editor.pointer.list.join('')
+              @tokens.push word
 
     update: ->
+      @updateTokens()
       @index = -1
       @render()
 
     render: ->
       html = @tokens
       .map (item, index) =>
-        console.log index, @index
         if index is @index
           "<div class='cirru-item cirru-active'>#{item}</div>"
         else
@@ -53,12 +54,14 @@ define (require, exports) ->
         @index = -1
       else
         @index += 1
+      @render()
 
     goPrevious: ->
       if @index > 0
         @index -= 1
       else
         @index = (@tokens.length - 1)
+      @render()
 
     isSelected: ->
       @index >= 0

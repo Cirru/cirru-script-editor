@@ -36,23 +36,6 @@ define (require, exports) ->
       @input.on 'keypress', @handlePress.bind(@)
       @input.on 'keydown', @handeKeyDown.bind(@)
 
-    render: ->
-      convert = (obj) =>
-        if obj.isToken()
-          list = obj.list.concat()
-          list.splice @index, 0, caretHtml if @pointer is obj
-          inner = list.join ''
-          "<div class='cirru-token'>#{inner}</div>"
-        else if obj.isExp()
-          list = obj.list.concat().map(convert)
-          list.splice @index, 0, caretHtml if @pointer is obj
-          inner = list.join ''
-          "<div class='cirru-exp'>#{inner}</div>"
-      console.debug @pointer, @index
-      html = convert @tree
-      @area.html html
-      @el.find('.cirru-caret').get(0).scrollIntoView()
-
     handlePress: (event) ->
       char = String.fromCharCode event.charCode
       @insertChar char
@@ -123,7 +106,6 @@ define (require, exports) ->
         @pointer.splice @index, 0, newToken
         @pointer = newToken
         @index = 1
-      @complete.updateTokens()
       @complete.update()
 
     actionBlank: ->
@@ -140,6 +122,7 @@ define (require, exports) ->
       else
         if @pointer.hasParent()
           @pointer.parent.focusStart()
+      @complete.update()
 
     actionDown: ->
       if @index < @pointer.getLength()
@@ -147,6 +130,7 @@ define (require, exports) ->
       else
         if @pointer.hasParent()
           @pointer.parent.focusEnd()
+      @complete.update()
 
     actionLeft: ->
       if @pointer.isToken()
@@ -161,6 +145,7 @@ define (require, exports) ->
           @index = lastToken.getLength()
         else
           @pointer.focusBefore()
+      @complete.update()
 
     actionRight: ->
       if @pointer.isToken()
@@ -175,6 +160,7 @@ define (require, exports) ->
           @index = 0
         else
           @pointer.focusAfter()
+      @complete.update()
 
     actionEnter: ->
       if @complete.isSelected()
@@ -209,7 +195,6 @@ define (require, exports) ->
         if @index > 0
           @index -= 1
           @pointer.splice @index, 1
-      @complete.updateTokens()
       @complete.update()
 
     actionWordLeft: ->
@@ -220,6 +205,7 @@ define (require, exports) ->
           @index -= 1
         else
           @pointer.focusBefore()
+      @complete.update()
 
     actionWordRight: ->
       if @pointer.isToken()
@@ -229,6 +215,7 @@ define (require, exports) ->
           @index += 1
         else
           @pointer.focusAfter()
+      @complete.update()
 
     actionLineUp: ->
       {entry, start} = @pointer.getEntryStart()
@@ -244,12 +231,12 @@ define (require, exports) ->
         target.focusEnd()
       else
         entry.focusBefore()
+      @complete.update()
 
     actionLineDown: ->
       {entry, start} = @pointer.getEntryStart()
       target = undefined
       length = entry.getLength()
-      console.log 'start, length:', start, length
       while start < length
         item = entry.getItem start
         if item.isExp()
@@ -260,6 +247,7 @@ define (require, exports) ->
         target.focusStart()
       else
         entry.focusAfter()
+      @complete.update()
 
     moveCaret: ->
       caret = @el.find('.cirru-caret').detach()
@@ -271,28 +259,28 @@ define (require, exports) ->
           @pointer.el.children().eq(@index).before caret
       else
         @pointer.el.children().eq(@index - 1).after caret
+      @el.find('.cirru-caret').get(0).scrollIntoViewIfNeeded()
 
     actionTab: ->
       return if @pointer.isExp()
       @complete.goNext()
       @swapToken()
-      @complete.render()
+      @pointer.render()
+      @moveCaret()
 
     actionShiftTab: ->
       return if @pointer.isExp()
       @complete.goPrevious()
       @swapToken()
-      @complete.render()
+      @pointer.render()
+      @moveCaret()
 
     swapToken: ->
       if @complete.isSelected()
-        @complete.cache = @pointer.list
         @pointer.list = @complete.getItem().split('')
         @index = @pointer.list.length
-        @pointer.render()
       else
         @pointer.list = @complete.cache
         @index = @pointer.list.length
-        @pointer.render()
 
   {Editor}

@@ -11,10 +11,10 @@ define (require, exports) ->
     makeElement: ->
       @el = $ '<div class="cirru-token">'
       @el.on 'click', (event) =>
-        console.log 'click Token', @
         @focusEnd()
         @caret.moveCaret()
         event.stopPropagation()
+        @caret.el.find('.cirru-input').focus()
 
     getEntryStart: ->
       entry: @caret.pointer.parent
