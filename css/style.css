@@ -8,33 +8,4 @@ body {
 .cirru-editor {
     width: 600px;
     height: 600px;
-    overflow: auto;
-    font-family: Monaco;
-    font-size: 14px;
-    position: relative;
-}
-
-.cirru-caret {
-    display: inline-block;
-    background: hsla(0, 100%, 100%, 0.46);
-    height: 1em;
-    width: 8px;
-}
-
-.cirru-complete {
-    position: absolute;
-    right: 0;
-    top: 0;
-    max-height: 200px;
-}
-
-.cirru-item {
-    background: hsla(233, 100%, 70%, 0.73);
-    color: hsl(0, 100%, 100%);
-    padding: 1px 6px;
-    min-width: 80px;
-}
-
-.cirru-item.cirru-active {
-    background-color: hsl(269, 100%, 58%);
 }
