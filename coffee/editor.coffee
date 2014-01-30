@@ -2,73 +2,9 @@
 define (require, exports) ->
 
   $ = require 'jquery'
-  caret = '<div class="cirru-caret"></div>'
+  caretHtml = '<div class="cirru-caret"></div>'
 
-  class Unit
-    constructor: ->
-      @list = []
-
-    indexOf: (item) ->
-      @list.indexOf item
-
-    getLength: ->
-      @list.length
-
-    selfLocate: ->
-      @parent.indexOf @
-
-    push: (item) ->
-      @list.push item
-
-    splice: (args...) ->
-      @list.splice args...
-
-    drop: ->
-      if @parent?
-        @parent.splice @selfLocate(), 1
-        delete @parent
-
-    hasParent: ->
-      @parent?
-
-    isToken: ->
-      @type is 'Token'
-
-    isExp: ->
-      @type is 'Exp'
-
-    hasContent: ->
-      @list.length > 0
-
-    isEmpty: ->
-      @list.length is 0
-
-    toParent: (caretObj) ->
-      parent = @parent
-      if @isEmpty() and @hasParent()
-        @parent.splice @selfLocate(), 1
-        delete @parent
-        caretObj.index -= 1 if caretObj?
-      parent
-
-  class Token extends Unit
-    type: 'Token'
-    constructor: (@parent) ->
-      super()
-
-  class Exp extends Unit
-    type: 'Exp'
-    constructor: (@parent) ->
-      super()
-
-    makeToken: ->
-      new Token @
-
-    makeExp: ->
-      new Exp @
-
-    getItem: (index) ->
-      @list[index]
+  {Exp} = require 'exp'
 
   class Editor
     constructor: ->
@@ -100,12 +36,12 @@ define (require, exports) ->
       convert = (obj) =>
         if obj.isToken()
           list = obj.list.concat()
-          list.splice @index, 0, caret if @pointer is obj
+          list.splice @index, 0, caretHtml if @pointer is obj
           inner = list.join ''
           "<div class='cirru-token'>#{inner}</div>"
         else if obj.isExp()
           list = obj.list.concat().map(convert)
-          list.splice @index, 0, caret if @pointer is obj
+          list.splice @index, 0, caretHtml if @pointer is obj
           inner = list.join ''
           "<div class='cirru-exp'>#{inner}</div>"
       console.debug @pointer, @index
@@ -200,34 +136,28 @@ define (require, exports) ->
         if @index > 0
           @index -= 1
         else
-          @index = @pointer.selfLocate()
-          @pointer = @pointer.toParent()
+          @pointer.focusBefore @
       else if @pointer.isExp()
         if @index > 0
           lastToken = @pointer.getItem (@index - 1)
           @pointer = lastToken
           @index = lastToken.getLength()
         else
-          if @pointer.hasParent()
-            @index = @pointer.selfLocate()
-            @pointer = @pointer.toParent()
+          @pointer.focusBefore @
 
     actionRight: ->
       if @pointer.isToken()
         if @index < @pointer.getLength()
           @index += 1
         else
-          @index = @pointer.selfLocate() + 1
-          @pointer = @pointer.toParent(@)
+          @pointer.focusAfter @
       else if @pointer.isExp()
         if @index < @pointer.getLength()
           nextToken = @pointer.getItem @index
           @pointer = nextToken
           @index = 0
         else
-          if @pointer.hasParent()
-            @index = @pointer.selfLocate() + 1
-            @pointer = @pointer.toParent(@)
+          @pointer.focusAfter @
 
     actionEnter: ->
       if @pointer.isToken()
@@ -267,9 +197,7 @@ define (require, exports) ->
         if @index > 0
           @index -= 1
         else
-          if @pointer.hasParent()
-            @index = @pointer.selfLocate()
-            @pointer = @pointer.toParent()
+          @pointer.focusBefore @
 
     actionWordRight: ->
       if @pointer.isToken()
@@ -279,8 +207,6 @@ define (require, exports) ->
         if @index < @pointer.getLength()
           @index += 1
         else
-          if @pointer.hasParent()
-            @index = @pointer.selfLocate() + 1
-            @pointer = @pointer.toParent(@)
+          @pointer.focusAfter @
 
   {Editor}
