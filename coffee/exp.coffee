@@ -10,6 +10,7 @@ define (require, exports) ->
 
     makeElement: ->
       @el = $ '<div class="cirru-exp">'
+      @el.toggleClass 'all-token', @hasParent()
       @el.on 'click', (event) =>
         @focusEnd()
         @caret.moveCaret()
@@ -50,6 +51,7 @@ define (require, exports) ->
         else
           allToken = @list.every (item) ->
             item.isToken()
+
         @el.toggleClass 'all-token', allToken
 
   {Exp}
