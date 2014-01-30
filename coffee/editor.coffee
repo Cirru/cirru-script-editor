@@ -5,9 +5,11 @@ define (require, exports) ->
   caretElement = $ '<div class="cirru-caret"></div>'
 
   {Exp} = require 'exp'
+  {Complete} = require 'complete'
 
   class Editor
     constructor: ->
+      @complete = new Complete @
       @makeElement()
       @bindEvents()
       @tree = new Exp null, @
@@ -18,10 +20,11 @@ define (require, exports) ->
       @moveCaret()
 
     makeElement: ->
-      @el = $ '<div>'
-      @el.attr 'class', 'cirru-editor'
+      @el = $ '<div class="cirru-editor">'
       @area = $ '<pre class="cirru-area"/>'
       @input = $ '<input class="cirru-input"/>'
+
+      @el.append @complete.el
 
       @el.append @area
       @el.append @input
@@ -84,10 +87,16 @@ define (require, exports) ->
           @actionDelete()
           event.preventDefault()
         when '9'
-          @insertChar ' '
+          @actionTab()
+          event.preventDefault()
+        when 'shift 9'
+          @actionShiftTab()
           event.preventDefault()
         when '32'
           @actionBlank()
+          event.preventDefault()
+        when 'shift 32'
+          @insertChar ' '
           event.preventDefault()
         when 'alt 37'
           @actionWordLeft()
@@ -114,6 +123,8 @@ define (require, exports) ->
         @pointer.splice @index, 0, newToken
         @pointer = newToken
         @index = 1
+      @complete.updateTokens()
+      @complete.update()
 
     actionBlank: ->
       if @pointer.isExp()
@@ -121,6 +132,7 @@ define (require, exports) ->
       else if @pointer.isToken()
         @index = @pointer.selfLocate() + 1
         @pointer = @pointer.parent
+      @complete.update()
 
     actionUp: ->
       if @index > 0
@@ -165,6 +177,9 @@ define (require, exports) ->
           @pointer.focusAfter()
 
     actionEnter: ->
+      if @complete.isSelected()
+        @chooseToken()
+        return
       if @pointer.isToken()
         newExp = @pointer.parent.makeExp()
         entry = @pointer.selfLocate() + 1
@@ -179,6 +194,7 @@ define (require, exports) ->
         @pointer.splice @index, 0, newExp
         @pointer = newExp
         @index = 0
+      @complete.update()
 
     actionDelete: ->
       if @pointer.isToken()
@@ -193,6 +209,8 @@ define (require, exports) ->
         if @index > 0
           @index -= 1
           @pointer.splice @index, 1
+      @complete.updateTokens()
+      @complete.update()
 
     actionWordLeft: ->
       if @pointer.isToken()
@@ -253,5 +271,28 @@ define (require, exports) ->
           @pointer.el.children().eq(@index).before caret
       else
         @pointer.el.children().eq(@index - 1).after caret
+
+    actionTab: ->
+      return if @pointer.isExp()
+      @complete.goNext()
+      @swapToken()
+      @complete.render()
+
+    actionShiftTab: ->
+      return if @pointer.isExp()
+      @complete.goPrevious()
+      @swapToken()
+      @complete.render()
+
+    swapToken: ->
+      if @complete.isSelected()
+        @complete.cache = @pointer.list
+        @pointer.list = @complete.getItem().split('')
+        @index = @pointer.list.length
+        @pointer.render()
+      else
+        @pointer.list = @complete.cache
+        @index = @pointer.list.length
+        @pointer.render()
 
   {Editor}

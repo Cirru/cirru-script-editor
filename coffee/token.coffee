@@ -22,6 +22,9 @@ define (require, exports) ->
 
     splice: (args...) ->
       @list.splice args...
+      @render()
+
+    render: ->
       @el.html (@list.map(letter).join '')
 
   {Token}
