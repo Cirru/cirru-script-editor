@@ -8,4 +8,8 @@ define (require, exports) ->
     constructor: (@parent) ->
       super()
 
+    getEntryStart: (caret) ->
+      entry: caret.pointer.parent
+      start: caret.pointer.selfLocate()
+
   {Token}

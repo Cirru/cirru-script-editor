@@ -73,9 +73,9 @@ define (require, exports) ->
         when '39'
           @actionRight()
         when '38'
-          @actionUp()
+          @actionLineUp()
         when '40'
-          @actionDown()
+          @actionLineDown()
         when '13'
           @actionEnter()
           event.preventDefault()
@@ -93,6 +93,12 @@ define (require, exports) ->
           event.preventDefault()
         when 'alt 39'
           @actionWordRight()
+          event.preventDefault()
+        when 'alt 38'
+          @actionUp()
+          event.preventDefault()
+        when 'alt 40'
+          @actionDown()
           event.preventDefault()
         
       console.info 'unhandled action:', name
@@ -120,16 +126,14 @@ define (require, exports) ->
         @index = 0
       else
         if @pointer.hasParent()
-          @pointer = @pointer.toParent()
-          @index = 0
+          @pointer.parent.focusStart @
 
     actionDown: ->
       if @index < @pointer.getLength()
         @index = @pointer.getLength()
       else
         if @pointer.hasParent()
-          @index = @pointer.parent.getLength()
-          @pointer = @pointer.toParent()
+          @pointer.parent.focusEnd @
 
     actionLeft: ->
       if @pointer.isToken()
@@ -191,8 +195,7 @@ define (require, exports) ->
 
     actionWordLeft: ->
       if @pointer.isToken()
-        @index = @pointer.selfLocate()
-        @pointer = @pointer.toParent()
+        @pointer.focusBefore @
       else if @pointer.isExp()
         if @index > 0
           @index -= 1
@@ -201,12 +204,42 @@ define (require, exports) ->
 
     actionWordRight: ->
       if @pointer.isToken()
-        @index = @pointer.selfLocate() + 1
-        @pointer = @pointer.toParent(@)
+        @pointer.focusAfter @
       else if @pointer.isExp()
         if @index < @pointer.getLength()
           @index += 1
         else
           @pointer.focusAfter @
+
+    actionLineUp: ->
+      {entry, start} = @pointer.getEntryStart @
+      target = undefined
+      while start > 0
+        start -= 1
+        item = entry.getItem start
+        if item.isExp()
+          target = item
+          break
+
+      if target?
+        target.focusEnd @
+      else
+        entry.focusBefore @
+
+    actionLineDown: ->
+      {entry, start} = @pointer.getEntryStart @
+      target = undefined
+      length = entry.getLength()
+      console.log 'start, length:', start, length
+      while start < length
+        item = entry.getItem start
+        if item.isExp()
+          target = item
+          break
+        start += 1
+      if target?
+        target.focusStart @
+      else
+        entry.focusAfter @
 
   {Editor}

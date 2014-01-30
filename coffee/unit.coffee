@@ -5,14 +5,11 @@ define (require, exports) ->
     constructor: ->
       @list = []
 
-    indexOf: (item) ->
-      @list.indexOf item
-
     getLength: ->
       @list.length
 
     selfLocate: ->
-      @parent.indexOf @
+      @parent.list.indexOf @
 
     push: (item) ->
       @list.push item
@@ -40,14 +37,6 @@ define (require, exports) ->
     isEmpty: ->
       @list.length is 0
 
-    toParent: (caret) ->
-      parent = @parent
-      if @isEmpty() and @hasParent()
-        @parent.splice @selfLocate(), 1
-        delete @parent
-        caret.index -= 1 if caret?
-      parent
-
     focusEnd: (caret) ->
       caret.pointer = @
       caret.index = @getLength()
@@ -59,13 +48,18 @@ define (require, exports) ->
     focusBefore: (caret) ->
       if @hasParent()
         caret.index = @selfLocate()
-        caret.pointer = @toParent()
+        caret.pointer = @parent
+        if @isEmpty()
+          caret.pointer.splice caret.index, 1
 
     focusAfter: (caret) ->
       if @hasParent()
         if @isEmpty()
+          caret.index = @selfLocate() 
           @parent.splice @selfLocate(), 1
+          caret.pointer = @parent
+        else if @hasContent()
           caret.index = @selfLocate() + 1
-          caret.pointer = @toParent()
-          
+          caret.pointer = @parent
+
   {Unit}

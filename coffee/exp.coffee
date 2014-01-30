@@ -18,4 +18,8 @@ define (require, exports) ->
     getItem: (index) ->
       @list[index]
 
+    getEntryStart: (caret) ->
+      entry: caret.pointer
+      start: caret.index
+
   {Exp}
