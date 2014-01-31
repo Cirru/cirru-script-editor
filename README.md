@@ -34,9 +34,9 @@ define (require, exports) ->
 
 * Auto layout
 * AutoComplete
-* Navigate caret by Click
+* Navigate caret by clicking
 
-### Short cuts:
+### Shortcuts:
 
 Debugged on OS X:
 
