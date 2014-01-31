@@ -13,8 +13,7 @@ define (require, exports) ->
       @makeElement()
       @bindEvents()
       @tree = new Exp null, @
-      @pointer = @tree.makeToken()
-      @tree.splice 0, 0, @pointer
+      @setPointer @tree
       @index = 0
       @area.append @tree.el
       @moveCaret()
@@ -31,16 +30,14 @@ define (require, exports) ->
 
     bindEvents: ->
       @el.on 'click', (event) =>
-        @focus()
+        @input.focus()
         # console.info 'focusing on editor!'
       @input.on 'blur', =>
         @el.removeClass 'cirru-focus'
+      @input.on 'focus', =>
+        @el.addClass 'cirru-focus'
       @input.on 'keypress', @handlePress.bind(@)
       @input.on 'keydown', @handeKeyDown.bind(@)
-
-    focus: ->
-      @input.focus()
-      @el.addClass 'cirru-focus'
 
     handlePress: (event) ->
       char = String.fromCharCode event.charCode
@@ -110,7 +107,7 @@ define (require, exports) ->
         newToken = @pointer.makeToken()
         newToken.splice 0, 0, char
         @pointer.splice @index, 0, newToken
-        @pointer = newToken
+        @setPointer newToken
         @index = 1
       @complete.update()
 
@@ -119,7 +116,7 @@ define (require, exports) ->
         return
       else if @pointer.isToken()
         @index = @pointer.selfLocate() + 1
-        @pointer = @pointer.parent
+        @setPointer @pointer.parent
       @complete.update()
 
     actionUp: ->
@@ -147,7 +144,7 @@ define (require, exports) ->
       else if @pointer.isExp()
         if @index > 0
           lastToken = @pointer.getItem (@index - 1)
-          @pointer = lastToken
+          @setPointer lastToken
           @index = lastToken.getLength()
         else
           @pointer.focusBefore()
@@ -160,9 +157,9 @@ define (require, exports) ->
         else
           @pointer.focusAfter()
       else if @pointer.isExp()
-        if @index <= @pointer.getLength()
+        if @index < @pointer.getLength()
           nextToken = @pointer.getItem @index
-          @pointer = nextToken
+          @setPointer nextToken
           @index = 0
         else
           @pointer.focusAfter()
@@ -179,12 +176,12 @@ define (require, exports) ->
           @pointer.parent.splice entry, 0, newExp
         else if @pointer.isEmpty()
           @pointer.parent.splice entry, 1, newExp
-        @pointer = newExp
+        @setPointer newExp
         @index = 0
       else if @pointer.isExp()
         newExp = @pointer.makeExp()
         @pointer.splice @index, 0, newExp
-        @pointer = newExp
+        @setPointer newExp
         @index = 0
       @complete.update()
 
@@ -196,7 +193,7 @@ define (require, exports) ->
         else
           @index = @pointer.selfLocate()
           @pointer.parent.splice @index, 1
-          @pointer = @pointer.parent
+          @setPointer @pointer.parent
       else if @pointer.isExp()
         if @index > 0
           @index -= 1
@@ -265,7 +262,7 @@ define (require, exports) ->
           @pointer.el.children().eq(@index).before caret
       else
         @pointer.el.children().eq(@index - 1).after caret
-      @el.find('.cirru-caret').get(0).scrollIntoViewIfNeeded()
+      caret.get(0).scrollIntoViewIfNeeded()
 
     actionTab: ->
       return if @pointer.isExp()
@@ -288,5 +285,18 @@ define (require, exports) ->
       else
         @pointer.list = @complete.cache
         @index = @pointer.list.length
+
+    val: (tree) ->
+      if tree?
+        @tree.fromJSON tree
+        @setPointer @tree
+        @index = @pointer.getLength()
+        @moveCaret()
+      else
+        @tree.toJSON()
+
+    setPointer: (obj) ->
+      debugger unless obj?
+      @pointer = obj
 
   {Editor}

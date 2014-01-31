@@ -33,17 +33,17 @@ define (require, exports) ->
       @list.length is 0
 
     focusEnd: ->
-      @caret.pointer = @
+      @caret.setPointer @
       @caret.index = @getLength()
 
     focusStart: ->
-      @caret.pointer = @
+      @caret.setPointer @
       @caret.index = 0
 
     focusBefore: ->
       if @hasParent()
         @caret.index = @selfLocate()
-        @caret.pointer = @parent
+        @caret.setPointer @parent
         if @isEmpty()
           @caret.pointer.splice @caret.index, 1
 
@@ -52,9 +52,9 @@ define (require, exports) ->
         if @isEmpty()
           @caret.index = @selfLocate() 
           @parent.splice @selfLocate(), 1
-          @caret.pointer = @parent
+          @caret.setPointer @parent
         else if @hasContent()
           @caret.index = @selfLocate() + 1
-          @caret.pointer = @parent
+          @caret.setPointer @parent
 
   {Unit}

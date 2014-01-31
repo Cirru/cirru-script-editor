@@ -37,11 +37,11 @@ define (require, exports) ->
       while index < range
         @el.children().eq(start).remove()
         index += 1
-      for item in children.reverse()
-        if @el.children().length is 0
-          @el.append item.el
+      for item, index in children
+        if start is 0
+          @el.prepend item.el
         else
-          @el.children().eq(start - 1).after item.el
+          @el.children().eq(start - 1 + index).after item.el
       @checkAllToken()
 
     checkAllToken: ->
@@ -53,5 +53,35 @@ define (require, exports) ->
             item.isToken()
 
         @el.toggleClass 'all-token', allToken
+
+    toJSON: ->
+      readTree = (obj) =>
+        if obj.isToken()
+          obj.list.join ''
+        else if obj.isExp()
+          obj.list
+          .map readTree
+          .filter (item) ->
+            item.length > 0
+
+      readTree @caret.tree
+
+    fromJSON: (tree) ->
+      writeTree = (parent, item) =>
+        if Array.isArray item
+          newExp = new Exp parent, @caret
+          parent.splice parent.getLength(), 0, newExp
+          writeTree newExp, obj for obj in item
+        else if typeof item is 'string'
+          if item.length > 0
+            newToken = new Token parent, @caret
+            newToken.list = item.split ''
+            newToken.render()
+            parent.splice parent.getLength(), 0, newToken
+
+      @caret.tree.list = []
+      @caret.tree.el.innerHTML = ''
+      tree.forEach (obj) =>
+        writeTree @caret.tree, obj
 
   {Exp}

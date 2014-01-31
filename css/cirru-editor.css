@@ -26,6 +26,11 @@
 .cirru-exp.all-token {
     display: inline-block;
     box-shadow: 0px 0px 2px white;
+    margin-right: 6px;
+}
+
+.cirru-exp.all-token:hover {
+    box-shadow: 0px 0px 4px white;
 }
 
 .cirru-exp:hover {
