@@ -34,6 +34,7 @@ define (require, exports) ->
 
 * Auto layout
 * AutoComplete
+* Navigate caret by Click
 
 ### Short cuts:
 
