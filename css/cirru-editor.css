@@ -17,8 +17,8 @@
 }
 
 .cirru-exp,
-.cirru-area > .all-token,
-.cirru-area > .cirru-exp > .all-token{
+.cirru-area > .cirru-exp.all-token,
+.cirru-area > .cirru-exp > .cirru-exp.all-token{
     display: block;
     box-shadow: -1px 0px 0 hsla(0, 100%, 100%, 0.5);
 }
@@ -56,10 +56,17 @@
     position: relative;
 }
 
+.cirru-editor.cirru-focus {
+}
+
 .cirru-caret {
     display: inline-block;
     background: hsla(0, 100%, 100%, 0.46);
     height: 1em;
+    width: 0px;
+}
+
+.cirru-focus .cirru-caret {
     width: 8px;
 }
 

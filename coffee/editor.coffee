@@ -31,10 +31,16 @@ define (require, exports) ->
 
     bindEvents: ->
       @el.on 'click', (event) =>
-        @input.focus()
+        @focus()
         # console.info 'focusing on editor!'
+      @input.on 'blur', =>
+        @el.removeClass 'cirru-focus'
       @input.on 'keypress', @handlePress.bind(@)
       @input.on 'keydown', @handeKeyDown.bind(@)
+
+    focus: ->
+      @input.focus()
+      @el.addClass 'cirru-focus'
 
     handlePress: (event) ->
       char = String.fromCharCode event.charCode
@@ -154,7 +160,7 @@ define (require, exports) ->
         else
           @pointer.focusAfter()
       else if @pointer.isExp()
-        if @index < @pointer.getLength()
+        if @index <= @pointer.getLength()
           nextToken = @pointer.getItem @index
           @pointer = nextToken
           @index = 0
