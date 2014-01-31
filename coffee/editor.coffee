@@ -14,7 +14,7 @@ define (require, exports) ->
       @bindEvents()
       @tree = new Exp null, @
       @setPointer @tree
-      @index = 0
+      @setIndex 0
       @area.append @tree.el
       @moveCaret()
 
@@ -44,6 +44,7 @@ define (require, exports) ->
       @insertChar char
       event.preventDefault()
       @moveCaret()
+      $('#hint .press').text ('press:' + char)
 
     handeKeyDown: (event) ->
       signiture = []
@@ -55,17 +56,22 @@ define (require, exports) ->
       identifier = signiture.join ' '
       @action identifier, event
       @moveCaret()
+      $('#hint .down').text ('down:' + identifier)
 
     action: (name, event) ->
       switch name
         when '37'
           @actionLeft()
+          event.preventDefault()
         when '39'
           @actionRight()
+          event.preventDefault()
         when '38'
           @actionLineUp()
+          event.preventDefault()
         when '40'
           @actionLineDown()
+          event.preventDefault()
         when '13'
           @actionEnter()
           event.preventDefault()
@@ -108,20 +114,20 @@ define (require, exports) ->
         newToken.splice 0, 0, char
         @pointer.splice @index, 0, newToken
         @setPointer newToken
-        @index = 1
+        @setIndex 1
       @complete.update()
 
     actionBlank: ->
       if @pointer.isExp()
         return
       else if @pointer.isToken()
-        @index = @pointer.selfLocate() + 1
+        @setIndex @pointer.selfLocate() + 1
         @setPointer @pointer.parent
       @complete.update()
 
     actionUp: ->
       if @index > 0
-        @index = 0
+        @setIndex 0
       else
         if @pointer.hasParent()
           @pointer.parent.focusStart()
@@ -129,7 +135,7 @@ define (require, exports) ->
 
     actionDown: ->
       if @index < @pointer.getLength()
-        @index = @pointer.getLength()
+        @setIndex @pointer.getLength()
       else
         if @pointer.hasParent()
           @pointer.parent.focusEnd()
@@ -145,7 +151,7 @@ define (require, exports) ->
         if @index > 0
           lastToken = @pointer.getItem (@index - 1)
           @setPointer lastToken
-          @index = lastToken.getLength()
+          @setIndex lastToken.getLength()
         else
           @pointer.focusBefore()
       @complete.update()
@@ -160,7 +166,7 @@ define (require, exports) ->
         if @index < @pointer.getLength()
           nextToken = @pointer.getItem @index
           @setPointer nextToken
-          @index = 0
+          @setIndex 0
         else
           @pointer.focusAfter()
       @complete.update()
@@ -177,12 +183,12 @@ define (require, exports) ->
         else if @pointer.isEmpty()
           @pointer.parent.splice entry, 1, newExp
         @setPointer newExp
-        @index = 0
+        @setIndex 0
       else if @pointer.isExp()
         newExp = @pointer.makeExp()
         @pointer.splice @index, 0, newExp
         @setPointer newExp
-        @index = 0
+        @setIndex 0
       @complete.update()
 
     actionDelete: ->
@@ -193,7 +199,7 @@ define (require, exports) ->
           if @pointer.isEmpty()
             @actionLeft()
         else
-          @index = @pointer.selfLocate()
+          @setIndex @pointer.selfLocate()
           @pointer.parent.splice @index, 1
           @setPointer @pointer.parent
       else if @pointer.isExp()
@@ -283,16 +289,16 @@ define (require, exports) ->
     swapToken: ->
       if @complete.isSelected()
         @pointer.list = @complete.getItem().split('')
-        @index = @pointer.list.length
+        @setIndex @pointer.list.length
       else
         @pointer.list = @complete.cache
-        @index = @pointer.list.length
+        @setIndex @pointer.list.length
 
     val: (tree) ->
       if tree?
         @tree.fromJSON tree
         @setPointer @tree
-        @index = @pointer.getLength()
+        @setIndex @pointer.getLength()
         @moveCaret()
       else
         @tree.toJSON()
@@ -300,5 +306,8 @@ define (require, exports) ->
     setPointer: (obj) ->
       debugger unless obj?
       @pointer = obj
+
+    setIndex: (index) ->
+      @index = index
 
   {Editor}

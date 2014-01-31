@@ -7,5 +7,13 @@ body {
 
 .cirru-editor {
     width: 600px;
-    height: 600px;
+    height: 500px;
+}
+
+
+#hint {
+    font-size: 20px;
+    font-family: Optima;
+    line-height: 30px;
+    margin: 0px 10px;
 }

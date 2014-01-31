@@ -35,13 +35,13 @@ define (require, exports) ->
       [start, range, children...] = args
       index = 0
       while index < range
-        @el.children().eq(start).remove()
+        @el.children().not('.cirru-caret').eq(start).remove()
         index += 1
       for item, index in children
         if start is 0
           @el.prepend item.el
         else
-          @el.children().eq(start - 1 + index).after item.el
+          @el.children().not('.cirru-caret').eq(start - 1 + index).after item.el
       @checkAllToken()
 
     checkAllToken: ->

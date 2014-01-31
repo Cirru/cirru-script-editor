@@ -7,4 +7,4 @@ define (require, exports) ->
 
   $('#entry').append editor.el
 
-  editor.val [[['x']]]
+  # editor.val [[['x']]]
