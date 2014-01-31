@@ -190,6 +190,8 @@ define (require, exports) ->
         if @index > 0
           @index -= 1
           @pointer.splice @index, 1
+          if @pointer.isEmpty()
+            @actionLeft()
         else
           @index = @pointer.selfLocate()
           @pointer.parent.splice @index, 1

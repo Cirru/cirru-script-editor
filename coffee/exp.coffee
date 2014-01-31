@@ -53,6 +53,8 @@ define (require, exports) ->
             item.isToken()
 
         @el.toggleClass 'all-token', allToken
+        if @hasParent()
+          @parent.checkAllToken()
 
     toJSON: ->
       readTree = (obj) =>

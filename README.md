@@ -30,6 +30,11 @@ define (require, exports) ->
   console.log editor.val()
 ```
 
+### Features
+
+* Auto layout
+* AutoComplete
+
 ### Short cuts:
 
 Debugged on OS X:
@@ -49,6 +54,10 @@ Debugged on OS X:
 | Shift Tab | Choose previous autocomplete candidate |
 | Backspace | Delete by one |
 | Enter | Create expression |
+
+### Screenshot
+
+![](http://repo.tiye.me/cirru.org/pics/cirru-editor.jpg)
 
 ### License
 
