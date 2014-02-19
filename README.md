@@ -9,26 +9,21 @@ Live demo: http://repo.tiye.me/cirru-editor
 Currently is based on RequireJS and CSS `@import`.
 
 ```
-bower install cirru-editor --save
+npm install --save cirru-editor
 ```
-
-Future plan maybe:
-
-* wrap it as a Polymer element
-
-A simple demo of usage:
 
 ```coffee
-define (require, exports) ->
-  $ = require 'jquery'
-  {Editor} = require 'editor'
+$ = require 'jquery'
+{Editor} = require 'editor'
 
-  # put element into DOM manually
-  $('#entry').append editor.el
+# put element into DOM manually
+$('#entry').append editor.el
 
-  editor.val [[['x']]]
-  console.log editor.val()
+editor.val [[['x']]]
+console.log editor.val()
 ```
+
+Note that you have to `@import` CSS file manually.
 
 ### Features
 
@@ -58,7 +53,7 @@ Debugged on OS X:
 
 ### Screenshot
 
-![](http://repo.tiye.me/cirru.org/pics/cirru-editor.jpg)
+![](http://cirru.org/pics/cirru-editor.jpg)
 
 ### License
 

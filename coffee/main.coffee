@@ -1,10 +1,10 @@
 
-define (require, exports) ->
-  $ = require 'jquery'
-  {Editor} = require 'editor'
+{$} = require 'zepto-browserify'
 
-  window.editor = new Editor
+{Editor} = require './editor'
 
-  $('#entry').append editor.el
+window.editor = new Editor
 
-  # editor.val [[['x']]]
+$('#entry').append editor.el
+
+# editor.val [[['x']]]

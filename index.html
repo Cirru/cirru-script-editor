@@ -4,17 +4,8 @@
 <head>
   <title>Cirru Editor</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
-   <link rel="icon" type="image/png" href="http://logo.cirru.org/cirru-32x32.png?v=3" />
-  <script type="text/javascript" src="bower_components/requirejs/require.js"></script>
-  <script type="text/javascript">
-  requirejs.config({
-    baseUrl: 'src/',
-    paths: {
-      jquery: '../bower_components/jquery/jquery'
-    }
-  })
-  require(['main'])
-  </script>
+  <link rel="icon" type="image/png" href="http://logo.cirru.org/cirru-32x32.png?v=3" />
+  <script type="text/javascript" defer src='build/build.js'></script>
 </head>
 <body>
 <div id="entry"></div>

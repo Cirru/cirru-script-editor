@@ -1,0 +1,26 @@
+{
+  "name": "cirru-editor",
+  "version": "0.2.0",
+  "description": "Structured editor for Cirru grammar",
+  "main": "src/editor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Cirru/cirru-editor.git"
+  },
+  "keywords": [
+    "cirru",
+    "editor"
+  ],
+  "author": "jiyinyiyong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cirru/cirru-editor/issues"
+  },
+  "homepage": "http://repo.tiye.me/cirru-editor",
+  "dependencies": {
+    "zepto-browserify": "~1.0.0"
+  }
+}
