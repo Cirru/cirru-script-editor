@@ -3,7 +3,10 @@
 {$} = require 'zepto-browserify'
 
 letter = (char) ->
-  "<span class='cirru-letter'>#{char}</span>"
+  if char is ' '
+    "<span class='cirru-letter cirru-blank'></span>"
+  else
+    "<span class='cirru-letter'>#{char}</span>"
 
 exports.Token = class Token extends Unit
   type: 'Token'

@@ -171,9 +171,6 @@ exports.Editor = class Editor
     @complete.update()
 
   actionEnter: ->
-    if @complete.isSelected()
-      @chooseToken()
-      return
     if @pointer.isToken()
       newExp = @pointer.parent.makeExp()
       entry = @pointer.selfLocate() + 1

@@ -1,19 +1,22 @@
 
 .cirru-editor {
-    background: #aaf;
+    background: #528AEC;
     color: white;
 }
 
 .cirru-area {
-    padding-top: 1em;
-    padding-bottom: 10em;
+    height: 100%;
+    overflow: auto;
+    width: 100%;
+    margin: 0;
 }
 
 .cirru-exp {
     margin-left: 8px;
     padding-left: 8px;
-    margin-top: 5px;
+    margin-top: 6px;
     cursor: pointer;
+    line-height: 23px;
 }
 
 .cirru-exp,
@@ -25,26 +28,24 @@
 
 .cirru-exp.all-token {
     display: inline-block;
-    box-shadow: 0px 0px 2px white;
+    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
     margin-right: 6px;
 }
 
 .cirru-exp.all-token:hover {
-    box-shadow: 0px 0px 4px white;
+    box-shadow: 0px 1px 0px white;
 }
 
 .cirru-exp:hover {
-    box-shadow: -2px 0px 0px;
+    box-shadow: -1px 0px 0px white;
 }
 
 .cirru-token {
     display: inline-block;
     margin-right: 8px;
-    box-shadow: 0px 1px 0px white;
 }
 
 .cirru-token:hover {
-    box-shadow: 0px 2px 0;
 }
 
 .cirru-input {
@@ -55,18 +56,22 @@
 }
 
 .cirru-editor {
-    overflow: auto;
     font-family: Monaco;
     font-size: 14px;
     position: relative;
+    box-sizing: border-box;
 }
 
 .cirru-editor.cirru-focus {
 }
 
+.cirru-editor * {
+    box-sizing: border-box;
+}
+
 .cirru-caret {
     display: inline-block;
-    background: hsla(0, 100%, 100%, 0.46);
+    background: hsla(0, 100%, 100%, 1);
     height: 1em;
     width: 0px;
 }
@@ -76,19 +81,29 @@
 }
 
 .cirru-complete {
-    position: absolute;
     right: 0;
-    top: 0;
+    top: 0px;
     max-height: 200px;
+    overflow: auto;
+    width: 120px;
+    position: absolute;
 }
 
 .cirru-item {
     background: hsla(233, 100%, 70%, 0.73);
     color: hsl(0, 100%, 100%);
-    padding: 1px 6px;
+    padding: 6px 6px 2px;
     min-width: 80px;
 }
 
 .cirru-item.cirru-active {
-    background-color: hsl(269, 100%, 58%);
+    border-bottom: 1px solid white;
+}
+
+.cirru-blank {
+    display: inline-block;
+    height: 1px;
+    width: 0.5em;
+    background: white;
+    vertical-align: middle;
 }

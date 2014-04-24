@@ -1,7 +1,7 @@
 
 build/
 coffee/
-src/main.js
+js/main.js
 
-calabash.coffee
+make.coffee
 index.html
