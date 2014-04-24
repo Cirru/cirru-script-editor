@@ -1,7 +1,9 @@
 
-build/
-coffee/
-js/main.js
+/build/
+/coffee/
+/cirru/
 
-make.coffee
-index.html
+/js/main.js
+/make.coffee
+/index.html
+/css/style.css

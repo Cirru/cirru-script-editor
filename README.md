@@ -6,7 +6,9 @@ Cirru Editor
 
 Live demo: http://repo.tiye.me/cirru-editor
 
-Currently is based on RequireJS and CSS `@import`.
+This editor if part of Cirru Project: http://cirru.org/
+
+The module uses CommonJS and CSS `@import` for packaging.
 
 ```
 npm install --save cirru-editor
@@ -30,6 +32,7 @@ Note that you have to `@import` CSS file manually.
 * Auto layout
 * AutoComplete
 * Navigate caret by clicking
+* History for deleting
 
 ### Shortcuts:
 
@@ -50,10 +53,12 @@ Debugged on OS X:
 | Shift Tab | Choose previous autocomplete candidate |
 | Backspace | Delete by one |
 | Enter | Create expression |
+| Ctrl z | Go Back |
+| Ctrl y | Go Ahead |
 
 ### Screenshot
 
-![](http://cirru.org/pics/cirru-editor.jpg)
+![](http://cirru.qiniudn.com/cirru-editor.png)
 
 ### License
 
