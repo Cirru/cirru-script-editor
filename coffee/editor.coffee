@@ -5,10 +5,12 @@ caretElement = $ '<div class="cirru-caret"></div>'
 
 {Exp} = require './exp'
 {Complete} = require './complete'
+{EditorHistory} = require './history'
 
 exports.Editor = class Editor
   constructor: ->
     @complete = new Complete @
+    @history = new EditorHistory
     @makeElement()
     @bindEvents()
     @tree = new Exp null, @
@@ -100,6 +102,12 @@ exports.Editor = class Editor
         event.preventDefault()
       when 'alt 40'
         @actionDown()
+        event.preventDefault()
+      when 'ctrl 90'
+        @actionBack()
+        event.preventDefault()
+      when 'ctrl 89'
+        @actionForward()
         event.preventDefault()
       
     # console.info 'unhandled action:', name
@@ -202,6 +210,7 @@ exports.Editor = class Editor
       if @index > 0
         @index -= 1
         @pointer.splice @index, 1
+        @history.addRecord @val()
     @complete.update()
 
   actionWordLeft: ->
@@ -292,7 +301,9 @@ exports.Editor = class Editor
 
   val: (tree) ->
     if tree?
+      @tree = new Exp null, @
       @tree.fromJSON tree
+      @area.empty().append @tree.el
       @setPointer @tree
       @setIndex @pointer.getLength()
       @moveCaret()
@@ -305,3 +316,15 @@ exports.Editor = class Editor
 
   setIndex: (index) ->
     @index = index
+
+  actionBack: ->
+    previousOne = @history.previousRecord()
+    console.log 'previous', previousOne
+    if previousOne?
+      @val previousOne
+
+  actionForward: ->
+    nextOne = @history.nextRecord()
+    console.log 'nextOne', nextOne
+    if nextOne?
+      @val nextOne
