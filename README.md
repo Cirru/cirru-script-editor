@@ -16,7 +16,9 @@ npm install --save cirru-editor
 
 ```coffee
 $ = require 'jquery'
-{Editor} = require 'editor'
+
+{Editor} = require 'cirru-editor'
+editor = new Editor
 
 # put element into DOM manually
 $('#entry').append editor.el
@@ -26,6 +28,10 @@ console.log editor.val()
 ```
 
 Note that you have to `@import` CSS file manually.
+
+```css
+@import url('node_modules/cirru-editor/css/cirru-editor.css');
+```
 
 ### Features
 
