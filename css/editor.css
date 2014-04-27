@@ -11,39 +11,41 @@
     margin: 0;
 }
 
+.cirru-area > .cirru-exp,
+.cirru-area > .cirru-exp:hover {
+    box-shadow: -1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
 .cirru-exp {
-    margin-left: 8px;
-    padding-left: 8px;
-    margin-top: 6px;
     cursor: pointer;
     line-height: 23px;
-    margin-bottom: 2px;
+    margin: 0.5em 1em;
 }
 
 .cirru-exp,
 .cirru-area > .cirru-exp.all-token,
 .cirru-area > .cirru-exp > .cirru-exp.all-token{
     display: block;
-    box-shadow: -1px 0px 0 hsla(0, 100%, 100%, 0.5);
+    box-shadow: -1px 0px 0 hsla(0, 100%, 100%, 0.3);
 }
 
 .cirru-exp.all-token {
     display: inline-block;
-    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
-    margin-right: 6px;
+    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3);
+    margin: 4px 6px;
 }
 
 .cirru-exp.all-token:hover {
-    box-shadow: 0px 1px 0px white;
+    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.6);
 }
 
 .cirru-exp:hover {
-    box-shadow: -1px 0px 0px white;
+    box-shadow: -1px 0px 0px rgba(255, 255, 255, 0.6);
 }
 
 .cirru-token {
     display: inline-block;
-    margin-right: 8px;
+    margin: 0 0.5em;
 }
 
 .cirru-token:hover {
@@ -78,7 +80,9 @@
 }
 
 .cirru-focus .cirru-caret {
-    width: 8px;
+    width: 2px;
+    height: 2em;
+    margin: -0.5em -1px;
 }
 
 .cirru-complete {
@@ -105,8 +109,8 @@
 
 .cirru-blank {
     display: inline-block;
-    height: 1px;
     width: 0.5em;
-    background: white;
     vertical-align: middle;
+    box-shadow: 0 -1px 0 white;
+    height: 1em;
 }
