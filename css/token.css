@@ -1,0 +1,23 @@
+
+.cirru-editor .token {
+    display: inline-block;
+    border-radius: 3px;
+    outline: none;
+    min-width: 3px;
+    height: 20px;
+    vertical-align: middle;
+    padding-left: 1em;
+    color: hsla(0, 100%, 100%, 0.5);
+}
+
+.cirru-editor .token:hover {
+    color: white;
+}
+
+.cirru-editor .token > .letter.is-space {
+    display: inline-block;
+    width: 0.5em;
+    vertical-align: middle;
+    box-shadow: 0 -1px 0 hsla(0, 100%, 100%, 0.5);
+    height: 1em;
+}

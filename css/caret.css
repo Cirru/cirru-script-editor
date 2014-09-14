@@ -1,0 +1,13 @@
+
+.cirru-caret {
+    display: inline-block;
+    background: hsla(0, 100%, 100%, 1);
+    height: 1em;
+    width: 0px;
+}
+
+.cirru-editor .cirru-focus .cirru-caret {
+    width: 2px;
+    height: 2em;
+    margin: -0.5em -1px;
+}

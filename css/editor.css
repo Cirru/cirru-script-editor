@@ -1,56 +1,18 @@
 
-.cirru-editor {
-    background: #528AEC;
-    color: white;
-}
+@import url('sequence.css');
+@import url('token.css');
+@import url('complete.css');
+@import url('caret.css');
 
-.cirru-area {
+.cirru-editor {
+    background: #3358EA;
+    color: white;
     height: 100%;
     overflow: auto;
     width: 100%;
     margin: 0;
 }
 
-.cirru-area > .cirru-exp,
-.cirru-area > .cirru-exp:hover {
-    box-shadow: -1px 0 0 rgba(255, 255, 255, 0.2);
-}
-
-.cirru-exp {
-    cursor: pointer;
-    line-height: 23px;
-    margin: 0.5em 1em;
-}
-
-.cirru-exp,
-.cirru-area > .cirru-exp.all-token,
-.cirru-area > .cirru-exp > .cirru-exp.all-token{
-    display: block;
-    box-shadow: -1px 0px 0 hsla(0, 100%, 100%, 0.3);
-}
-
-.cirru-exp.all-token {
-    display: inline-block;
-    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.3);
-    margin: 4px 6px;
-    min-width: 0.5em;
-}
-
-.cirru-exp.all-token:hover {
-    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.6);
-}
-
-.cirru-exp:hover {
-    box-shadow: -1px 0px 0px rgba(255, 255, 255, 0.6);
-}
-
-.cirru-token {
-    display: inline-block;
-    margin: 0 0.5em;
-}
-
-.cirru-token:hover {
-}
 
 .cirru-input {
     pointer-events: none;
@@ -60,58 +22,12 @@
 }
 
 .cirru-editor {
-    font-family: Monaco;
+    font-family: Menlo;
     font-size: 14px;
     position: relative;
     box-sizing: border-box;
 }
 
-.cirru-editor.cirru-focus {
-}
-
 .cirru-editor * {
     box-sizing: border-box;
-}
-
-.cirru-caret {
-    display: inline-block;
-    background: hsla(0, 100%, 100%, 1);
-    height: 1em;
-    width: 0px;
-}
-
-.cirru-focus .cirru-caret {
-    width: 2px;
-    height: 2em;
-    margin: -0.5em -1px;
-}
-
-.cirru-complete {
-    right: 0;
-    top: 0px;
-    max-height: 200px;
-    overflow: auto;
-    width: 120px;
-    position: absolute;
-}
-
-.cirru-item {
-    color: hsl(0, 100%, 100%);
-    padding: 6px 6px 2px;
-    min-width: 80px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.cirru-item.cirru-active {
-    border-bottom: 1px solid white;
-}
-
-.cirru-blank {
-    display: inline-block;
-    width: 0.5em;
-    vertical-align: middle;
-    box-shadow: 0 -1px 0 white;
-    height: 1em;
 }

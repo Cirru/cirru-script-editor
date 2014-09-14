@@ -1,0 +1,22 @@
+
+.cirru-complete {
+    right: 0;
+    top: 0px;
+    max-height: 200px;
+    overflow: auto;
+    width: 120px;
+    position: absolute;
+}
+
+.cirru-item {
+    color: hsl(0, 100%, 100%);
+    padding: 6px 6px 2px;
+    min-width: 80px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.cirru-item.cirru-active {
+    border-bottom: 1px solid white;
+}

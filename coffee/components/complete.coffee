@@ -3,7 +3,8 @@ React = require 'react'
 $ = React.DOM
 
 module.exports = React.createClass
-  displayName: 'app-component'
+  displayName: 'Complete'
 
   render: ->
-    $.div {}, 'app here'
+    $.div className: 'cirru-complete',
+      "Complete"

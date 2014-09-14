@@ -10,7 +10,11 @@ module.exports = new Dispatcher
 
 mixin module.exports,
   data:
-    ast: {}
+    ast: [
+      ['set', '', '1']
+      ['print', ['+', 'x', 'y']]
+      ['set', ['get', 'a'], ['string', 'a b c']]
+    ]
 
   getAST: ->
     @data.ast

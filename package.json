@@ -28,9 +28,10 @@
     "run-sequence": "^0.3.6",
     "vinyl-buffer": "0.0.0",
     "vinyl-source-stream": "^0.1.1",
-    "vinyl-transform": "0.0.1"
+    "vinyl-transform": "0.0.1",
+    "uuid": "^1.4.1"
   },
-  "description": "A chat app",
+  "description": "Editor of Cirru AST",
   "dependencies": {},
   "repository": {
     "type": "git",

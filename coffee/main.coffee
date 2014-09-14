@@ -1,15 +1,16 @@
 
 React = require 'react'
 
-body = document.body
-
 store = require './store'
 
-AppComponent = require './components/app'
+Editor = require './components/editor'
 
-render = ->
-  React.renderComponent AppComponent(ast: store.getAST()), body
+editor = Editor
+  data: store.data
+  onSave: (ast) ->
+    console.log 'saving', ast
 
-store.addChangeListener render
+store.addChangeListener ->
+  React.renderComponent editor, document.body
 
-render()
+store.emit()
