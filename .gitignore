@@ -1,6 +1,8 @@
 
-/node_modules/
-/js/
-/build/
+bower_components/
+node_modules/
 
-/index.html
+build/
+dist/
+
+index.html

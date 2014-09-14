@@ -1,16 +1,15 @@
 
-{$} = require 'zepto-browserify'
+React = require 'react'
 
-{Editor} = require './editor'
+body = document.body
 
-window.editor = new Editor
+store = require './store'
 
-$('#entry').append editor.el
+AppComponent = require './components/app'
 
-try
-  data = JSON.parse (localStorage.getItem 'editor')
-  editor.val data
+render = ->
+  React.renderComponent AppComponent(ast: store.getAST()), body
 
-window.onbeforeunload = ->
-  data = editor.val()
-  localStorage.setItem 'editor', (JSON.stringify data)
+store.addChangeListener render
+
+render()
