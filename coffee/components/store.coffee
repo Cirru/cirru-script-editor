@@ -1,25 +1,31 @@
 
 uuid = require 'uuid'
 
-store =
-  caret:
-    buffer: ''
-    pointer: null
-    index: 0
-  ast:
-    id: 'root'
-    data: []
-    type: 'sequence'
-    parent: null
+createSequence = (parent) ->
+  id: uuid.v4()
+  data: []
+  type: 'sequence'
+  parent: parent
 
-store.caret.pointer = store.ast.id
+createToken = (parent, text) ->
+  id: uuid.v4()
+  data: text
+  token: token
+  parent: parent
+
+ast = createSequence null
+ast.id = 'root'
+caret =
+  buffer: ''
+  ast: ast
+  index: 0
 
 module.exports =
   getAst: ->
-    store.ast
+    ast
 
   getCaret: ->
-    store.caret
+    caret
 
   exportData: ->
     getData = (x) ->
@@ -28,26 +34,61 @@ module.exports =
       else
         x
 
-    getData store.ast
+    getData ast
 
   importData: (data) ->
     expandData = (x, parent) ->
       if typeof x is 'string'
-        id: uuid.v4()
-        parent: parent
-        data: x
-        type: 'token'
+        createToken parent, x
       else
-        id: uuid.v4()
-        parent: parent
-        data: x
-        type: 'sequence'
+        createSequence x
 
-    store.ast = expandData data
-    store.ast.id = 'root'
+    ast = expandData data
+    ast.id = 'root'
 
-    store.caret.pointer = 'root'
-    store.caret.index = 0
-    store.caret.buffer = ''
+    caret.ast = ast
+    caret.index = 0
+    caret.buffer = ''
 
     @emit()
+
+  typeInCaret: (text) ->
+    if text is '\n'
+      @newSequenceFromCaret()
+    else
+      @newTokenFromCaret text
+
+  newSequenceFromCaret: ->
+    sequence = createSequence caret.ast
+    index = caret.index
+    caret.ast.data.splice index, 0, sequence
+    caret.index = 0
+    caret.buffer = ''
+    caret.ast = sequence
+    @emit()
+
+  newTokenFromCaret: (text) ->
+    token = createToken caret.ast, text
+    caret.ast.data.splice index, 0, token
+    caret.index = 0
+    caret.buffer = ''
+    caret.ast = token
+    @emit()
+
+  newTokenFromToken: ->
+
+  newSequenceFromToken: ->
+    sequence = createSequence caret.ast
+    if caret.ast.data.length > 0
+      index = caret.index + 1
+    else
+      index = caret.index
+    caret.ast.data.splice index, 0, sequence
+    caret.index = 0
+    caret.buffer = ''
+    caret.ast = sequence
+    @emit()
+
+  removeToken: ->
+
+  removeNode: ->

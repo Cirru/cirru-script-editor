@@ -13,10 +13,10 @@ module.exports = Sequence = React.createClass
 
   render: ->
     children = []
-    if @props.caret.pointer is @props.ast.id
+    if @props.caret.ast is @props.ast
       children.push Caret key: 'caret'
     @props.ast.data.forEach (item, index) =>
-      if @props.caret.pointer is @props.ast.id
+      if @props.caret.ast is @props.ast
         if @props.caret.index is index
           children.push Caret key: 'caret'
       if item.type is 'sequence'

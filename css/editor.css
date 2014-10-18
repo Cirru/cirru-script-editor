@@ -31,3 +31,10 @@
 .cirru-editor * {
     box-sizing: border-box;
 }
+
+.cirru-editor .caret {
+    width: 1px;
+    height: 20px;
+    display: inline-block;
+    outline: none;
+}
