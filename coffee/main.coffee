@@ -1,16 +1,11 @@
 
 React = require 'react'
 
-store = require './store'
-
 Editor = require './components/editor'
 
 editor = Editor
-  data: store.data
-  onSave: (ast) ->
-    console.log 'saving', ast
+  cirru: []
+  onAstChange: (code) ->
+    console.log 'Cirru AST change:', code
 
-store.addChangeListener ->
-  React.renderComponent editor, document.body
-
-store.emit()
+React.renderComponent editor, document.body

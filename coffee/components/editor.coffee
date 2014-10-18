@@ -5,32 +5,28 @@ $ = React.DOM
 Sequence = require './sequence'
 Complete = require './complete'
 
-syntaxTree = require '../utils/syntax-tree'
+store = require './store'
 
 module.exports = React.createClass
   displayName: 'Editor'
 
   getInitialState: ->
-    buffer: ''
-    ast: syntaxTree.label @props.data.ast
-
-  changeBuffer: (buffer) ->
-    @setState {buffer}
+    ast: store.getAst()
+    caret: store.getCaret()
 
   componentDidMount: ->
+    store.emit = =>
+      @setState ast: store.getAst()
+      @props.onAstChange? store.exportData()
 
-  onSave: ->
-    ast = syntaxTree.leach @state.ast
-    @props.onSave ast
-
-  updateToken: (token) ->
-    ast = syntaxTree.updateToken @state.ast, token
-    console.log 'setState'
-    @setState {ast}
+    store.importData @props.cirru
 
   render: ->
-    $.div className: 'cirru-editor',
+    $.div
+      className: 'cirru-editor',
       Sequence
-        ast: @state.ast, buffer: @state.buffer
-        updateToken: @updateToken
-      Complete ast: @state.ast, buffer: @state.buffer
+        ast: @state.ast
+        caret: @state.caret
+      Complete
+        ast: @state.ast
+        caret: @state.caret

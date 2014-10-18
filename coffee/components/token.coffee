@@ -2,8 +2,6 @@
 React = require 'react'
 $ = React.DOM
 
-Letter = require './letter'
-
 module.exports = React.createClass
   displayName: 'Token'
 
@@ -17,10 +15,13 @@ module.exports = React.createClass
   onDragStart: (event) ->
     event.dataTransfer.setDragImage event.target, 0, 0
 
+  onKeyDown: (event) ->
+    console.log event
+
   render: ->
-    letters = @props.ast.value.split('').map (letter) =>
-      Letter letter: letter
     $.div
+      contentEditable: yes
       className: 'token', draggable: yes
       ref: 'token', onKeyUp: @updateToken, onDragStart: @onDragStart
-      letters
+      onKeyDown: @onKeyDown
+      @props.ast.value

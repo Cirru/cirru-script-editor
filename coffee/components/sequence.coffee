@@ -3,6 +3,7 @@ React = require 'react'
 $ = React.DOM
 
 Token = require './token'
+Caret = require './caret'
 
 module.exports = Sequence = React.createClass
   displayName: 'Sequence'
@@ -11,11 +12,17 @@ module.exports = Sequence = React.createClass
     event.dataTransfer.setDragImage event.target, 0, 0
 
   render: ->
-    children = @props.ast.value.map (item) =>
+    children = []
+    if @props.caret.pointer is @props.ast.id
+      children.push Caret key: 'caret'
+    @props.ast.data.forEach (item, index) =>
+      if @props.caret.pointer is @props.ast.id
+        if @props.caret.index is index
+          children.push Caret key: 'caret'
       if item.type is 'sequence'
-        @transferPropsTo Sequence ast: item, key: item.id
+        children.push Sequence ast: item, key: item.id, caret: @props.caret
       else
-        @transferPropsTo Token ast: item, key: item.id
+        children.push Token ast: item, key: item.id, caret: @props.caret
 
     $.div className: 'sequence', draggable: yes, onDragStart: @onDragStart,
       children

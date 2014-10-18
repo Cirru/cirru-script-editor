@@ -1,9 +1,6 @@
 
 gulp = require 'gulp'
-rename = require 'gulp-rename'
-sequence = require 'run-sequence'
 
-project = 'Cirru/editor/index.html'
 dev = yes
 libraries = [
   'react'
@@ -24,44 +21,31 @@ gulp.task 'folder', ->
 gulp.task 'watch', ->
   plumber = require 'gulp-plumber'
   coffee = require 'gulp-coffee'
-  reloader = require 'gulp-reloader'
   watch = require 'gulp-watch'
   html = require 'gulp-cirru-html'
   transform = require 'vinyl-transform'
   browserify = require 'browserify'
-  reloader.listen()
+  rename = require 'gulp-rename'
 
-  gulp
-  .src 'cirru/*'
-  .pipe watch()
-  .pipe plumber()
-  .pipe html(data: {dev: yes})
-  .pipe gulp.dest('./')
-  .pipe reloader(project)
+  watch glob: 'cirru/*', emitOnGlob: no, (files) ->
+    gulp
+    .src 'cirru/index.cirru'
+    .pipe plumber()
+    .pipe html(data: {dev: yes})
+    .pipe gulp.dest('./')
 
   watch glob: 'coffee/**/*.coffee', emitOnGlob: no, (files) ->
     files
     .pipe plumber()
     .pipe (coffee bare: yes)
     .pipe (gulp.dest 'build/js/')
-
-  watch glob: 'build/js/**/*.js', emitOnGlob: no, (files) ->
-    gulp
-    .src './build/js/main.js'
-    .pipe plumber()
+    .pipe rename('main.js')
     .pipe transform (filename) ->
       b = browserify filename, debug: yes
       b.external library for library in libraries
       b.bundle()
     .pipe gulp.dest('build/')
-    .pipe reloader(project)
     return files
-
-  watch glob: ['server.coffee', 'src/**/*.coffee'], emitOnGlob: no, (files) ->
-    wait = require 'gulp-wait'
-    files
-    .pipe wait(800)
-    .pipe reloader(project)
 
 gulp.task 'js', ->
   browserify = require 'browserify'
@@ -127,24 +111,25 @@ gulp.task 'prefixer', ->
   .pipe gulp.dest('build/css/')
 
 gulp.task 'cssmin', ->
+  rename = require 'gulp-rename'
   cssmin = require 'gulp-cssmin'
   gulp
   .src 'build/css/main.css'
-  .pipe cssmin()
+  .pipe cssmin(root: 'build/css')
   .pipe rename(suffix: '.min')
   .pipe gulp.dest('dist/')
 
-gulp.task 'clean', ->
-  rimraf = require 'gulp-rimraf'
-  gulp
-  .src ['build/', 'dist/']
-  .pipe rimraf()
+gulp.task 'clean', (cb) ->
+  del = require 'del'
+  del ['build/', 'dist/'], cb
 
 gulp.task 'dev', ->
+  sequence = require 'run-sequence'
   sequence 'clean', ['html', 'coffee', 'vendor'], 'js'
 
 gulp.task 'build', ->
   dev = no
+  sequence = require 'run-sequence'
   sequence 'clean',
     ['coffee', 'html'], ['jsmin', 'vendor'],
     'prefixer', 'cssmin'
@@ -156,7 +141,7 @@ gulp.task 'rsync', ->
     src: '.'
     recursive: true
     args: ['--verbose']
-    dest: "tiye:~/repo/simple-chat"
+    dest: "tiye:~/repo/Cirru/editor"
     deleteAll: yes
     exclude: [
       'bower_components/'
