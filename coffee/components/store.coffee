@@ -186,4 +186,20 @@ module.exports =
         @emit()
 
   dropAt: (target) ->
-    console.log target, caret
+    item = caret.ast
+    if target.type is 'sequence'
+      parent = item.parent
+      index = parent.data.indexOf item
+      parent.data.splice index, 1
+      target.data.unshift item
+      item.parent = target
+      @emit()
+    else # 'token'
+      dest = target.parent
+      origin = item.parent
+      originIndex = origin.data.indexOf item
+      origin.data.splice originIndex, 1
+      item.parent = dest
+      index = (dest.data.indexOf target) + 1
+      dest.data.splice index, 0, item
+      @emit()
