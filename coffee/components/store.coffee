@@ -85,7 +85,7 @@ module.exports =
     @emit()
 
   newSequenceFromToken: ->
-    sequence = createSequence caret.ast
+    sequence = createSequence caret.ast.parent
     target = caret.ast.parent
     index = (target.data.indexOf caret.ast) + 1
     target.data.splice index, 0, sequence
@@ -93,8 +93,27 @@ module.exports =
     @emit()
 
   removeToken: ->
+    console.log caret.ast
+    if caret.ast.data.length is 0
+      target = caret.ast.parent
+      index = (target.data.indexOf caret.ast)
+      updateCaret target, index, ''
+      target.data.splice index, 1
+      @emit()
 
   removeNode: ->
+    if caret.index is 0
+      if caret.ast.id isnt 'root'
+        target = caret.ast.parent
+        index = target.data.indexOf caret.ast
+        target.data.splice index, 1
+        updateCaret target, index, ''
+        @emit()
+    else
+      index = caret.index - 1
+      caret.ast.data.splice index, 1
+      updateCaret caret.ast, index, ''
+      @emit()
 
   caretFocus: (target) ->
     updateCaret target, 0, ''
@@ -102,5 +121,6 @@ module.exports =
 
   updateToken: (text) ->
     if caret.ast.type is 'token'
+      caret.ast.data = text
       updateCaret caret.ast, 0, text
       @emit()
