@@ -11,6 +11,14 @@
     padding: 0 6px;
 }
 
+.cirru-editor .token.is-dragging {
+    opacity: 0;
+}
+
+.cirru-editor .token.is-dropping {
+    background: gray;
+}
+
 .cirru-editor .token + .token {
     margin-left: 0.5em;
 }

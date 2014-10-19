@@ -3,9 +3,14 @@ React = require 'react'
 $ = React.DOM
 
 store = require './store'
+$$ = require '../helper'
 
 module.exports = React.createClass
   displayName: 'Token'
+
+  getInitialState: ->
+    dragging: no
+    dropping: no
 
   componentDidMount: ->
     token = @refs.token.getDOMNode()
@@ -20,10 +25,8 @@ module.exports = React.createClass
     text = @refs.token.getDOMNode().innerText
     store.updateToken text
 
-  onDragStart: (event) ->
-    event.dataTransfer.setDragImage event.target, 0, 0
-
-  onClick: ->
+  onClick: (event) ->
+    event.stopPropagation()
     store.caretFocus @props.ast
 
   onKeyDown: (event) ->
@@ -36,12 +39,46 @@ module.exports = React.createClass
       store.newCaretFromToken()
       event.preventDefault()
 
+  onDrop: (event) ->
+    event.stopPropagation()
+    store.dropAt @props.ast
+    @setState dropping: no
+
+  onDragStart: (event) ->
+    event.stopPropagation()
+    event.dataTransfer.setDragImage event.target, 0, 0
+    store.caretFocus @props.ast
+    @setState dragging: yes
+
+  onDragEnd: (event) ->
+    @setState dragging: no
+
+  onDragEnter: (event) ->
+    event.dataTransfer.dropEffect = 'move'
+    @setState dropping: yes
+
+  onDragOver: (event) ->
+    event.preventDefault()
+
+  onDragLeave: (event) ->
+    event.stopPropagation()
+    @setState dropping: no
+
   render: ->
     $.div
+      className: $$.concat 'token',
+        if @state.dragging then 'is-dragging'
+        if @state.dropping then 'is-dropping'
+      draggable: yes
       contentEditable: yes
-      className: 'token', draggable: yes
       ref: 'token'
       onKeyUp: @onKeyUp, onDragStart: @onDragStart
       onKeyDown: @onKeyDown
       onClick: @onClick
+      onDragStart: @onDragStart
+      onDragEnd: @onDragEnd
+      onDragEnter: @onDragEnter
+      onDragLeave: @onDragLeave
+      onDragOver: @onDragOver
+      onDrop: @onDrop
       @props.ast.data

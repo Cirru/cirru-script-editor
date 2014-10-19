@@ -11,11 +11,19 @@
     padding: 2px 4px;
 }
 
+.cirru-editor .sequence.is-dragging {
+    opacity: 0;
+}
+
+.cirru-editor .sequence.is-dropping {
+    background: gray;
+}
+
 .cirru-editor .sequence,
 .cirru-editor > .sequence.all-token,
 .cirru-editor > .sequence > .sequence.all-token{
     display: block;
-    border-left: 2px solid hsla(0, 100%, 100%, 0.5);
+    border-left: 1px solid hsla(0, 100%, 100%, 0.5);
 }
 
 .cirru-editor .sequence.all-token {
@@ -31,5 +39,5 @@
 }
 
 .cirru-editor .sequence:hover {
-    border-left: 2px solid rgba(255, 255, 255, 1);
+    border-left: 1px solid rgba(255, 255, 255, 1);
 }

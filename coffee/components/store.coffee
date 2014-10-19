@@ -184,3 +184,6 @@ module.exports =
         index = (target.data.indexOf caret.ast) + 1
         updateCaret target, index, ''
         @emit()
+
+  dropAt: (target) ->
+    console.log target, caret
