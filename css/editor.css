@@ -33,8 +33,13 @@
 }
 
 .cirru-editor .caret {
-    width: 1px;
+    min-width: 4px;
     height: 20px;
     display: inline-block;
     outline: none;
+    margin: 0 0.5em;
+    vertical-align: middle;
+    border-top: solid white 1px;
+    line-height: 20px;
+    text-align: center;
 }

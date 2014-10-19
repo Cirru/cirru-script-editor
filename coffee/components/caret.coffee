@@ -16,11 +16,12 @@ module.exports = React.createClass
 
   onKeyDown: (event) ->
     text = event.target.innerText
-    if event.keyCode is '8' # tab
+    if event.keyCode is 9 # tab
+      event.preventDefault()
       return
     if text.length is 0
-      if event.keyCode is 9 # backspace
-        @removeNode()
+      if event.keyCode is 8 # backspace
+        store.removeNode()
 
   render: ->
     $.span

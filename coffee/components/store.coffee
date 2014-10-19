@@ -2,16 +2,16 @@
 uuid = require 'uuid'
 
 createSequence = (parent) ->
-  id: uuid.v4()
-  data: []
   type: 'sequence'
+  id: uuid.v4()
   parent: parent
+  data: []
 
 createToken = (parent, text) ->
+  type: 'token'
   id: uuid.v4()
-  data: text
-  token: token
   parent: parent
+  data: text
 
 ast = createSequence null
 ast.id = 'root'
@@ -19,6 +19,12 @@ caret =
   buffer: ''
   ast: ast
   index: 0
+
+updateCaret = (target, index, buffer) ->
+  console.log 'caret:', target, index, buffer
+  caret.ast = target
+  caret.index = index
+  caret.buffer = buffer
 
 module.exports =
   getAst: ->
@@ -32,7 +38,7 @@ module.exports =
       if x.type is 'sequence'
         x.data.map getData
       else
-        x
+        x.data
 
     getData ast
 
@@ -41,54 +47,60 @@ module.exports =
       if typeof x is 'string'
         createToken parent, x
       else
-        createSequence x
+        createSequence parent
 
-    ast = expandData data
+    ast = expandData data, null
     ast.id = 'root'
 
-    caret.ast = ast
-    caret.index = 0
-    caret.buffer = ''
+    updateCaret ast, 0, ''
 
     @emit()
 
   typeInCaret: (text) ->
-    if text is '\n'
-      @newSequenceFromCaret()
-    else
-      @newTokenFromCaret text
+    if text.length > 0
+      if text is '\n'
+        @newSequenceFromCaret()
+      else
+        @newTokenFromCaret text
 
   newSequenceFromCaret: ->
     sequence = createSequence caret.ast
     index = caret.index
     caret.ast.data.splice index, 0, sequence
-    caret.index = 0
-    caret.buffer = ''
-    caret.ast = sequence
+    updateCaret sequence, 0, ''
     @emit()
 
   newTokenFromCaret: (text) ->
     token = createToken caret.ast, text
+    index = caret.index
     caret.ast.data.splice index, 0, token
-    caret.index = 0
-    caret.buffer = ''
-    caret.ast = token
+    updateCaret token, index, ''
     @emit()
 
-  newTokenFromToken: ->
+  newCaretFromToken: ->
+    target = caret.ast.parent
+    index = (target.data.indexOf caret.ast) + 1
+    updateCaret target, index, ''
+    console.log 'set caret at sequence', target, index
+    @emit()
 
   newSequenceFromToken: ->
     sequence = createSequence caret.ast
-    if caret.ast.data.length > 0
-      index = caret.index + 1
-    else
-      index = caret.index
-    caret.ast.data.splice index, 0, sequence
-    caret.index = 0
-    caret.buffer = ''
-    caret.ast = sequence
+    target = caret.ast.parent
+    index = (target.data.indexOf caret.ast) + 1
+    target.data.splice index, 0, sequence
+    updateCaret sequence, 0, ''
     @emit()
 
   removeToken: ->
 
   removeNode: ->
+
+  caretFocus: (target) ->
+    updateCaret target, 0, ''
+    @emit()
+
+  updateToken: (text) ->
+    if caret.ast.type is 'token'
+      updateCaret caret.ast, 0, text
+      @emit()

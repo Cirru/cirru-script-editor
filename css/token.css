@@ -1,13 +1,17 @@
 
 .cirru-editor .token {
     display: inline-block;
-    border-radius: 3px;
     outline: none;
-    min-width: 3px;
+    min-width: 4px;
     height: 20px;
     vertical-align: middle;
-    padding-left: 1em;
     color: hsla(0, 100%, 100%, 0.5);
+    text-align: center;
+    border-bottom: solid 1px white;
+}
+
+.cirru-editor .token + .token {
+    margin-left: 0.5em;
 }
 
 .cirru-editor .token:hover {
