@@ -124,3 +124,37 @@ module.exports =
       caret.ast.data = text
       updateCaret caret.ast, 0, text
       @emit()
+
+  caretLeft: ->
+    if caret.index is 0
+      if caret.ast.parent?
+        target = caret.ast.parent
+        index = target.data.indexOf caret.ast
+        updateCaret target, index, ''
+        @emit()
+    else
+      index = caret.index - 1
+      target = caret.ast.data[index]
+      if target.type is 'sequence'
+        updateCaret target, target.data.length, ''
+        @emit()
+      else
+        updateCaret caret.ast, index, ''
+        @emit()
+
+  caretRight: ->
+    if caret.index is caret.ast.data.length
+      if caret.ast.parent?
+        target = caret.ast.parent
+        index = (target.data.indexOf caret.ast) + 1
+        updateCaret target, index, ''
+        @emit()
+    else
+      index = caret.index + 1
+      target = caret.ast.data[caret.index]
+      if target.type is 'sequence'
+        updateCaret target, 0, ''
+        @emit()
+      else
+        updateCaret caret.ast, index, ''
+        @emit()
