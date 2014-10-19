@@ -8,6 +8,7 @@
     color: hsla(0, 100%, 100%, 0.5);
     text-align: center;
     border-bottom: solid 1px white;
+    padding: 0 6px;
 }
 
 .cirru-editor .token + .token {

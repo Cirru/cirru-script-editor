@@ -21,7 +21,7 @@ caret =
   index: 0
 
 updateCaret = (target, index, buffer) ->
-  console.log 'caret:', target, index, buffer
+  # console.log 'caret:', target, index, buffer
   caret.ast = target
   caret.index = index
   caret.buffer = buffer
@@ -47,9 +47,13 @@ module.exports =
       if typeof x is 'string'
         createToken parent, x
       else
-        createSequence parent
+        sequence = createSequence parent
+        sequence.data = x.map (item, index) ->
+          expandData item, sequence
+        sequence
 
     ast = expandData data, null
+    console.log 'after import', ast
     ast.id = 'root'
 
     updateCaret ast, 0, ''
@@ -57,10 +61,10 @@ module.exports =
     @emit()
 
   typeInCaret: (text) ->
-    if text.length > 0
-      if text is '\n'
-        @newSequenceFromCaret()
-      else
+    if text[0] is '\n'
+      @newSequenceFromCaret()
+    else
+      if text.length > 0
         @newTokenFromCaret text
 
   newSequenceFromCaret: ->
@@ -157,4 +161,26 @@ module.exports =
         @emit()
       else
         updateCaret caret.ast, index, ''
+        @emit()
+
+  caretUp: ->
+    if caret.index > 0
+      updateCaret caret.ast, 0, ''
+      @emit()
+    else
+      if caret.ast.parent?
+        target = caret.ast.parent
+        index = target.data.indexOf caret.ast
+        updateCaret target, index, ''
+        @emit()
+
+  caretDown: ->
+    if caret.index < caret.ast.data.length
+      updateCaret caret.ast, caret.ast.data.length, ''
+      @emit()
+    else
+      if caret.ast.parent?
+        target = caret.ast.parent
+        index = (target.data.indexOf caret.ast) + 1
+        updateCaret target, index, ''
         @emit()

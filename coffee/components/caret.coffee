@@ -26,6 +26,10 @@ module.exports = React.createClass
         store.caretLeft()
       when 39 # right
         store.caretRight()
+      when 38 # up
+        store.caretUp()
+      when 40
+        store.caretDown()
 
   render: ->
     $.span

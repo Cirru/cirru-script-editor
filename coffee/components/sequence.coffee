@@ -12,6 +12,15 @@ module.exports = Sequence = React.createClass
     event.dataTransfer.setDragImage event.target, 0, 0
 
   render: ->
+    isDeep = no
+    @props.ast.data.forEach (item) ->
+      if item.type is 'sequence'
+        isDeep = yes
+    if @props.ast.id is 'root'
+      isDeep = yes
+    if @props.ast.parent?.id is 'root'
+      isDeep = yes
+
     children = []
     if @props.caret.ast is @props.ast
       if @props.caret.index is 0
@@ -25,5 +34,8 @@ module.exports = Sequence = React.createClass
         if (@props.caret.index - 1) is index
           children.push Caret key: 'caret'
 
-    $.div className: 'sequence', draggable: yes, onDragStart: @onDragStart,
+    $.div
+      className: if isDeep then 'sequence' else 'sequence all-token'
+      draggable: yes
+      onDragStart: @onDragStart
       children
