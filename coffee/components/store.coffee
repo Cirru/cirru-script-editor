@@ -1,5 +1,6 @@
 
 uuid = require 'uuid'
+query = require '../util/query'
 
 createSequence = (parent) ->
   type: 'sequence'
@@ -19,12 +20,15 @@ caret =
   buffer: ''
   ast: ast
   index: 0
+  nth: 0
+  candidates: []
 
-updateCaret = (target, index, buffer) ->
+updateCaret = (target, index, buffer, nth) ->
   # console.log 'caret:', target, index, buffer
   caret.ast = target
   caret.index = index
   caret.buffer = buffer
+  caret.nth = nth or 0
 
 module.exports =
   getAst: ->
@@ -56,7 +60,7 @@ module.exports =
     console.log 'after import', ast
     ast.id = 'root'
 
-    updateCaret ast, 0, ''
+    # updateCaret ast, 0, ''
 
     @emit()
 
@@ -78,26 +82,17 @@ module.exports =
     token = createToken caret.ast, text
     index = caret.index
     caret.ast.data.splice index, 0, token
-    updateCaret token, index, ''
+    updateCaret token, index, text
+    @generateComplete()
     @emit()
 
   newCaretFromToken: ->
     target = caret.ast.parent
     index = (target.data.indexOf caret.ast) + 1
     updateCaret target, index, ''
-    console.log 'set caret at sequence', target, index
-    @emit()
-
-  newSequenceFromToken: ->
-    sequence = createSequence caret.ast.parent
-    target = caret.ast.parent
-    index = (target.data.indexOf caret.ast) + 1
-    target.data.splice index, 0, sequence
-    updateCaret sequence, 0, ''
     @emit()
 
   removeToken: ->
-    console.log caret.ast
     if caret.ast.data.length is 0
       target = caret.ast.parent
       index = (target.data.indexOf caret.ast)
@@ -120,13 +115,15 @@ module.exports =
       @emit()
 
   caretFocus: (target) ->
-    updateCaret target, 0, ''
+    updateCaret target, 0, target.data
+    @generateComplete()
     @emit()
 
   updateToken: (text) ->
     if caret.ast.type is 'token'
       caret.ast.data = text
       updateCaret caret.ast, 0, text
+      @generateComplete()
       @emit()
 
   caretLeft: ->
@@ -203,3 +200,41 @@ module.exports =
       index = (dest.data.indexOf target) + 1
       dest.data.splice index, 0, item
       @emit()
+
+  generateComplete: ->
+    text = caret.buffer
+    candidates = []
+    recursiveFind = (ast) =>
+      if ast.type is 'token'
+        if ast.id isnt caret.ast.id
+          if query.fuzzy ast.data, text
+            unless ast.data in candidates
+              candidates.push ast.data
+      else
+        ast.data.map recursiveFind
+    recursiveFind ast
+    caret.candidates = candidates.sort (x, y) ->
+      x.length - y.length
+    caret.nth = 0
+
+  moveNthUp: ->
+    if caret.candidates.length > 1
+      if caret.nth is 0
+        caret.nth = caret.candidates.length - 1
+      else
+        caret.nth -= 1
+      @emit()
+
+  moveNthDown: ->
+    if caret.candidates.length > 1
+      if caret.nth is (caret.candidates.length - 1)
+        caret.nth = 0
+      else
+        caret.nth += 1
+      @emit()
+
+  complete: ->
+    caret.ast.data = caret.candidates[caret.nth]
+    caret.buffer = caret.candidates[caret.nth]
+    @generateComplete()
+    @emit()

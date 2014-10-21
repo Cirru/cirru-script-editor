@@ -17,11 +17,14 @@ module.exports = React.createClass
     sel = getSelection()
     sel.removeAllRanges()
     r = new Range
-    r.selectNode token.firstChild
-    sel.addRange r
-    sel.collapseToEnd()
+    if token.firstChild?
+      r.selectNode token.firstChild
+      sel.addRange r
+      sel.collapseToEnd()
 
   onKeyUp: (event) ->
+    if event.keyCode in [38, 40, 13]
+      return
     text = @refs.token.getDOMNode().innerText
     store.updateToken text
 
@@ -30,14 +33,21 @@ module.exports = React.createClass
     store.caretFocus @props.ast
 
   onKeyDown: (event) ->
-    if event.keyCode is 13
-      event.preventDefault()
-      store.newSequenceFromToken()
-    else if event.keyCode is 8 # backspace
-      store.removeToken()
-    else if event.keyCode is 9 # tab
-      store.newCaretFromToken()
-      event.preventDefault()
+    switch event.keyCode
+      when 13
+        store.complete()
+        event.preventDefault()
+      when 8 # backspace
+        store.removeToken()
+      when 9 # tab
+        store.newCaretFromToken()
+        event.preventDefault()
+      when 38 # up
+        store.moveNthUp()
+        event.preventDefault()
+      when 40 # down
+        store.moveNthDown()
+        event.preventDefault()
 
   onDrop: (event) ->
     event.stopPropagation()

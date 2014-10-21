@@ -2,9 +2,7 @@
 .cirru-complete {
     right: 0;
     top: 0px;
-    max-height: 200px;
     overflow: auto;
-    width: 120px;
     position: absolute;
 }
 
@@ -17,6 +15,6 @@
     overflow: hidden;
 }
 
-.cirru-item.cirru-active {
+.cirru-item.is-chosen {
     border-bottom: 1px solid white;
 }

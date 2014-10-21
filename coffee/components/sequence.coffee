@@ -78,7 +78,6 @@ module.exports = Sequence = React.createClass
       onDragEnter: @onDragEnter
       onDragLeave: @onDragLeave
       onDragOver: @onDragOver
-      stopPropagation: @stopPropagation
       onDrop: @onDrop
       onClick: @onClick
       children
