@@ -1,9 +1,9 @@
 
-/build/
+/dist/
 /coffee/
 /cirru/
+/css/
 
-/js/main.js
-/make.coffee
+/build/main.js
+/gulp.coffee
 /index.html
-/css/style.css

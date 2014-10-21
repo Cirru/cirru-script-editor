@@ -4,33 +4,33 @@ Cirru Editor
 
 ### Usage
 
-Live demo: http://repo.tiye.me/cirru-editor
+Live demo: http://repo.cirru.org/editor
 
-This editor if part of Cirru Project: http://cirru.org/
+This projecy is part of Cirru Project: http://cirru.org/
 
-The module uses CommonJS and CSS `@import` for packaging.
+This module is a React Component:
 
 ```
-npm install --save cirru-editor
+npm i -s cirru-editor
 ```
 
 ```coffee
-$ = require 'jquery'
+React = require 'react'
+Editor = require 'cirru-editor' # need to change in React 0.12
 
-{Editor} = require 'cirru-editor'
-editor = new Editor
+editor = Editor
+  cirru: ['cirru code']
+  onAstChange: (cirru) ->
+    ast = cirru
 
-# put element into DOM manually
-$('#entry').append editor.el
-
-editor.val [[['x']]]
-console.log editor.val()
+React.renderComponent editor, document.body
 ```
 
+The module uses CommonJS and CSS `@import` for packaging.
 Note that you have to `@import` CSS file manually.
 
 ```css
-@import url('node_modules/cirru-editor/css/cirru-editor.css');
+@import url('node_modules/cirru-editor/build/css/editor.css');
 ```
 
 ### Features
@@ -38,33 +38,33 @@ Note that you have to `@import` CSS file manually.
 * Auto layout
 * AutoComplete
 * Navigate caret by clicking
-* History for deleting
+* Drag and drop
 
 ### Shortcuts:
 
-Debugged on OS X:
+The app is developed in Chrome in OS X, caret has two modes:
+
+* Sequence Caret (a caret alone with point at top)
 
 | Shortcut | Usage |
 | --- | --- |
-| Most Characters | Type in characters |
-| Left | Go left by letter |
-| Right | Go right by letter |
-| Option Left | Go left by word |
-| Option Right | Go right by word |
-| Up | Go up by line or expression |
-| Down | Go down by line or expression |
-| Space | Seperate word |
-| Shift Space | Insert blank |
-| Tab | Choose next autocomplete candidate |
-| Shift Tab | Choose previous autocomplete candidate |
-| Backspace | Delete by one |
+| Left | Move left by one token |
+| Right | Move right by one token |
+| Up | Select precious suggestion |
+| Down | Select next suggestion |
+| Backspace | delete by token or sequence |
+| Enter | Choose suggestion |
+
+* Token Caret (in contentEditable token)
+
+| Shortcut | Usage |
+| --- | --- |
+| Left | move in text |
+| Right | move in text |
+| Space | space in text |
+| Tab | move caret out |
+| Backspace | delete in text |
 | Enter | Create expression |
-| Ctrl z | Go Back |
-| Ctrl y | Go Ahead |
-
-### Screenshot
-
-![](http://cirru.qiniudn.com/cirru-editor.png)
 
 ### License
 

@@ -141,7 +141,7 @@ gulp.task 'rsync', ->
     src: '.'
     recursive: true
     args: ['--verbose']
-    dest: "tiye:~/repo/cirru/editor-2"
+    dest: "tiye:~/repo/cirru/editor"
     deleteAll: yes
     exclude: [
       'bower_components/'

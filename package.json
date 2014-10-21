@@ -1,12 +1,17 @@
 {
   "name": "cirru-editor",
-  "version": "0.3.0",
-  "main": "index.js",
+  "version": "0.4.0",
+  "main": "build/js/components/editor.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "jiyinyiyong",
   "license": "MIT",
+  "keywords": [
+    "cirru",
+    "editor",
+    "react-component"
+  ],
   "devDependencies": {
     "browserify": "^5.10.1",
     "coffee-script": "^1.7.1",
@@ -22,16 +27,17 @@
     "gulp-wait": "0.0.2",
     "gulp-watch": "^0.6.9",
     "make-filetree": "0.0.2",
-    "react": "^0.11.1",
     "rsyncwrapper": "^0.4.1",
     "run-sequence": "^0.3.6",
     "vinyl-buffer": "0.0.0",
     "vinyl-source-stream": "^0.1.1",
-    "vinyl-transform": "0.0.1",
-    "uuid": "^1.4.1"
+    "vinyl-transform": "0.0.1"
   },
   "description": "Editor of Cirru AST",
-  "dependencies": {},
+  "dependencies": {
+    "react": "^0.11.1",
+    "uuid": "^1.4.1"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Cirru/cirru-editor.git"
