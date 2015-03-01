@@ -17,10 +17,16 @@
     "coffee-script": "^1.9.0",
     "gulp": "^3.8.11",
     "gulp-cirru-html": "0.0.4",
+    "react": "^0.12.2",
+    "react-hot-loader": "^1.1.5",
     "webpack": "^1.5.3",
     "webpack-dev-server": "^1.7.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "flux": "^2.0.1",
+    "lodash": "^3.3.1",
+    "wolfy87-eventemitter": "^4.2.11"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Cirru/cirru-editor.git"

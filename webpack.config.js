@@ -1,5 +1,6 @@
 
 fs = require('fs');
+webpack = require('webpack')
 
 module.exports = {
   entry: {
@@ -19,11 +20,13 @@ module.exports = {
   },
   module: {
     loaders: [
-      {test: /\.coffee$/, loader: 'coffee'},
-      {test: /\.cirru$/, loader: 'cirru-script'}
+      {test: /\.coffee$/, loaders: ['react-hot', 'coffee'], exclude: /node_modules/},
+      {test: /\.cirru$/, loaders: ['react-hot', 'cirru-script'], exclude: /node_modules/}
     ]
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
     function() {
        this.plugin('done', function(stats) {
         content = JSON.stringify(stats.toJson().assetsByChunkName, null, 2)
