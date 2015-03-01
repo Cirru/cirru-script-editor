@@ -1,8 +1,7 @@
 
-bower_components/
-node_modules/
-
-build/
-dist/
-
-index.html
+/build/
+/dist/
+/lib/
+/node_modules/
+/assets.json
+/index.html
