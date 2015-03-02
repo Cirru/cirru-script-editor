@@ -10,8 +10,10 @@
   :displayName :cirru-editor
 
   :getInitialState $ \ () $ object
+    :ast $ astStore.get
 
   :render $ \ ()
     o :div
       object (:className :cirru-editor)
-      , :cirru-editor
+      Expr
+        object (:expr @state.ast) (:coord $ array)

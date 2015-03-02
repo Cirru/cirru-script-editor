@@ -1,0 +1,21 @@
+
+.cirru-editor {
+  background-color: hsl(240,80%,80%);
+}
+
+.cirru-expr {
+  border: 1px solid white;
+  padding: 6px 10px;
+}
+
+.cirru-token {
+  border: 1px solid white;
+  background-color: transparent;
+  outline: none;
+  color: white;
+  font-family: Menlo;
+  line-height: 24px;
+  font-size: 14px;
+  padding: 0 4px;
+  box-sizing: content-box;
+}

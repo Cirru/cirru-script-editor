@@ -2,6 +2,10 @@
 = EventEmitter  $ require :wolfy87-eventemitter
 = dispatcher    $ require :../dispatcher
 
+= store $ JSON.parse $ or
+  localStorage.getItem :cirru-ast
+  , :[]
+
 = store $ array
   array :this :is :a :demo
   array :this :is :another
@@ -19,9 +23,9 @@
 
 _.assign astStore $ object
   :onchange $ \ ()
+    localStorage.setItem :cirru-ast $ JSON.stringify store
     @emit :change
 
-  :get $ \ ()
-    store
+  :get $ \ () store
 
-= module.export astStore
+= module.exports astStore
