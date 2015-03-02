@@ -1,6 +1,7 @@
 
 = EventEmitter  $ require :wolfy87-eventemitter
 = dispatcher    $ require :../dispatcher
+= manipulations $ require :../util/manipulations
 
 = store $ JSON.parse $ or
   localStorage.getItem :cirru-ast
@@ -18,7 +19,8 @@
 = astStore.dispatchToken $ dispatcher.register $ \ (action)
 
   switch action.type
-    :update-token (console.log :not-implemented)
+    :update-token
+      = store $ manipulations.updateToken store action.coord action.text
     else (console.log :else-not-implemented)
 
 _.assign astStore $ object

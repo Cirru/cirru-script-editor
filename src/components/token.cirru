@@ -21,6 +21,8 @@
 
   :onChange $ \ (event)
     console.log :token-update event.target.value @props.coord
+    = text event.target.value
+    astAction.updateToken @props.coord text
 
   :render $ \ ()
     = width $ detect.textWidth @state.token :14px :Menlo

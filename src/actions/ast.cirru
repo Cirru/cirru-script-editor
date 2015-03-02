@@ -1,8 +1,8 @@
 
 = dispatcher $ require :../dispatcher
 
-= exports.updateToken $ \ (text)
-  console.warn ":not implemented updateToken"
+= exports.updateToken $ \ (coord text)
   dispatcher.handleAction $ object
     :type :update-token
-    :data text
+    :coord coord
+    :text text
