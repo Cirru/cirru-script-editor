@@ -16,19 +16,15 @@
     :token T.string.isRequired
     :coord T.array.isRequired
 
-  :getInitialState $ \ () $ object
-    :token @props.token
-
   :onChange $ \ (event)
-    console.log :token-update event.target.value @props.coord
     = text event.target.value
     astAction.updateToken @props.coord text
 
   :render $ \ ()
-    = width $ detect.textWidth @state.token :14px :Menlo
+    = width $ detect.textWidth @props.token :14px :Menlo
     = style $ object
       :width $ ++: width :px
 
     o :input
-      object (:className :cirru-token) (:value @state.token) (:style style)
+      object (:className :cirru-token) (:value @props.token) (:style style)
         :onChange @onChange

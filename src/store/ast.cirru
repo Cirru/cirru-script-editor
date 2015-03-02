@@ -21,6 +21,7 @@
   switch action.type
     :update-token
       = store $ manipulations.updateToken store action.coord action.text
+      astStore.onchange
     else (console.log :else-not-implemented)
 
 _.assign astStore $ object

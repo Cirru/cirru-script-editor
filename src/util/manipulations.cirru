@@ -6,7 +6,7 @@
         = head $ . coord 0
         = body $ coord.slice 1
         ast.map $ \ (item index)
-          updateHelper item coord text (is head index)
+          updateHelper item body text (is head index)
       do text
     do ast
 

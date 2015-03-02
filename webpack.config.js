@@ -26,7 +26,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     function() {
       this.plugin('done', function(stats) {
