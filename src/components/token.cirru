@@ -3,6 +3,7 @@
 
 = astAction $ require :../actions/ast
 = detect $ require :../util/detect
+= keydownCode $ require :../util/keydown-code
 
 = Suggest $ React.createFactory $ require :./suggest
 
@@ -14,6 +15,7 @@
 
   :getInitialState $ \ () $ object
     :disableSuggest false
+    :isFocused false
 
   :propTypes $ object
     :token T.string.isRequired
@@ -27,8 +29,16 @@
 
   :onSuggest $ \ (text)
     astAction.updateToken @props.coord text
-    @setState $ object
-      :disableSuggest true
+
+  :onFocus $ \ ()
+    @setState $ object (:isFocused true)
+
+  :onBlur $ \ ()
+    @setState $ object (:isFocused false)
+
+  :onKeyDown $ \ (event)
+    if (is event.keyCode keydownCode.esc)
+      @setState $ object (:disableSuggest true)
 
   :render $ \ ()
     = width $ detect.textWidth @props.token :14px :Menlo
@@ -38,8 +48,11 @@
       object (:className :cirru-token)
       o :input
         object (:value @props.token) (:style style)
+          :onFocus @onFocus
+          :onBlur @onBlur
           :onChange @onChange
-      if (not @state.disableSuggest)
+          :onKeyDown @onKeyDown
+      if (and @state.isFocused (not @state.disableSuggest))
         Suggest $ object
           :text @props.token
           :onSuggest @onSuggest

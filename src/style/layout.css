@@ -27,6 +27,15 @@
 
 .cirru-suggest {
   position: absolute;
+  z-index: 100;
   top: 100%;
   left: 0;
+}
+
+.cirru-guess {
+  background-color: blue;
+  color: white;
+  font-family: Menlo;
+  font-size: 14px;
+  padding: 2px 4px;
 }
