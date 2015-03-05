@@ -34,7 +34,10 @@
     @setState $ object (:isFocused true)
 
   :onBlur $ \ ()
-    @setState $ object (:isFocused false)
+    setTimeout
+      \= ()
+        @setState $ object (:isFocused false)
+      , 100
 
   :onKeyDown $ \ (event)
     if (is event.keyCode keydownCode.esc)

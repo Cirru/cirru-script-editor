@@ -13,12 +13,20 @@
   :displayName :cirru-suggest
 
   :propTypes $ object
-    :text T.string
+    :text       T.string
+    :onSuggest  T.func
+
+  :onTextClick $ \ (text)
+    @props.onSuggest text
 
   :renderTokens $ \ (tokens)
-    tokens.map $ \ (text)
+    tokens.map $ \= (text)
+      = onClick $ \= (event)
+        event.preventDefault
+        console.log :onTextClick text
+        @onTextClick text
       o :div
-        object (:className :cirru-guess) (:key text)
+        object (:className :cirru-guess) (:key text) (:onClick onClick)
         , text
 
   :render $ \ ()
