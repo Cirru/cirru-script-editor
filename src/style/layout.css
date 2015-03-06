@@ -40,3 +40,7 @@
   padding: 2px 4px;
   cursor: pointer;
 }
+
+.cirru-guess.is-selected {
+  background-color: hsl(240,80%,70%);
+}

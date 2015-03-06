@@ -7,3 +7,5 @@
   :right 39
   :down 40
   :slash 191
+  :tab 9
+  :cancel 8

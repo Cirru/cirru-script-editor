@@ -1,10 +1,5 @@
 
 = React $ require :react/addons
-= _ $ require :lodash
-
-= astStore $ require :../store/ast
-
-= search $ require :../util/search
 
 = o React.createElement
 = T React.PropTypes
@@ -15,24 +10,26 @@
   :propTypes $ object
     :text       T.string
     :onSuggest  T.func
+    :cursor     T.number
+    :tokens     T.array
 
   :onTextClick $ \ (text)
     @props.onSuggest text
 
-  :renderTokens $ \ (tokens)
-    tokens.map $ \= (text)
+  :renderTokens $ \ ()
+    @props.tokens.map $ \= (text index)
       = onClick $ \= (event)
         event.preventDefault
-        console.log :onTextClick text
         @onTextClick text
+      = className :cirru-guess
+      if (is index @props.cursor)
+        do $ = className ":cirru-guess is-selected"
       o :div
-        object (:className :cirru-guess) (:key text) (:onClick onClick)
+        object (:className className) (:key text) (:onClick onClick)
         , text
 
   :render $ \ ()
-    = tokens $ _.unique $ _.flattenDeep $ astStore.get
-    = suggestTokens $ search.fuzzyStart tokens @props.text
 
     o :div
       object (:className :cirru-suggest)
-      @renderTokens suggestTokens
+      @renderTokens
