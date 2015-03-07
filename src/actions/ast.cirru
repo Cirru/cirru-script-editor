@@ -11,8 +11,12 @@
   dispatcher.handleAction $ object
     :type :new-token
     :coord coord
+  dispatcher.handleAction $ object
+    :type :token-forward
 
 = exports.newExpr $ \ (coord)
   dispatcher.handleAction $ object
     :type :new-expr
     :coord coord
+  dispatcher.handleAction $ object
+    :type :expr-forward

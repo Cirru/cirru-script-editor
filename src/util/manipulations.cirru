@@ -11,7 +11,6 @@
     do ast
 
 = newHelper $ \ (ast coord insertion matched)
-  console.log ast coord insertion matched
   if matched
     do $ if (> coord.length 1)
       do
