@@ -24,6 +24,11 @@
     event.stopPropagation
     focusActions.focus @props.coord
 
+  :onKeyDown $ \ (event)
+    event.stopPropagation
+    event.preventDefault
+    console.log event.keyCode event.target
+
   :render $ \ ()
     = className $ cx $ object
       :cirru-expr true
@@ -31,6 +36,8 @@
 
     o :div
       object (:className className) (:draggable true) (:onClick @onClick)
+        :tabIndex 0
+        :onKeyDown @onKeyDown
       _.map @props.expr $ \= (item index)
         if (_.isString item)
           do $ Token $ object (:token item) (:key index)

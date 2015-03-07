@@ -86,6 +86,7 @@
     event.stopPropagation
 
   :onKeyDown $ \ (event)
+    event.stopPropagation
     switch event.keyCode
       keydownCode.esc
         @setState $ object (:disableSuggest true)
@@ -120,6 +121,7 @@
 
     o :span
       object (:className className) (:draggable true) (:onClick @onRootClick)
+        :tabIndex 0
       o :input
         object (:value @props.token) (:style style) (:ref :input)
           :onFocus @onFocus

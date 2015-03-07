@@ -24,7 +24,6 @@
 .cirru-token input {
   border: 1px solid white;
   background-color: transparent;
-  outline: none;
   color: white;
   font-family: Menlo;
   line-height: 24px;
