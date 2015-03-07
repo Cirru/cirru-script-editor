@@ -10,7 +10,7 @@
   :propTypes $ object
     :text       T.string
     :onSuggest  T.func
-    :cursor     T.number
+    :select     T.number
     :tokens     T.array
 
   :onTextClick $ \ (text)
@@ -22,7 +22,7 @@
         event.preventDefault
         @onTextClick text
       = className :cirru-guess
-      if (is index @props.cursor)
+      if (is index @props.select)
         do $ = className ":cirru-guess is-selected"
       o :div
         object (:className className) (:key text) (:onClick onClick)

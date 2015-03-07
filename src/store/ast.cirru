@@ -28,7 +28,6 @@
     :new-expr
       = store $ manipulations.newExpr store action.coord
       astStore.onchange
-    else (console.log :else-not-implemented action.type)
 
 _.assign astStore $ object
   :onchange $ \ ()

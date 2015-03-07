@@ -8,9 +8,17 @@
   padding: 6px 10px;
 }
 
+.cirru-expr.is-focused {
+  border-color: red;
+}
+
 .cirru-token {
   position: relative;
   margin: 0 6px;
+}
+
+.cirru-token.is-focused input {
+  border-color: red;
 }
 
 .cirru-token input {
@@ -39,6 +47,7 @@
   font-size: 14px;
   padding: 2px 4px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .cirru-guess.is-selected {

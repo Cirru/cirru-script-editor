@@ -1,6 +1,8 @@
 
 = React $ require :react/addons
-= astStore $ require :../store/ast
+
+= astStore    $ require :../store/ast
+= focusStore  $ require :../store/focus
 
 = mixinListenTo $ require :../mixins/listen-to
 
@@ -14,16 +16,20 @@
 
   :getInitialState $ \ () $ object
     :ast $ astStore.get
+    :focus $ focusStore.get
 
   :componentDidMount $ \ ()
     @listenTo astStore @setAst
+    @listenTo focusStore @setFocus
 
   :setAst $ \ ()
-    @setState $ object
-      :ast $ astStore.get
+    @setState $ object (:ast $ astStore.get)
+
+  :setFocus $ \ ()
+    @setState $ object (:focus $ focusStore.get)
 
   :render $ \ ()
     o :div
       object (:className :cirru-editor)
       Expr
-        object (:expr @state.ast) (:coord $ array)
+        object (:expr @state.ast) (:coord $ array) (:focus @state.focus)

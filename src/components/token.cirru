@@ -2,37 +2,42 @@
 = React $ require :react/addons
 = _ $ require :lodash
 
-= astStore $ require :../store/ast
+= astStore    $ require :../store/ast
 
 = search $ require :../util/search
 
 = astAction $ require :../actions/ast
+= focusActions $ require :../actions/focus
+
 = detect $ require :../util/detect
 = keydownCode $ require :../util/keydown-code
 
 = Suggest $ React.createFactory $ require :./suggest
 
+= mixinListenTo $ require :../mixins/listen-to
+
 = o React.createElement
 = T React.PropTypes
+= cx React.addons.classSet
 
 = module.exports $ React.createClass $ object
   :displayName :cirru-token
 
   :getInitialState $ \ () $ object
     :disableSuggest false
-    :isFocused false
-    :cursor 0
+    :select 0
 
   :propTypes $ object
     :token T.string.isRequired
     :coord T.array.isRequired
+    :focus T.array.isRequired
 
   :componentDidMount $ \ ()
-    if (is @props.token :)
-      do $ if (? @refs.input)
-        do
-          = input $ @refs.input.getDOMNode
-          input.focus
+    if (_.isEqual @props.coord @props.focus)
+      do
+        = input $ @refs.input.getDOMNode
+        if (not (is document.activeElement input))
+          do $ input.focus
 
   :getTokens $ \ ()
     = tokens $ _.unique $ _.flattenDeep $ astStore.get
@@ -50,38 +55,35 @@
 
   :getCurrentGuess $ \ ()
     = tokens (@getTokens)
-    . tokens @state.cursor
+    . tokens @state.select
 
   :selectPrev $ \ ()
     = tokens $ @getTokens
-    if (> @state.cursor 0)
-      do $ @setState $ object $ :cursor $ - @state.cursor 1
-      do $ @setState $ object $ :cursor $ - tokens.length 1
+    if (> @state.select 0)
+      do $ @setState $ object $ :select $ - @state.select 1
+      do $ @setState $ object $ :select $ - tokens.length 1
 
   :selectNext $ \ ()
     = tokens $ @getTokens
-    if (>= @state.cursor (- tokens.length 1))
-      do $ @setState $ object $ :cursor 0
-      do $ @setState $ object $ :cursor $ + @state.cursor 1
+    if (>= @state.select (- tokens.length 1))
+      do $ @setState $ object $ :select 0
+      do $ @setState $ object $ :select $ + @state.select 1
 
   :onChange $ \ (event)
     = text event.target.value
     astAction.updateToken @props.coord text
     @setState $ object
       :disableSuggest false
-      :cursor 0
+      :select 0
 
   :onSuggest $ \ (text)
     astAction.updateToken @props.coord text
 
-  :onFocus $ \ ()
-    @setState $ object (:isFocused true)
+  :onClick $ \ (event)
+    focusActions.focus @props.coord
 
-  :onBlur $ \ ()
-    setTimeout
-      \= ()
-        @setState $ object (:isFocused false)
-      , 100
+  :onRootClick $ \ (event)
+    event.stopPropagation
 
   :onKeyDown $ \ (event)
     switch event.keyCode
@@ -112,18 +114,22 @@
     = style $ object
       :width $ ++: width :px
     = tokens (@getTokens)
+    = className $ cx $ object
+      :cirru-token true
+      :is-focused $ _.isEqual @props.coord @props.focus
 
     o :span
-      object (:className :cirru-token)
+      object (:className className) (:draggable true) (:onClick @onRootClick)
       o :input
         object (:value @props.token) (:style style) (:ref :input)
           :onFocus @onFocus
           :onBlur @onBlur
           :onChange @onChange
           :onKeyDown @onKeyDown
-      if (and @state.isFocused (not @state.disableSuggest))
+          :onClick @onClick
+      if (and (_.isEqual @props.focus @props.coord) (not @state.disableSuggest))
         Suggest $ object
           :text @props.token
           :onSuggest @onSuggest
           :tokens tokens
-          :cursor @state.cursor
+          :select @state.select
