@@ -22,7 +22,13 @@
     :update-token
       = store $ manipulations.updateToken store action.coord action.text
       astStore.onchange
-    else (console.log :else-not-implemented)
+    :new-token
+      = store $ manipulations.newToken store action.coord
+      astStore.onchange
+    :new-expr
+      = store $ manipulations.newExpr store action.coord
+      astStore.onchange
+    else (console.log :else-not-implemented action.type)
 
 _.assign astStore $ object
   :onchange $ \ ()

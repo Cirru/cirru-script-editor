@@ -27,6 +27,13 @@
     :token T.string.isRequired
     :coord T.array.isRequired
 
+  :componentDidMount $ \ ()
+    if (is @props.token :)
+      do $ if (? @refs.input)
+        do
+          = input $ @refs.input.getDOMNode
+          input.focus
+
   :getTokens $ \ ()
     = tokens $ _.unique $ _.flattenDeep $ astStore.get
     search.fuzzyStart tokens @props.token
@@ -85,9 +92,9 @@
         = tokens (@getTokens)
         if (@inSuggest)
           do $ @onSuggest $ @getCurrentGuess
-          do $ astAction.newExpr @state.coord
+          do $ astAction.newExpr @props.coord
       keydownCode.tab
-        astAction.newToken @state.coord
+        astAction.newToken @props.coord
         event.preventDefault
       keydownCode.up
         if (@inSuggest)
@@ -109,7 +116,7 @@
     o :span
       object (:className :cirru-token)
       o :input
-        object (:value @props.token) (:style style)
+        object (:value @props.token) (:style style) (:ref :input)
           :onFocus @onFocus
           :onBlur @onBlur
           :onChange @onChange
