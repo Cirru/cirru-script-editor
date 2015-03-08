@@ -20,3 +20,10 @@
     :coord coord
   dispatcher.handleAction $ object
     :type :expr-forward
+
+= exports.removeToken $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :remove-token
+    :coord coord
+  dispatcher.handleAction $ object
+    :type :token-backward

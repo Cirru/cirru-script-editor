@@ -33,6 +33,12 @@
     :focus T.array.isRequired
 
   :componentDidMount $ \ ()
+    @setFocus
+
+  :componentDidUpdate $ \ ()
+    @setFocus
+
+  :setFocus $ \ ()
     if (_.isEqual @props.coord @props.focus)
       do
         = input $ @refs.input.getDOMNode
@@ -109,6 +115,11 @@
           do
             event.preventDefault
             @selectNext
+      keydownCode.cancel
+        if (is @props.token :)
+          astAction.removeToken @props.coord
+          event.stopPropagation
+          event.preventDefault
 
   :render $ \ ()
     = width $ detect.textWidth @props.token :14px :Menlo

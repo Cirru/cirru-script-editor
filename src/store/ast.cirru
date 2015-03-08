@@ -28,6 +28,9 @@
     :new-expr
       = store $ manipulations.newExpr store action.coord
       astStore.onchange
+    :remove-token
+      = store $ manipulations.removeNode store action.coord
+      astStore.onchange
 
 _.assign astStore $ object
   :onchange $ \ ()

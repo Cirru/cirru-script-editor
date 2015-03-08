@@ -16,7 +16,7 @@
       = before $ store.slice 0 -1
       = store $ before.concat (+ last 1)
       focusStore.onchange
-    :token-backword
+    :token-backward
       = last $ . store (- store.length 1)
       = before $ store.slice 0 -1
       = store $ before.concat (- last 1)
@@ -25,7 +25,6 @@
       = last $ . store (- store.length 1)
       = before $ store.slice 0 -1
       = store $ before.concat (+ last 1) 0
-      console.log store
       focusStore.onchange
 
 _.assign focusStore $ object

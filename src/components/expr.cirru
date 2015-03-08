@@ -20,6 +20,19 @@
     :coord  T.array.isRequired
     :focus  T.array.isRequired
 
+  :componentDidMount $ \ ()
+    @setFocus
+
+  :componentDidUpdate $ \ ()
+    @setFocus
+
+  :setFocus $ \ ()
+    if (_.isEqual @props.coord @props.focus)
+      do
+        = root $ @refs.root.getDOMNode
+        if (? root)
+          do $ root.click
+
   :onClick $ \ (event)
     event.stopPropagation
     focusActions.focus @props.coord
@@ -38,6 +51,7 @@
       object (:className className) (:draggable true) (:onClick @onClick)
         :tabIndex 0
         :onKeyDown @onKeyDown
+        :ref :root
       _.map @props.expr $ \= (item index)
         if (_.isString item)
           do $ Token $ object (:token item) (:key index)

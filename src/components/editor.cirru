@@ -28,8 +28,12 @@
   :setFocus $ \ ()
     @setState $ object (:focus $ focusStore.get)
 
+  :onKeyDown $ \ (event)
+    event.stopPropagation
+    event.preventDefault
+
   :render $ \ ()
     o :div
-      object (:className :cirru-editor)
+      object (:className :cirru-editor) (:onKeyDown @onKeyDown)
       Expr
         object (:expr @state.ast) (:coord $ array) (:focus @state.focus)
