@@ -8,12 +8,8 @@
   localStorage.getItem :cirru-ast
   , :[]
 
+-- "force set to empty"
 = store $ array
-  array :this :is :a :demo
-  array :this :is :another
-  array :try
-    array :another
-      array :nested
 
 = astStore $ new EventEmitter
 

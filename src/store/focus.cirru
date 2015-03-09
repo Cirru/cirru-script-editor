@@ -2,7 +2,7 @@
 = EventEmitter  $ require :wolfy87-eventemitter
 = dispatcher    $ require :../dispatcher
 
-= store $ array
+= store $ array 0
 
 = focusStore $ new EventEmitter
 

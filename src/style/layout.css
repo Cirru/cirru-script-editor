@@ -3,25 +3,51 @@
   background-color: hsl(240,80%,80%);
 }
 
+.cirru-expr:focus, .cirru-token input:focus {
+  outline: none;
+}
+
 .cirru-expr {
-  border: 1px solid white;
-  padding: 6px 10px;
+  border: 1px solid hsla(0,100%,100%,0.3);
+  padding: 4px 10px;
+  margin-top: 4px;
+}
+
+.cirru-expr:focus {
+  border-color: white;
+}
+
+.cirru-expr.is-plain {
+  display: inline-block;
+}
+
+.cirru-editor > .cirru-expr {
+  display: block;
+  min-height: 30px;
+  margin-top: 0;
+}
+.cirru-editor > .cirru-expr > .cirru-expr {
+  display: block;
 }
 
 .cirru-token {
   position: relative;
-  margin: 0 6px;
+  margin-right: 6px;
 }
 
 .cirru-token input {
-  border: 1px solid white;
+  border: 1px solid hsla(0,100%,100%,0.3);
   background-color: transparent;
   color: white;
   font-family: Menlo;
-  line-height: 24px;
+  line-height: 20px;
   font-size: 14px;
   padding: 0 4px;
   box-sizing: content-box;
+}
+
+.cirru-token input:focus {
+  border-color: white;
 }
 
 .cirru-suggest {

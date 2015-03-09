@@ -10,6 +10,7 @@
 = astActions $ require :../actions/ast
 
 = keydownCode $ require :../util/keydown-code
+= detect $ require :../util/detect
 
 = o React.createElement
 = T React.PropTypes
@@ -54,6 +55,7 @@
   :render $ \ ()
     = className $ cx $ object
       :cirru-expr true
+      :is-plain $ detect.isPlain @props.expr
 
     o :div
       object (:className className) (:draggable true) (:onClick @onClick)
