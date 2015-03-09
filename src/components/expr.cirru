@@ -7,6 +7,9 @@
 = focusStore $ require :../store/focus
 
 = focusActions $ require :../actions/focus
+= astActions $ require :../actions/ast
+
+= keydownCode $ require :../util/keydown-code
 
 = o React.createElement
 = T React.PropTypes
@@ -30,22 +33,27 @@
     if (_.isEqual @props.coord @props.focus)
       do
         = root $ @refs.root.getDOMNode
-        if (? root)
-          do $ root.click
+        root.focus
 
   :onClick $ \ (event)
     event.stopPropagation
     focusActions.focus @props.coord
 
   :onKeyDown $ \ (event)
-    event.stopPropagation
-    event.preventDefault
-    console.log event.keyCode event.target
+    switch event.keyCode
+      keydownCode.cancel
+        event.stopPropagation
+        event.preventDefault
+        astActions.removeNode @props.coord
+      keydownCode.enter
+        event.stopPropagation
+        astActions.insertToken @props.coord
+      keydownCode.tab
+        astActions.newToken @props.coord
 
   :render $ \ ()
     = className $ cx $ object
       :cirru-expr true
-      :is-focused $ _.isEqual @props.focus @props.coord
 
     o :div
       object (:className className) (:draggable true) (:onClick @onClick)

@@ -21,9 +21,16 @@
   dispatcher.handleAction $ object
     :type :expr-forward
 
-= exports.removeToken $ \ (coord)
-  dispatcher.handleAction $ object
-    :type :remove-token
-    :coord coord
+= exports.removeNode $ \ (coord)
   dispatcher.handleAction $ object
     :type :token-backward
+  setTimeout $ \= () $ dispatcher.handleAction $ object
+    :type :remove-node
+    :coord coord
+
+= exports.insertToken $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :insert-token
+    :coord coord
+  setTimeout $ \= () $ dispatcher.handleAction $ object
+    :type :token-in

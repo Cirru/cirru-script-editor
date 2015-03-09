@@ -24,6 +24,20 @@
         before.concat (array insertion) (ast.slice pos)
     do ast
 
+= insertHelper $ \ (ast coord insertion matched)
+  console.log ast coord matched
+  if matched
+    do $ if (> coord.length 0)
+      do
+        = head $ . coord 0
+        = body $ coord.slice 1
+        ast.map $ \ (item index)
+          insertHelper item body insertion (is head index)
+      do
+        = before $ array insertion
+        before.concat ast
+    do ast
+
 = removeHelper $ \ (ast coord matched)
   if matched
     do $ if (> coord.length 1)
@@ -49,3 +63,6 @@
 
 = exports.removeNode $ \ (ast coord)
   removeHelper ast coord true
+
+= exports.insertToken $ \ (ast coord)
+  insertHelper ast coord : true

@@ -117,7 +117,7 @@
             @selectNext
       keydownCode.cancel
         if (is @props.token :)
-          astAction.removeToken @props.coord
+          astAction.removeNode @props.coord
           event.stopPropagation
           event.preventDefault
 
@@ -128,7 +128,6 @@
     = tokens (@getTokens)
     = className $ cx $ object
       :cirru-token true
-      :is-focused $ _.isEqual @props.coord @props.focus
 
     o :span
       object (:className className) (:draggable true) (:onClick @onRootClick)

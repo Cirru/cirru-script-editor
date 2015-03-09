@@ -2,6 +2,7 @@
 = EventEmitter  $ require :wolfy87-eventemitter
 = dispatcher    $ require :../dispatcher
 = manipulations $ require :../util/manipulations
+= focusStore    $ require :./focus
 
 = store $ JSON.parse $ or
   localStorage.getItem :cirru-ast
@@ -28,8 +29,12 @@
     :new-expr
       = store $ manipulations.newExpr store action.coord
       astStore.onchange
-    :remove-token
+    :remove-node
+      dispatcher.waitFor $ array focusStore.dispatchToken
       = store $ manipulations.removeNode store action.coord
+      astStore.onchange
+    :insert-token
+      = store $ manipulations.insertToken store action.coord
       astStore.onchange
 
 _.assign astStore $ object
