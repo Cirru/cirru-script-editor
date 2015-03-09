@@ -131,6 +131,7 @@
     = tokens (@getTokens)
     = className $ cx $ object
       :cirru-token true
+      :is-fuzzy $ or (is @props.token :) (? (@props.token.match /\s))
 
     o :span
       object (:className className) (:draggable true) (:onClick @onRootClick)

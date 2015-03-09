@@ -84,9 +84,7 @@
   beforeHelper ast coord true
 
 = exports.afterToken $ \ (ast coord)
-  if (_.isEqual (array) ast)
-    do $ return ast
-    do $ afterHelper ast coord true
+  afterHelper ast coord true
 
 = exports.prependToken $ \ (ast coord)
   prependHelper ast coord true

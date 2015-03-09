@@ -1,6 +1,7 @@
 
 .cirru-editor {
   background-color: hsl(240,80%,80%);
+  padding: 10px;
 }
 
 .cirru-expr:focus, .cirru-token input:focus {
@@ -8,9 +9,11 @@
 }
 
 .cirru-expr {
-  border: 1px solid hsla(0,100%,100%,0.3);
-  padding: 4px 10px;
-  margin-top: 4px;
+  min-height: 20px;
+  border: none;
+  border-left: 1px solid hsla(0,100%,100%,0.3);
+  padding: 2px 10px;
+  margin-top: 0px;
 }
 
 .cirru-expr:focus {
@@ -19,11 +22,16 @@
 
 .cirru-expr.is-plain {
   display: inline-block;
+  border: none;
+  border-bottom: 1px solid hsla(0,100%,100%,0.3);
+}
+
+.cirru-expr.is-plain:focus {
+  border-color: white;
 }
 
 .cirru-editor > .cirru-expr {
   display: block;
-  min-height: 30px;
   margin-top: 0;
 }
 .cirru-editor > .cirru-expr > .cirru-expr {
@@ -36,7 +44,7 @@
 }
 
 .cirru-token input {
-  border: 1px solid hsla(0,100%,100%,0.3);
+  border: none;
   background-color: transparent;
   color: white;
   font-family: Menlo;
@@ -44,10 +52,15 @@
   font-size: 14px;
   padding: 0 4px;
   box-sizing: content-box;
+  border-radius: 2px;
+}
+
+.cirru-token.is-fuzzy input {
+  background-color: hsla(240, 80%, 90%,0.3);
 }
 
 .cirru-token input:focus {
-  border-color: white;
+  background-color: hsla(240, 80%, 60%,0.3);
 }
 
 .cirru-suggest {
@@ -58,7 +71,7 @@
 }
 
 .cirru-guess {
-  background-color: blue;
+  background-color: hsl(240,80%,75%);
   color: white;
   font-family: Menlo;
   font-size: 14px;

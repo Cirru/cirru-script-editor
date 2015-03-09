@@ -1,4 +1,6 @@
 
+= _ $ require :lodash
+
 = dispatcher $ require :../dispatcher
 
 = exports.focusTo $ \ (coord)
@@ -13,11 +15,13 @@
     :text text
 
 = exports.removeNode $ \ (coord)
-  dispatcher.handleAction $ object
-    :type :focus-backward
-  setTimeout $ \= () $ dispatcher.handleAction $ object
-    :type :remove-node
-    :coord coord
+  -- "slow down moving and do't trigger back"
+  setTimeout $ \= ()
+    dispatcher.handleAction $ object
+      :type :focus-backward
+    dispatcher.handleAction $ object
+      :type :remove-node
+      :coord coord
 
 = exports.beforeToken $ \ (coord)
   dispatcher.handleAction $ object
@@ -27,10 +31,14 @@
     :type :focus-backward
 
 = exports.afterToken $ \ (coord)
+  if (_.isEqual coord (array))
+    do
+      exports.prependToken coord
+      return
   dispatcher.handleAction $ object
     :type :after-token
     :coord coord
-  setTimeout $ \= () $ dispatcher.handleAction $ object
+  dispatcher.handleAction $ object
     :type :focus-forward
 
 = exports.prependToken $ \ (coord)

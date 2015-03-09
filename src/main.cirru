@@ -14,4 +14,5 @@ React.render editor document.body
 window.addEventListener :keydown $ \ (event)
   if (is event.keyCode keydownCode.cancel)
     do
+      console.log :blocked
       event.preventDefault
