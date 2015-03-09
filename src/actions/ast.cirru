@@ -14,7 +14,7 @@
 
 = exports.removeNode $ \ (coord)
   dispatcher.handleAction $ object
-    :type :focus-outside
+    :type :focus-backward
   setTimeout $ \= () $ dispatcher.handleAction $ object
     :type :remove-node
     :coord coord
@@ -32,6 +32,13 @@
     :coord coord
   setTimeout $ \= () $ dispatcher.handleAction $ object
     :type :focus-forward
+
+= exports.prependToken $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :prepend-token
+    :coord coord
+  dispatcher.handleAction $ object
+    :type :focus-inside
 
 = exports.packNode $ \ (coord)
   dispatcher.handleAction $ object

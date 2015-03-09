@@ -100,16 +100,13 @@
         = tokens (@getTokens)
         if (@inSuggest)
           do $ @onSuggest $ @getCurrentGuess
-          do $ cond
-            event.shiftKey
-              astActions.beforeToken @props.coord
-            (or event.metaKey event.altKey)
-              return false
-            else
-              astActions.afterToken @props.coord
+          do $ if event.shiftKey
+            do $ astActions.beforeToken @props.coord
+            do $ astActions.afterToken @props.coord
       keydownCode.tab
         event.preventDefault
-        if (not event.shiftKey)
+        if event.shiftKey
+          do $ astActions.unpackExpr $ @props.coord.slice 0 -1
           do $ astActions.packNode @props.coord
       keydownCode.up
         if (@inSuggest)

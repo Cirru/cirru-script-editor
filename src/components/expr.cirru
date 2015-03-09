@@ -55,6 +55,7 @@
           else
             astActions.afterToken @props.coord
       keydownCode.tab
+        event.stopPropagation
         if event.shiftKey
           do $ astActions.unpackExpr @props.coord
           do $ astActions.packNode @props.coord

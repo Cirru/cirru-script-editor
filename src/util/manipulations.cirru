@@ -1,4 +1,6 @@
 
+= _ $ require :lodash
+
 = updateHelper $ \ (ast coord text matched)
   if matched
     do $ if (> coord.length 0)
@@ -11,7 +13,7 @@
   if matched
     do $ if (> coord.length 1)
       do $ ast.map $ \ (item index)
-        newHelper item (coord.slice 1) (is (. coord 0) index)
+        afterHelper item (coord.slice 1) (is (. coord 0) index)
       do
         = pos $ + 1 $ . coord 0
         = before $ ast.slice 0 pos
@@ -31,7 +33,7 @@
 
 = removeHelper $ \ (ast coord matched)
   if matched
-    do $ if (> coord.length 0)
+    do $ if (> coord.length 1)
       do $ ast.map $ \ (item index)
         removeHelper item (coord.slice 1) (is (. coord 0) index)
       do
@@ -67,7 +69,9 @@
         = pos $ . coord 0
         = before $ ast.slice 0 pos
         = after $ ast.slice (+ pos 1)
-        before.concat (. ast pos) after
+        = current $ or (. ast pos) (array)
+        console.log before current after
+        before.concat current after
     do ast
 
 = exports.updateToken $ \ (ast coord text)
@@ -80,7 +84,9 @@
   beforeHelper ast coord true
 
 = exports.afterToken $ \ (ast coord)
-  afterHelper ast coord true
+  if (_.isEqual (array) ast)
+    do $ return ast
+    do $ afterHelper ast coord true
 
 = exports.prependToken $ \ (ast coord)
   prependHelper ast coord true
@@ -89,4 +95,4 @@
   packHelper ast coord true
 
 = exports.unpackExpr $ \ (ast coord)
-  unpackExpr ast coord true
+  unpackHelper ast coord true

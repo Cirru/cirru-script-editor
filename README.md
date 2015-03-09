@@ -12,7 +12,7 @@ tab
   expr packNode
 
 shift tab
-  token --
+  token unpackExpr(parent)
   expr unpackExpr
 
 enter
@@ -24,7 +24,7 @@ shift enter
   expr beforeToken
 
 command enter
-  token --
+  token afterToken
   expr prependToken
 ```
 

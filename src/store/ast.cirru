@@ -4,7 +4,7 @@
 = manipulations $ require :../util/manipulations
 = focusStore    $ require :./focus
 
-= store $ JSON.parse $ or
+= store $ JSON.parse $ and
   localStorage.getItem :cirru-ast
   , :[]
 
@@ -30,7 +30,7 @@
       = store $ manipulations.afterToken store action.coord
       astStore.onchange
     :prepend-token
-      = store $ manipulations.afterToken store action.coord
+      = store $ manipulations.prependToken store action.coord
       astStore.onchange
     :pack-node
       = store $ manipulations.packNode store action.coord
