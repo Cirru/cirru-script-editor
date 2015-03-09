@@ -8,28 +8,26 @@
 
 = focusStore.dispatchToken $ dispatcher.register $ \ (action)
   switch action.type
-    :focus
+    :focus-to
       = store action.coord
       focusStore.onchange
-    :token-forward
+    :focus-forward
       = last $ . store (- store.length 1)
       = before $ store.slice 0 -1
       = store $ before.concat (+ last 1)
       focusStore.onchange
-    :token-backward
+    :focus-backward
       = last $ . store (- store.length 1)
       = before $ store.slice 0 -1
       if (> last 0)
         do $ = store $ before.concat (- last 1)
         do $ = store before
       focusStore.onchange
-    :expr-forward
-      = last $ . store (- store.length 1)
-      = before $ store.slice 0 -1
-      = store $ before.concat (+ last 1) 0
-      focusStore.onchange
-    :token-in
+    :focus-inside
       = store $ store.concat 0
+      focusStore.onchange
+    :focus-outside
+      = store $ store.slice 0 -1
       focusStore.onchange
 
 _.assign focusStore $ object

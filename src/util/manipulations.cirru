@@ -2,67 +2,91 @@
 = updateHelper $ \ (ast coord text matched)
   if matched
     do $ if (> coord.length 0)
-      do
-        = head $ . coord 0
-        = body $ coord.slice 1
-        ast.map $ \ (item index)
-          updateHelper item body text (is head index)
+      do $ ast.map $ \ (item index)
+        updateHelper item (coord.slice 1) text (is (. coord 0) index)
       do text
     do ast
 
-= newHelper $ \ (ast coord insertion matched)
+= afterHelper $ \ (ast coord matched)
   if matched
     do $ if (> coord.length 1)
-      do
-        = head $ . coord 0
-        = body $ coord.slice 1
-        ast.map $ \ (item index)
-          newHelper item body insertion (is head index)
+      do $ ast.map $ \ (item index)
+        newHelper item (coord.slice 1) (is (. coord 0) index)
       do
         = pos $ + 1 $ . coord 0
         = before $ ast.slice 0 pos
-        before.concat (array insertion) (ast.slice pos)
+        before.concat (array :) (ast.slice pos)
     do ast
 
-= insertHelper $ \ (ast coord insertion matched)
-  console.log ast coord matched
+= beforeHelper $ \ (ast coord matched)
   if matched
-    do $ if (> coord.length 0)
+    do $ if (> coord.length 1)
+      do $ ast.map $ \ (item index)
+        beforeHelper item (coord.slice 1) (is (. coord 0) index)
       do
-        = head $ . coord 0
-        = body $ coord.slice 1
-        ast.map $ \ (item index)
-          insertHelper item body insertion (is head index)
-      do
-        = before $ array insertion
-        before.concat ast
+        = pos $ . coord 0
+        = before $ ast.slice 0 pos
+        before.concat (array :) (ast.slice pos)
     do ast
 
 = removeHelper $ \ (ast coord matched)
   if matched
-    do $ if (> coord.length 1)
-      do
-        = head $ . coord 0
-        = body $ coord.slice 1
-        ast.map $ \ (item index)
-          removeHelper item body (is head index)
+    do $ if (> coord.length 0)
+      do $ ast.map $ \ (item index)
+        removeHelper item (coord.slice 1) (is (. coord 0) index)
       do
         = pos $ . coord 0
         = before $ ast.slice 0 pos
         before.concat $ ast.slice (+ pos 1)
     do ast
 
+= prependHelper $ \ (ast coord matched)
+  if matched
+    do $ if (> coord.length 0)
+      do $ ast.map $ \ (item index)
+        prependHelper item (coord.slice 1) (is (. coord 0) index)
+      do
+        = before $ array :
+        before.concat ast
+    do ast
+
+= packHelper $ \ (ast coord matched)
+  if matched
+    do $ if (> coord.length 0)
+      do $ ast.map $ \ (item index)
+        packHelper item (coord.slice 1) (is (. coord 0) index)
+      do $ array ast
+    do ast
+
+= unpackHelper $ \ (ast coord matched)
+  if matched
+    do $ if (> coord.length 1)
+      do $ ast.map $ \ (item index)
+        unpackHelper item (coord.slice 1) (is (. coord 0) index)
+      do
+        = pos $ . coord 0
+        = before $ ast.slice 0 pos
+        = after $ ast.slice (+ pos 1)
+        before.concat (. ast pos) after
+    do ast
+
 = exports.updateToken $ \ (ast coord text)
   updateHelper ast coord text true
-
-= exports.newToken $ \ (ast coord)
-  newHelper ast coord : true
-
-= exports.newExpr $ \ (ast coord)
-  newHelper ast coord (array :) true
 
 = exports.removeNode $ \ (ast coord)
   removeHelper ast coord true
 
-= exports.insertToken $ \ (ast coord)
-  insertHelper ast coord : true
+= exports.beforeToken $ \ (ast coord)
+  beforeHelper ast coord true
+
+= exports.afterToken $ \ (ast coord)
+  afterHelper ast coord true
+
+= exports.prependToken $ \ (ast coord)
+  prependHelper ast coord true
+
+= exports.packNode $ \ (ast coord)
+  packHelper ast coord true
+
+= exports.unpackExpr $ \ (ast coord)
+  unpackExpr ast coord true

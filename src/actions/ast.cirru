@@ -1,36 +1,48 @@
 
 = dispatcher $ require :../dispatcher
 
+= exports.focusTo $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :focus-to
+    :coord coord
+
 = exports.updateToken $ \ (coord text)
   dispatcher.handleAction $ object
     :type :update-token
     :coord coord
     :text text
 
-= exports.newToken $ \ (coord)
-  dispatcher.handleAction $ object
-    :type :new-token
-    :coord coord
-  dispatcher.handleAction $ object
-    :type :token-forward
-
-= exports.newExpr $ \ (coord)
-  dispatcher.handleAction $ object
-    :type :new-expr
-    :coord coord
-  dispatcher.handleAction $ object
-    :type :expr-forward
-
 = exports.removeNode $ \ (coord)
   dispatcher.handleAction $ object
-    :type :token-backward
+    :type :focus-outside
   setTimeout $ \= () $ dispatcher.handleAction $ object
     :type :remove-node
     :coord coord
 
-= exports.insertToken $ \ (coord)
+= exports.beforeToken $ \ (coord)
   dispatcher.handleAction $ object
-    :type :insert-token
+    :type :before-token
+    :coord coord
+  dispatcher.handleAction $ object
+    :type :focus-backward
+
+= exports.afterToken $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :after-token
     :coord coord
   setTimeout $ \= () $ dispatcher.handleAction $ object
-    :type :token-in
+    :type :focus-forward
+
+= exports.packNode $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :pack-node
+    :coord coord
+  dispatcher.handleAction $ object
+    :type :focus-inside
+
+= exports.unpackExpr $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :unpack-expr
+    :coord coord
+  dispatcher.handleAction $ object
+    :type :focus-outside

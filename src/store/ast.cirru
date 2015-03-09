@@ -19,18 +19,24 @@
     :update-token
       = store $ manipulations.updateToken store action.coord action.text
       astStore.onchange
-    :new-token
-      = store $ manipulations.newToken store action.coord
-      astStore.onchange
-    :new-expr
-      = store $ manipulations.newExpr store action.coord
-      astStore.onchange
     :remove-node
       dispatcher.waitFor $ array focusStore.dispatchToken
       = store $ manipulations.removeNode store action.coord
       astStore.onchange
-    :insert-token
-      = store $ manipulations.insertToken store action.coord
+    :before-token
+      = store $ manipulations.beforeToken store action.coord
+      astStore.onchange
+    :after-token
+      = store $ manipulations.afterToken store action.coord
+      astStore.onchange
+    :prepend-token
+      = store $ manipulations.afterToken store action.coord
+      astStore.onchange
+    :pack-node
+      = store $ manipulations.packNode store action.coord
+      astStore.onchange
+    :unpack-expr
+      = store $ manipulations.unpackExpr store action.coord
       astStore.onchange
 
 _.assign astStore $ object

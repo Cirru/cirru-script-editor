@@ -6,8 +6,7 @@
 
 = search $ require :../util/search
 
-= astAction $ require :../actions/ast
-= focusActions $ require :../actions/focus
+= astActions $ require :../actions/ast
 
 = detect $ require :../util/detect
 = keydownCode $ require :../util/keydown-code
@@ -77,16 +76,16 @@
 
   :onChange $ \ (event)
     = text event.target.value
-    astAction.updateToken @props.coord text
+    astActions.updateToken @props.coord text
     @setState $ object
       :disableSuggest false
       :select 0
 
   :onSuggest $ \ (text)
-    astAction.updateToken @props.coord text
+    astActions.updateToken @props.coord text
 
   :onClick $ \ (event)
-    focusActions.focus @props.coord
+    astActions.focusTo @props.coord
 
   :onRootClick $ \ (event)
     event.stopPropagation
@@ -101,10 +100,17 @@
         = tokens (@getTokens)
         if (@inSuggest)
           do $ @onSuggest $ @getCurrentGuess
-          do $ astAction.newExpr @props.coord
+          do $ cond
+            event.shiftKey
+              astActions.beforeToken @props.coord
+            (or event.metaKey event.altKey)
+              return false
+            else
+              astActions.afterToken @props.coord
       keydownCode.tab
-        astAction.newToken @props.coord
         event.preventDefault
+        if (not event.shiftKey)
+          do $ astActions.packNode @props.coord
       keydownCode.up
         if (@inSuggest)
           do
@@ -117,7 +123,7 @@
             @selectNext
       keydownCode.cancel
         if (is @props.token :)
-          astAction.removeNode @props.coord
+          astActions.removeNode @props.coord
           event.stopPropagation
           event.preventDefault
 

@@ -6,7 +6,6 @@
 
 = focusStore $ require :../store/focus
 
-= focusActions $ require :../actions/focus
 = astActions $ require :../actions/ast
 
 = keydownCode $ require :../util/keydown-code
@@ -38,7 +37,7 @@
 
   :onClick $ \ (event)
     event.stopPropagation
-    focusActions.focus @props.coord
+    astActions.focusTo @props.coord
 
   :onKeyDown $ \ (event)
     switch event.keyCode
@@ -48,9 +47,17 @@
         astActions.removeNode @props.coord
       keydownCode.enter
         event.stopPropagation
-        astActions.insertToken @props.coord
+        cond
+          event.shiftKey
+            astActions.beforeToken @props.coord
+          (or event.metaKey event.altKey)
+            astActions.prependToken @props.coord
+          else
+            astActions.afterToken @props.coord
       keydownCode.tab
-        astActions.newToken @props.coord
+        if event.shiftKey
+          do $ astActions.unpackExpr @props.coord
+          do $ astActions.packNode @props.coord
 
   :render $ \ ()
     = className $ cx $ object
