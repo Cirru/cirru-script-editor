@@ -22,7 +22,8 @@ module.exports = {
     loaders: [
       {test: /\.coffee$/, loaders: ['react-hot', 'coffee'], exclude: /node_modules/},
       {test: /\.cirru$/, loaders: ['react-hot', 'cirru-script'], exclude: /node_modules/},
-      {test: /\.css$/, loaders: ['style', 'css']}
+      {test: /\.css$/, loaders: ['style', 'css']},
+      {test: /\.png$/, loaders: ['url']}
     ]
   },
   plugins: [

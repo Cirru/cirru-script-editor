@@ -15,3 +15,13 @@
 = exports.isPlain $ \ (ast)
   ast.every $ \ (item)
     _.isString item
+
+= containsHelper $ \ (a b)
+  if (is b.length 0)
+    do $ return true
+  if (is (. a 0) (. b 0))
+    do $ containsHelper (a.slice 0 -1) (b.slice 0 -1)
+    do $ return false
+
+= exports.contains $ \ (a b)
+  containsHelper a b

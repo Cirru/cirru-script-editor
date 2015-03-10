@@ -1,5 +1,6 @@
 
 = _ $ require :lodash
+= detect $ require :../util/detect
 
 = updateHelper $ \ (ast coord text matched)
   if matched
@@ -20,15 +21,15 @@
         before.concat (array :) (ast.slice pos)
     do ast
 
-= beforeHelper $ \ (ast coord matched)
+= beforeHelper $ \ (ast coord matched insertion)
   if matched
     do $ if (> coord.length 1)
       do $ ast.map $ \ (item index)
-        beforeHelper item (coord.slice 1) (is (. coord 0) index)
+        beforeHelper item (coord.slice 1) (is (. coord 0) index) insertion
       do
         = pos $ . coord 0
         = before $ ast.slice 0 pos
-        before.concat (array :) (ast.slice pos)
+        before.concat (array insertion) (ast.slice pos)
     do ast
 
 = removeHelper $ \ (ast coord matched)
@@ -50,6 +51,15 @@
       do
         = before $ array :
         before.concat ast
+    do ast
+
+= appendHelper $ \ (ast coord matched insertion)
+  if matched
+    do $ if (> coord.length 0)
+      do $ ast.map $ \ (item index)
+        appendHelper item (coord.slice 1) (is (. coord 0) index) insertion
+      do
+        ast.concat $ array insertion
     do ast
 
 = packHelper $ \ (ast coord matched)
@@ -81,7 +91,7 @@
   removeHelper ast coord true
 
 = exports.beforeToken $ \ (ast coord)
-  beforeHelper ast coord true
+  beforeHelper ast coord true :
 
 = exports.afterToken $ \ (ast coord)
   afterHelper ast coord true
@@ -94,3 +104,12 @@
 
 = exports.unpackExpr $ \ (ast coord)
   unpackHelper ast coord true
+
+= exports.dropTo $ \ (ast focus coord node inside)
+  if (detect.contains coord focus)
+    do $ return ast
+
+  = ast $ removeHelper ast focus
+  if inside
+    do $ return $ appendHelper ast coord true node
+    do $ return $ beforeHelper ast coord true node

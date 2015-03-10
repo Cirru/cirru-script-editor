@@ -15,6 +15,8 @@
 
 = mixinListenTo $ require :../mixins/listen-to
 
+= iconUrl $ require ":../images/cirru-32x32.png"
+
 = o React.createElement
 = T React.PropTypes
 = cx React.addons.classSet
@@ -25,6 +27,8 @@
   :getInitialState $ \ () $ object
     :disableSuggest false
     :select 0
+    :isDrag false
+    :isDrop false
 
   :propTypes $ object
     :token T.string.isRequired
@@ -124,6 +128,30 @@
           event.stopPropagation
           event.preventDefault
 
+  :onDragOver $ \ (event)
+    event.preventDefault
+
+  :onDragStart $ \ (event)
+    = img $ document.createElement :img
+    = img.src iconUrl
+    event.dataTransfer.setDragImage img 16 16
+    event.stopPropagation
+    @setState $ object (:isDrag true)
+
+  :onDragEnd $ \ (event)
+    @setState $ object (:isDrag false)
+
+  :onDragEnter $ \ (event)
+    @setState $ object (:isDrop true)
+
+  :onDragLeave $ \ (event)
+    @setState $ object (:isDrop false)
+
+  :onDrop $ \ (event)
+    event.stopPropagation
+    @setState $ object (:isDrop false)
+    astActions.dropTo @props.coord @props.token false
+
   :render $ \ ()
     = width $ detect.textWidth @props.token :14px :Menlo
     = style $ object
@@ -132,10 +160,18 @@
     = className $ cx $ object
       :cirru-token true
       :is-fuzzy $ or (is @props.token :) (? (@props.token.match /\s))
+      :is-drag @state.isDrag
+      :is-drop @state.isDrop
 
     o :span
       object (:className className) (:draggable true) (:onClick @onRootClick)
         :tabIndex 0
+        :onDragOver @onDragOver
+        :onDragStart @onDragStart
+        :onDragEnd @onDragEnd
+        :onDragEnter @onDragEnter
+        :onDragLeave @onDragLeave
+        :onDrop @onDrop
       o :input
         object (:value @props.token) (:style style) (:ref :input)
           :onFocus @onFocus

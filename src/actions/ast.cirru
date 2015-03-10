@@ -61,3 +61,13 @@
     :coord coord
   dispatcher.handleAction $ object
     :type :focus-outside
+
+= exports.dropTo $ \ (coord node inside)
+  dispatcher.handleAction $ object
+    :type :drop-to
+    :coord coord
+    :node node
+    :inside inside
+  dispatcher.handleAction $ object
+    :type :focus-to
+    :coord coord

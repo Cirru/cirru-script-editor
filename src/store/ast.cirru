@@ -4,12 +4,9 @@
 = manipulations $ require :../util/manipulations
 = focusStore    $ require :./focus
 
-= store $ JSON.parse $ and
+= store $ JSON.parse $ or
   localStorage.getItem :cirru-ast
   , :[]
-
--- "force set to empty"
-= store $ array
 
 = astStore $ new EventEmitter
 
@@ -37,6 +34,9 @@
       astStore.onchange
     :unpack-expr
       = store $ manipulations.unpackExpr store action.coord
+      astStore.onchange
+    :drop-to
+      = store $ manipulations.dropTo store (focusStore.get) action.coord action.node action.inside
       astStore.onchange
 
 _.assign astStore $ object
