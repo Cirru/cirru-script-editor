@@ -44,13 +44,12 @@
     astActions.focusTo @props.coord
 
   :onKeyDown $ \ (event)
+    event.stopPropagation
     switch event.keyCode
       keydownCode.cancel
-        event.stopPropagation
         event.preventDefault
         astActions.removeNode @props.coord
       keydownCode.enter
-        event.stopPropagation
         cond
           event.shiftKey
             astActions.beforeToken @props.coord
@@ -59,10 +58,17 @@
           else
             astActions.afterToken @props.coord
       keydownCode.tab
-        event.stopPropagation
         if event.shiftKey
           do $ astActions.unpackExpr @props.coord
           do $ astActions.packNode @props.coord
+      keydownCode.left
+        astActions.goLeft @props.coord
+      keydownCode.right
+        astActions.goRight @props.coord
+      keydownCode.up
+        astActions.goUp @props.coord
+      keydownCode.down
+        astActions.goDown @props.coord
 
   :onDragOver $ \ (event)
     event.preventDefault

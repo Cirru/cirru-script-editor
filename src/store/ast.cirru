@@ -48,6 +48,18 @@
     :focus-to
       = focus action.coord
       astStore.onchange
+    :go-left
+      = focus $ caret.left store focus
+      astStore.onchange
+    :go-right
+      = focus $ caret.right store focus
+      astStore.onchange
+    :go-up
+      = focus $ caret.up store focus
+      astStore.onchange
+    :go-down
+      = focus $ caret.down store focus
+      astStore.onchange
 
 _.assign astStore $ object
   :onchange $ \ ()

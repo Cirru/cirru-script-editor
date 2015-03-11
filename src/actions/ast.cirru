@@ -56,3 +56,23 @@
   dispatcher.handleAction $ object
     :type :drop-to
     :coord coord
+
+= exports.goLeft $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :go-left
+    :coord coord
+
+= exports.goRight $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :go-right
+    :coord coord
+
+= exports.goUp $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :go-up
+    :coord coord
+
+= exports.goDown $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :go-down
+    :coord coord
