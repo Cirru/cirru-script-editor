@@ -78,6 +78,14 @@
       do $ @setState $ object $ :select 0
       do $ @setState $ object $ :select $ + @state.select 1
 
+  :isCaretAhead $ \ ()
+    = input $ @refs.input.getDOMNode
+    is input.selectionStart 0
+
+  :isCaretBehind $ \ ()
+    = input $ @refs.input.getDOMNode
+    is input.selectionEnd input.value.length
+
   :onChange $ \ (event)
     = text event.target.value
     astActions.updateToken @props.coord text
@@ -96,7 +104,8 @@
 
   :onKeyDown $ \ (event)
     event.stopPropagation
-    switch event.keyCode
+    = keyCode event.keyCode
+    switch keyCode
       keydownCode.esc
         @setState $ object (:disableSuggest true)
         return undefined
@@ -117,16 +126,26 @@
           do
             event.preventDefault
             @selectPrev
+          do $ if (@isCaretAhead)
+            do $ astActions.goUp @props.coord
       keydownCode.down
         if (@inSuggest)
           do
             event.preventDefault
             @selectNext
+          do $ if (@isCaretBehind)
+            do $ astActions.goDown @props.coord
       keydownCode.cancel
         if (is @props.token :)
           astActions.removeNode @props.coord
           event.stopPropagation
           event.preventDefault
+      keydownCode.left
+        if (@isCaretAhead)
+          do $ astActions.goLeft @props.coord
+      keydownCode.right
+        if (@isCaretBehind)
+          do $ astActions.goRight @props.coord
 
   :onDragOver $ \ (event)
     event.preventDefault
