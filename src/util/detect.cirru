@@ -20,7 +20,7 @@
   if (is b.length 0)
     do $ return true
   if (is (. a 0) (. b 0))
-    do $ containsHelper (a.slice 0 -1) (b.slice 0 -1)
+    do $ containsHelper (a.slice 1) (b.slice 1)
     do $ return false
 
 = exports.contains $ \ (a b)

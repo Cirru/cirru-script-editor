@@ -105,11 +105,19 @@
 = exports.unpackExpr $ \ (ast coord)
   unpackHelper ast coord true
 
-= exports.dropTo $ \ (ast focus coord node inside)
+= getHelper $ \ (ast coord)
+  if (is coord.length 0)
+    do $ return ast
+  getHelper (. ast (. coord 0)) (coord.slice 1)
+
+= exports.dropTo $ \ (ast focus coord)
   if (detect.contains coord focus)
     do $ return ast
 
-  = ast $ removeHelper ast focus
-  if inside
+  = node $ getHelper ast focus
+  = target $ getHelper ast coord
+
+  = ast $ removeHelper ast focus true
+  if (_.isArray target)
     do $ return $ appendHelper ast coord true node
     do $ return $ beforeHelper ast coord true node

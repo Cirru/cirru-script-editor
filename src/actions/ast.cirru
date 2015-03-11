@@ -62,12 +62,10 @@
   dispatcher.handleAction $ object
     :type :focus-outside
 
-= exports.dropTo $ \ (coord node inside)
+= exports.dropTo $ \ (coord)
   dispatcher.handleAction $ object
     :type :drop-to
     :coord coord
-    :node node
-    :inside inside
-  dispatcher.handleAction $ object
+  setTimeout $ \ () dispatcher.handleAction $ object
     :type :focus-to
     :coord coord

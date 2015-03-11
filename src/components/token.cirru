@@ -136,6 +136,7 @@
     = img.src iconUrl
     event.dataTransfer.setDragImage img 16 16
     event.stopPropagation
+    astActions.focusTo @props.coord
     @setState $ object (:isDrag true)
 
   :onDragEnd $ \ (event)
@@ -150,7 +151,7 @@
   :onDrop $ \ (event)
     event.stopPropagation
     @setState $ object (:isDrop false)
-    astActions.dropTo @props.coord @props.token false
+    astActions.dropTo @props.coord
 
   :render $ \ ()
     = width $ detect.textWidth @props.token :14px :Menlo

@@ -36,7 +36,7 @@
       = store $ manipulations.unpackExpr store action.coord
       astStore.onchange
     :drop-to
-      = store $ manipulations.dropTo store (focusStore.get) action.coord action.node action.inside
+      = store $ manipulations.dropTo store (focusStore.get) action.coord
       astStore.onchange
 
 _.assign astStore $ object
