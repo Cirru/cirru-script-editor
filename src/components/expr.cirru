@@ -4,8 +4,6 @@
 
 = Token $ React.createFactory $ require :./token
 
-= focusStore $ require :../store/focus
-
 = astActions $ require :../actions/ast
 
 = keydownCode $ require :../util/keydown-code

@@ -80,7 +80,6 @@
         = before $ ast.slice 0 pos
         = after $ ast.slice (+ pos 1)
         = current $ or (. ast pos) (array)
-        console.log before current after
         before.concat current after
     do ast
 

@@ -8,9 +8,6 @@
 
 = focusStore.dispatchToken $ dispatcher.register $ \ (action)
   switch action.type
-    :focus-to
-      = store action.coord
-      focusStore.onchange
     :focus-forward
       = last $ . store (- store.length 1)
       = before $ store.slice 0 -1

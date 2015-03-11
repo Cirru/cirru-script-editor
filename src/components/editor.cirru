@@ -2,7 +2,6 @@
 = React $ require :react/addons
 
 = astStore    $ require :../store/ast
-= focusStore  $ require :../store/focus
 
 = mixinListenTo $ require :../mixins/listen-to
 
@@ -16,17 +15,13 @@
 
   :getInitialState $ \ () $ object
     :ast $ astStore.get
-    :focus $ focusStore.get
+    :focus $ astStore.getFocus
 
   :componentDidMount $ \ ()
     @listenTo astStore @setAst
-    @listenTo focusStore @setFocus
 
   :setAst $ \ ()
-    @setState $ object (:ast $ astStore.get)
-
-  :setFocus $ \ ()
-    @setState $ object (:focus $ focusStore.get)
+    @setState $ object (:ast $ astStore.get) (:focus $ astStore.getFocus)
 
   :onKeyDown $ \ (event)
     event.stopPropagation

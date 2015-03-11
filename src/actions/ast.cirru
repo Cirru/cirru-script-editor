@@ -18,8 +18,6 @@
   -- "slow down moving and do't trigger back"
   setTimeout $ \= ()
     dispatcher.handleAction $ object
-      :type :focus-backward
-    dispatcher.handleAction $ object
       :type :remove-node
       :coord coord
 
@@ -27,8 +25,6 @@
   dispatcher.handleAction $ object
     :type :before-token
     :coord coord
-  dispatcher.handleAction $ object
-    :type :focus-backward
 
 = exports.afterToken $ \ (coord)
   if (_.isEqual coord (array))
@@ -45,27 +41,18 @@
   dispatcher.handleAction $ object
     :type :prepend-token
     :coord coord
-  dispatcher.handleAction $ object
-    :type :focus-inside
 
 = exports.packNode $ \ (coord)
   dispatcher.handleAction $ object
     :type :pack-node
     :coord coord
-  dispatcher.handleAction $ object
-    :type :focus-inside
 
 = exports.unpackExpr $ \ (coord)
   dispatcher.handleAction $ object
     :type :unpack-expr
     :coord coord
-  dispatcher.handleAction $ object
-    :type :focus-outside
 
 = exports.dropTo $ \ (coord)
   dispatcher.handleAction $ object
     :type :drop-to
-    :coord coord
-  setTimeout $ \ () dispatcher.handleAction $ object
-    :type :focus-to
     :coord coord
