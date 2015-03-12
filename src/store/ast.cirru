@@ -26,6 +26,8 @@ history.init $ object
       history.add $ object (:store store) (:focus focus)
       astStore.onchange
     :remove-node
+      if (is action.coord.length 0)
+        do return
       = store $ manipulations.removeNode store action.coord
       = focus $ caret.backward store action.coord
       history.add $ object (:store store) (:focus focus)
