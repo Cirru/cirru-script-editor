@@ -9,7 +9,8 @@
 _.assign dispatcher $ object
 
   :handleAction $ \ (action)
-    console.info :action: action
+    if window.isCirruLogOn
+      do $ console.info :action: action
     @dispatch action
 
 = module.exports dispatcher

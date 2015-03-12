@@ -33,6 +33,15 @@
   :componentDidUpdate $ \ ()
     @setFocus
 
+  :shoudComponentUpdate $ \ (props state)
+    if (isnt props.expr @props.expr)
+      do $ return true
+    if (isnt props.focus @props.focus)
+      do $ return true
+    if (isnt state @state)
+      do $ return true
+    return false
+
   :setFocus $ \ ()
     if (_.isEqual @props.coord @props.focus)
       do

@@ -5,7 +5,7 @@
 = caret         $ require :../util/caret
 = history       $ require :../util/history
 
--- "not running" = store $ JSON.parse $ or
+= store $ JSON.parse $ or
   localStorage.getItem :cirru-ast
   , :[]
 
