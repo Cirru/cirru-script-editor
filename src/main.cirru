@@ -3,11 +3,12 @@
 
 require :./style/main.css
 
-= Editor $ React.createFactory $ require :./components/editor
+= Container $ React.createFactory $ require :./components/container
 
 = keydownCode $ require :./util/keydown-code
 
-= editor $ Editor
+= editor $ Container
+= window.isCirruLogOn true
 
 React.render editor document.body
 

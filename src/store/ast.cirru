@@ -5,16 +5,8 @@
 = caret         $ require :../util/caret
 = history       $ require :../util/history
 
-= store $ JSON.parse $ or
-  localStorage.getItem :cirru-ast
-  , :[]
-
-= store $ array :demo
-
+= store $ array
 = focus $ array
-history.init $ object
-  :store store
-  :focus focus
 
 = astStore $ new EventEmitter
 
@@ -89,11 +81,17 @@ history.init $ object
 
 _.assign astStore $ object
   :onchange $ \ ()
-    localStorage.setItem :cirru-ast $ JSON.stringify (or store $ array)
     @emit :change
 
   :get $ \ () store
 
   :getFocus $ \ () focus
+
+  :init $ \ (initialStore initialFocus)
+    = store initialStore
+    = focus initialFocus
+    history.init $ object
+      :store store
+      :focus focus
 
 = module.exports astStore

@@ -8,20 +8,23 @@
 = Expr $ React.createFactory $ require :./expr
 
 = o React.createElement
+= T React.PropTypes
 
 = module.exports $ React.createClass $ object
   :displayName :cirru-editor
   :mixins $ array mixinListenTo
 
-  :getInitialState $ \ () $ object
-    :ast $ astStore.get
-    :focus $ astStore.getFocus
+  :propTypes $ object
+    :ast      T.array.isRequired
+    :focus    T.array.isRequired
+    :onChange T.func.isRequired
 
   :componentDidMount $ \ ()
     @listenTo astStore @setAst
+    astStore.init @props.ast @props.focus
 
   :setAst $ \ ()
-    @setState $ object (:ast $ astStore.get) (:focus $ astStore.getFocus)
+    @props.onChange (astStore.get) (astStore.getFocus)
 
   :onKeyDown $ \ (event)
     event.stopPropagation
@@ -31,4 +34,4 @@
     o :div
       object (:className :cirru-editor) (:onKeyDown @onKeyDown)
       Expr
-        object (:expr @state.ast) (:coord $ array) (:focus @state.focus)
+        object (:expr @props.ast) (:coord $ array) (:focus @props.focus)
