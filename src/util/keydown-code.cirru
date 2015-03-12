@@ -9,3 +9,4 @@
   :slash 191
   :tab 9
   :cancel 8
+  :z 90

@@ -53,7 +53,7 @@
         cond
           event.shiftKey
             astActions.beforeToken @props.coord
-          (or event.metaKey event.altKey)
+          (or event.metaKey event.ctrlKey)
             astActions.prependToken @props.coord
           else
             astActions.afterToken @props.coord
@@ -69,6 +69,13 @@
         astActions.goUp @props.coord
       keydownCode.down
         astActions.goDown @props.coord
+      keydownCode.z
+        if (or event.metaKey event.ctrlKey)
+          do
+            event.preventDefault
+            if event.shiftKey
+              do $ astActions.redo
+              do $ astActions.undo
 
   :onDragOver $ \ (event)
     event.preventDefault

@@ -76,3 +76,11 @@
   dispatcher.handleAction $ object
     :type :go-down
     :coord coord
+
+= exports.undo $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :undo
+
+= exports.redo $ \ (coord)
+  dispatcher.handleAction $ object
+    :type :redo

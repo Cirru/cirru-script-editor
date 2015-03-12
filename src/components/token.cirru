@@ -146,6 +146,13 @@
       keydownCode.right
         if (@isCaretBehind)
           do $ astActions.goRight @props.coord
+      keydownCode.z
+        if (or event.metaKey event.ctrlKey)
+          do
+            event.preventDefault
+            if event.shiftKey
+              do $ astActions.redo
+              do $ astActions.undo
 
   :onDragOver $ \ (event)
     event.preventDefault
