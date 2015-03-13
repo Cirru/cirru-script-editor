@@ -15,7 +15,7 @@
     :text text
 
 = exports.removeNode $ \ (coord)
-  -- "slow down moving and do't trigger back"
+  -- "slow down moving and don't trigger back"
   setTimeout $ \= ()
     dispatcher.handleAction $ object
       :type :remove-node
