@@ -9,7 +9,7 @@
 = keydownCode $ require :../util/keydown-code
 = detect $ require :../util/detect
 
-= iconUrl $ require ":../images/cirru-32x32.png"
+= iconUrl $ require ":../../images/cirru-32x32.png"
 
 = o React.createElement
 = T React.PropTypes

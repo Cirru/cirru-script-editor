@@ -1,6 +1,6 @@
 {
   "name": "cirru-editor",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Editor of Cirru grammar",
   "main": "lib/components/editor.js",
   "scripts": {
@@ -32,6 +32,7 @@
   "dependencies": {
     "flux": "^2.0.1",
     "lodash": "^3.3.1",
+    "react": "^0.13.1",
     "wolfy87-eventemitter": "^4.2.11"
   },
   "repository": {

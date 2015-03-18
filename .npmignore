@@ -1,9 +1,10 @@
 
-/dist/
-/coffee/
-/cirru/
-/css/
+/src/
+/src/
+/build/
 
-/build/main.js
-/gulp.coffee
-/index.html
+/gulp.cirru
+/assets.json
+
+/index.*
+/webpack.*
