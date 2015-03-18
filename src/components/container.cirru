@@ -3,7 +3,7 @@
 
 = Editor $ React.createFactory $ require :./editor
 
-= o React.createElement
+= div $ React.createFactory :div
 
 = cachedAst $ JSON.parse $ or
   localStorage.getItem :cirru-ast
@@ -23,7 +23,7 @@
     localStorage.setItem :cirru-ast $ JSON.stringify @state.ast
 
   :render $ \ ()
-    o :div (object)
+    div (object)
       Editor $ object
         :ast @state.ast
         :focus @state.focus

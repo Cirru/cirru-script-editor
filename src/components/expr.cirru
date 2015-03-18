@@ -1,8 +1,10 @@
 
 = React $ require :react/addons
 = _ $ require :lodash
+= cx $ require :classnames
 
 = Token $ React.createFactory $ require :./token
+= div $ React.createFactory :div
 
 = astActions $ require :../actions/ast
 
@@ -11,9 +13,7 @@
 
 = iconUrl $ require ":../../images/cirru-32x32.png"
 
-= o React.createElement
 = T React.PropTypes
-= cx React.addons.classSet
 
 = module.exports $ React.createClass $ object
   :displayName :cirru-expr
@@ -118,7 +118,7 @@
       :is-drag @state.isDrag
       :is-drop @state.isDrop
 
-    o :div
+    div
       object (:className className) (:draggable true) (:onClick @onClick)
         :tabIndex 0
         :onKeyDown @onKeyDown

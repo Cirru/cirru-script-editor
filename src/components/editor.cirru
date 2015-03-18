@@ -1,13 +1,13 @@
 
-= React $ require :react/addons
+= React $ require :react
 
 = astStore    $ require :../store/ast
 
 = mixinListenTo $ require :../mixins/listen-to
 
 = Expr $ React.createFactory $ require :./expr
+= div $ React.createFactory :div
 
-= o React.createElement
 = T React.PropTypes
 
 = module.exports $ React.createClass $ object
@@ -31,7 +31,7 @@
     event.preventDefault
 
   :render $ \ ()
-    o :div
+    div
       object (:className :cirru-editor) (:onKeyDown @onKeyDown)
       Expr
         object (:expr @props.ast) (:coord $ array) (:focus @props.focus)

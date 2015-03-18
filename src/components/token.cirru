@@ -1,6 +1,7 @@
 
 = React $ require :react/addons
 = _ $ require :lodash
+= cx $ require :classnames
 
 = astStore    $ require :../store/ast
 
@@ -12,14 +13,14 @@
 = keydownCode $ require :../util/keydown-code
 
 = Suggest $ React.createFactory $ require :./suggest
+= span $ React.createFactory :span
+= input $ React.createFactory :input
 
 = mixinListenTo $ require :../mixins/listen-to
 
 = iconUrl $ require ":../../images/cirru-32x32.png"
 
-= o React.createElement
 = T React.PropTypes
-= cx React.addons.classSet
 
 = module.exports $ React.createClass $ object
   :displayName :cirru-token
@@ -53,9 +54,9 @@
   :setFocus $ \ ()
     if (_.isEqual @props.coord @props.focus)
       do
-        = input $ @refs.input.getDOMNode
-        if (not (is document.activeElement input))
-          do $ input.focus
+        = inputEl $ @refs.input.getDOMNode
+        if (not (is document.activeElement inputEl))
+          do $ inputEl.focus
 
   :getTokens $ \ ()
     = tokens $ _.unique $ _.flattenDeep $ astStore.get
@@ -88,12 +89,12 @@
       do $ @setState $ object $ :select $ + @state.select 1
 
   :isCaretAhead $ \ ()
-    = input $ @refs.input.getDOMNode
-    is input.selectionStart 0
+    = inputEl $ @refs.input.getDOMNode
+    is inputEl.selectionStart 0
 
   :isCaretBehind $ \ ()
-    = input $ @refs.input.getDOMNode
-    is input.selectionEnd input.value.length
+    = inputEl $ @refs.input.getDOMNode
+    is inputEl.selectionEnd inputEl.value.length
 
   :onChange $ \ (event)
     = text event.target.value
@@ -199,7 +200,7 @@
       :is-drag @state.isDrag
       :is-drop @state.isDrop
 
-    o :span
+    span
       object (:className className) (:draggable true) (:onClick @onRootClick)
         :tabIndex 0
         :onDragOver @onDragOver
@@ -208,7 +209,7 @@
         :onDragEnter @onDragEnter
         :onDragLeave @onDragLeave
         :onDrop @onDrop
-      o :input
+      input
         object (:value @props.token) (:style style) (:ref :input)
           :onFocus @onFocus
           :onBlur @onBlur

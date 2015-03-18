@@ -1,7 +1,8 @@
 
 = React $ require :react/addons
 
-= o React.createElement
+= div $ React.createFactory :div
+
 = T React.PropTypes
 
 = module.exports $ React.createClass $ object
@@ -24,12 +25,11 @@
       = className :cirru-guess
       if (is index @props.select)
         do $ = className ":cirru-guess is-selected"
-      o :div
+      div
         object (:className className) (:key text) (:onClick onClick)
         , text
 
   :render $ \ ()
-
-    o :div
+    div
       object (:className :cirru-suggest)
       @renderTokens
