@@ -1,7 +1,7 @@
 
 = React $ require :react/addons
 
-require :./style/main.css
+require :../style/main.css
 
 = Container $ React.createFactory $ require :./components/container
 
