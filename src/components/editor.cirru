@@ -34,4 +34,7 @@
     div
       object (:className :cirru-editor) (:onKeyDown @onKeyDown)
       Expr
-        object (:expr @props.ast) (:coord $ array) (:focus @props.focus)
+        object (:expr @props.ast) (:coord $ array)
+          :focus @props.focus
+          :level 0
+          :inline false

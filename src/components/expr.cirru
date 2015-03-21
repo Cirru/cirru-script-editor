@@ -22,6 +22,8 @@
     :expr   T.array.isRequired
     :coord  T.array.isRequired
     :focus  T.array.isRequired
+    :level  T.number.isRequired
+    :inline T.bool.isRequired
 
   :getInitialState $ \ () $ object
     :isDrag false
@@ -72,12 +74,16 @@
           do $ astActions.packNode @props.coord
       keydownCode.left
         astActions.goLeft @props.coord
+        event.preventDefault
       keydownCode.right
         astActions.goRight @props.coord
+        event.preventDefault
       keydownCode.up
         astActions.goUp @props.coord
+        event.preventDefault
       keydownCode.down
         astActions.goDown @props.coord
+        event.preventDefault
       keydownCode.z
         if (or event.metaKey event.ctrlKey)
           do
@@ -114,9 +120,12 @@
   :render $ \ ()
     = className $ cx $ object
       :cirru-expr true
-      :is-plain $ detect.isPlain @props.expr
+      :is-inline @props.inline
       :is-drag @state.isDrag
       :is-drop @state.isDrop
+      :is-empty $ is @props.expr.length 0
+      :is-root $ is @props.level 0
+    = isLastList true
 
     div
       object (:className className) (:draggable true) (:onClick @onClick)
@@ -130,12 +139,18 @@
         :onDragLeave @onDragLeave
         :onDrop @onDrop
       _.map @props.expr $ \= (item index)
+        = isLastInline $ not isLastList
+        = isLastList $ _.isArray item
         if (_.isString item)
           do $ Token $ object (:token item) (:key index)
             :coord $ @props.coord.concat index
             :focus @props.focus
           do $ Expr $ object (:expr item) (:key index)
+            :level $ + @props.level 1
             :coord $ @props.coord.concat index
             :focus @props.focus
+            :inline $ and
+              detect.isPlain item
+              and (> @props.level 0) isLastInline
 
 = Expr $ React.createFactory module.exports

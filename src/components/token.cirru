@@ -6,6 +6,7 @@
 = astStore    $ require :../store/ast
 
 = search $ require :../util/search
+= list $ require :../util/list
 
 = astActions $ require :../actions/ast
 
@@ -55,12 +56,19 @@
     if (_.isEqual @props.coord @props.focus)
       do
         = inputEl $ @refs.input.getDOMNode
+        if (is document.activeElement inputEl)
+          do $ return
         if (not (is document.activeElement inputEl))
-          do $ inputEl.focus
+          do
+            inputEl.focus
+            = inputEl.selectionStart inputEl.value.length
+            = inputEl.selectionEnd inputEl.value.length
 
   :getTokens $ \ ()
-    = tokens $ _.unique $ _.flattenDeep $ astStore.get
-    search.fuzzyStart tokens @props.token
+    = tokens $ _.flattenDeep $ astStore.get
+    = tokens $ list.removeOne tokens @props.token
+    = uniqueTokens $ _.unique tokens
+    search.fuzzyStart uniqueTokens @props.token
 
   :inSuggest $ \ ()
     if @state.disableSuggest
@@ -105,6 +113,8 @@
 
   :onSuggest $ \ (text)
     astActions.updateToken @props.coord text
+    @setState $ object
+      :disableSuggest true
 
   :onClick $ \ (event)
     astActions.focusTo @props.coord
@@ -122,10 +132,16 @@
       keydownCode.enter
         = tokens (@getTokens)
         if (@inSuggest)
-          do $ @onSuggest $ @getCurrentGuess
-          do $ if event.shiftKey
-            do $ astActions.beforeToken @props.coord
-            do $ astActions.afterToken @props.coord
+          do
+            @onSuggest $ @getCurrentGuess
+            @setState $ object
+              :disableSuggest true
+          do
+            if event.shiftKey
+              do $ astActions.beforeToken @props.coord
+              do $ astActions.afterToken @props.coord
+            @setState $ object
+              :disableSuggest true
       keydownCode.tab
         event.preventDefault
         if event.shiftKey
@@ -192,7 +208,7 @@
   :render $ \ ()
     = width $ detect.textWidth @props.token :14px :Menlo
     = style $ object
-      :width $ ++: width :px
+      :width $ ++: (+ width 8) :px
     = tokens (@getTokens)
     = className $ cx $ object
       :cirru-token true

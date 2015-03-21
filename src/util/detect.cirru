@@ -10,7 +10,7 @@
   = ctx.font $ ++: size ": " family
   = width $ . (ctx.measureText text) :width
   ctx.restore
-  , width
+  Math.ceil width
 
 = exports.isPlain $ \ (ast)
   ast.every $ \ (item)

@@ -1,7 +1,7 @@
 
 .cirru-editor {
   background-color: hsl(240,80%,80%);
-  padding: 10px;
+  padding: 100px 10px 300px;
 }
 
 .cirru-expr:focus, .cirru-token input:focus {
@@ -9,43 +9,48 @@
 }
 
 .cirru-expr {
-  min-height: 20px;
+  min-height: 24px;
   border: none;
   border-left: 1px solid hsla(0,100%,100%,0.3);
-  padding: 2px 10px;
+  padding: 2px 0px 2px 12px;
 }
 
 .cirru-expr:focus {
   border-color: white;
 }
 
-.cirru-expr.is-plain {
+.cirru-expr.is-inline {
   display: inline-block;
-  padding: 4px 0;
   border: none;
-  border-bottom: 1px solid hsla(0,100%,100%,0.3);
+  box-shadow: 0 1px 0 hsla(0,100%,100%,0.3);
+  vertical-align: middle;
+  margin-right: 8px;
+  margin-left: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
-.cirru-expr.is-plain:focus {
-  border-color: white;
+.cirru-expr.is-inline:focus {
+  box-shadow: 0 1px 0 white;
 }
 
-.cirru-editor > .cirru-expr {
+.cirru-expr.is-inline .cirru-token {
+  margin-top: -1px;
+}
+
+.cirru-expr.is-empty {
+  padding: 0 8px;
+}
+
+.cirru-expr.is-root {
   display: block;
   margin-top: 0;
-}
-.cirru-editor > .cirru-expr > .cirru-expr {
-  display: block;
-  border: none;
-  border-left: 1px solid hsla(0,100%,100%,0.3);
-}
-.cirru-editor > .cirru-expr > .cirru-expr:focus {
-  border-color: white;
 }
 
 .cirru-token {
   position: relative;
-  margin-right: 6px;
+  display: inline-block;
+  line-height: 24px;
 }
 
 .cirru-token input {
@@ -54,11 +59,12 @@
   background-color: transparent;
   color: white;
   font-family: Menlo;
-  line-height: 20px;
+  line-height: 24px;
   font-size: 14px;
-  padding: 0 4px;
+  padding: 0 0 0 4px;
   box-sizing: content-box;
   border-radius: 2px;
+  transform: translate(-4px, 0);
 }
 
 .cirru-token.is-fuzzy input {

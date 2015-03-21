@@ -1,8 +1,5 @@
 
 = generateSearch $ \ (text query info index)
-  if (is text query)
-    do $ return $ object (:match false) (:start 0)
-
   if (and (is text.length 0) (> query.length 0))
     do $ return $ object (:match false) (:start 0)
 
