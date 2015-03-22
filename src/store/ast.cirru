@@ -29,13 +29,18 @@
       history.add $ object (:store store) (:focus focus)
       astStore.onchange
     :after-token
-      = needWrap $ is action.coord.length 1
-      = store $ manipulations.afterToken store action.coord
-      = focus $ caret.forward store action.coord
-      if needWrap
+      if (_.isEqual action.coord (array))
         do
-          = store $ manipulations.packNode store focus
-          = focus $ caret.inside store focus
+          = store $ array $ array :
+          = focus $ array 0 0
+        do
+          = needWrap $ is action.coord.length 1
+          = store $ manipulations.afterToken store action.coord
+          = focus $ caret.forward store action.coord
+          if needWrap
+            do
+              = store $ manipulations.packNode store focus
+              = focus $ caret.inside store focus
       history.add $ object (:store store) (:focus focus)
       astStore.onchange
     :prepend-token

@@ -27,10 +27,6 @@
     :coord coord
 
 = exports.afterToken $ \ (coord)
-  if (_.isEqual coord (array))
-    do
-      exports.prependToken coord
-      return
   dispatcher.handleAction $ object
     :type :after-token
     :coord coord
