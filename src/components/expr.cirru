@@ -35,11 +35,15 @@
   :componentDidUpdate $ \ ()
     @setFocus
 
-  :shoudComponentUpdate $ \ (props state)
+  :shouldComponentUpdate $ \ (props state)
     if (not (_.isEqual props.expr @props.expr))
       do $ return true
     if (not (_.isEqual props.focus @props.focus))
-      do $ return true
+      do
+        if detect.contains @props.coord props.focus
+          do $ return true
+        if detect.contains @props.coord @props.focus
+          do $ return true
     if (not (_.isEqual state @state))
       do $ return true
     return false

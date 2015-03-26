@@ -43,12 +43,16 @@
   :componentDidUpdate $ \ ()
     @setFocus
 
-  :shoudComponentUpdate $ \ (props state)
+  :shouldComponentUpdate $ \ (props state)
     if (isnt props.token @props.token)
       do $ return true
-    if (isnt props.focus @props.focus)
-      do $ return true
-    if (isnt state @state)
+    if (not $ _.isEqual props.focus @props.focus)
+      do
+        if (_.isEqual props.focus @props.coord)
+          do $ return true
+        if (_.isEqual props.focus props.coord)
+          do $ return true
+    if (not $ _.isEqual state @state)
       do $ return true
     return false
 
