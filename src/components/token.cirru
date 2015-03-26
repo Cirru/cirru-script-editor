@@ -27,7 +27,7 @@
   :displayName :cirru-token
 
   :getInitialState $ \ () $ object
-    :disableSuggest false
+    :disableSuggest true
     :select 0
     :isDrag false
     :isDrop false

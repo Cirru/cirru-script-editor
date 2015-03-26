@@ -36,11 +36,11 @@
     @setFocus
 
   :shoudComponentUpdate $ \ (props state)
-    if (isnt props.expr @props.expr)
+    if (not (_.isEqual props.expr @props.expr))
       do $ return true
-    if (isnt props.focus @props.focus)
+    if (not (_.isEqual props.focus @props.focus))
       do $ return true
-    if (isnt state @state)
+    if (not (_.isEqual state @state))
       do $ return true
     return false
 
