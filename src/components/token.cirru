@@ -70,6 +70,8 @@
 
   :getTokens $ \ ()
     = tokens $ _.flattenDeep $ astStore.get
+    = tokens $ tokens.filter $ \ (item)
+      > item.length 2
     = tokens $ list.removeOne tokens @props.token
     = uniqueTokens $ _.unique tokens
     search.fuzzyStart uniqueTokens @props.token
