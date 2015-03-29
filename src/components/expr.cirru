@@ -40,9 +40,9 @@
       do $ return true
     if (not (_.isEqual props.focus @props.focus))
       do
-        if detect.contains @props.coord props.focus
+        if (detect.contains props.focus @props.coord)
           do $ return true
-        if detect.contains @props.coord @props.focus
+        if (detect.contains @props.focus @props.coord)
           do $ return true
     if (not (_.isEqual state @state))
       do $ return true
