@@ -62,11 +62,9 @@
         = inputEl $ @refs.input.getDOMNode
         if (is document.activeElement inputEl)
           do $ return
-        if (not (is document.activeElement inputEl))
-          do
-            inputEl.focus
-            = inputEl.selectionStart inputEl.value.length
-            = inputEl.selectionEnd inputEl.value.length
+        inputEl.focus
+        = inputEl.selectionStart inputEl.value.length
+        = inputEl.selectionEnd inputEl.value.length
 
   :getTokens $ \ ()
     = tokens $ _.flattenDeep $ astStore.get
