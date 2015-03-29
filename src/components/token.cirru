@@ -123,6 +123,10 @@
   :onClick $ \ (event)
     astActions.focusTo @props.coord
 
+  :onBlur $ \ (event)
+    @setState $ object
+      :disableSuggest true
+
   :onRootClick $ \ (event)
     event.stopPropagation
 
@@ -231,7 +235,6 @@
         :onDrop @onDrop
       input
         object (:value @props.token) (:style style) (:ref :input)
-          :onFocus @onFocus
           :onBlur @onBlur
           :onChange @onChange
           :onKeyDown @onKeyDown
