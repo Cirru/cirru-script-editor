@@ -1,14 +1,16 @@
 
-= React $ require :react
+var
+  React $ require :react
 
-= astStore    $ require :../store/ast
+  astStore    $ require :../store/ast
 
-= mixinListenTo $ require :../mixins/listen-to
+  mixinListenTo $ require :../mixins/listen-to
 
-= Expr $ React.createFactory $ require :./expr
-= div $ React.createFactory :div
+  Expr $ React.createFactory $ require :./expr
 
-= T React.PropTypes
+  ({}~ div) React.DOM
+
+  T React.PropTypes
 
 = module.exports $ React.createClass $ object
   :displayName :cirru-editor

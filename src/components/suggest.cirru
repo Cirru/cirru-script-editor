@@ -1,9 +1,10 @@
 
-= React $ require :react/addons
+var
+  React $ require :react
 
-= div $ React.createFactory :div
+  ({}~ div) React.DOM
 
-= T React.PropTypes
+  T React.PropTypes
 
 = module.exports $ React.createClass $ object
   :displayName :cirru-suggest
@@ -18,11 +19,11 @@
     @props.onSuggest text
 
   :renderTokens $ \ ()
-    @props.tokens.map $ \= (text index)
-      = onClick $ \= (event)
+    @props.tokens.map $ \\ (text index)
+      var onClick $ \\ (event)
         event.preventDefault
         @onTextClick text
-      = className :cirru-guess
+      var className :cirru-guess
       if (is index @props.select)
         do $ = className ":cirru-guess is-selected"
       div

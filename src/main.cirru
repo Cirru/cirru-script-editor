@@ -1,19 +1,23 @@
 
-= React $ require :react/addons
-
 require :../style/main.css
 
-= Container $ React.createFactory $ require :./components/container
+var
+  React $ require :react
+  ReactDOM $ require :react-dom
 
-= keydownCode $ require :./util/keydown-code
+  keydownCode $ require :./util/keydown-code
 
-= editor $ Container
+  Container $ React.createFactory $ require :./components/container
+
+  editor $ Container
+
 = window.isCirruLogOn true
 
-React.render editor document.body
+ReactDOM.render editor (document.querySelector :#app)
 
 window.addEventListener :keydown $ \ (event)
   if (is event.keyCode keydownCode.cancel)
     do
       console.log :blocked
       event.preventDefault
+  return

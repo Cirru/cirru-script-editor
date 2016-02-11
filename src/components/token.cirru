@@ -1,27 +1,28 @@
 
-= React $ require :react/addons
-= _ $ require :lodash
-= cx $ require :classnames
+var
+  React $ require :react
+  _ $ require :lodash
+  cx $ require :classnames
 
-= astStore    $ require :../store/ast
+  astStore    $ require :../store/ast
 
-= search $ require :../util/search
-= list $ require :../util/list
+  search $ require :../util/search
+  list $ require :../util/list
 
-= astActions $ require :../actions/ast
+  astActions $ require :../actions/ast
 
-= detect $ require :../util/detect
-= keydownCode $ require :../util/keydown-code
+  detect $ require :../util/detect
+  keydownCode $ require :../util/keydown-code
 
-= Suggest $ React.createFactory $ require :./suggest
-= span $ React.createFactory :span
-= input $ React.createFactory :input
+  Suggest $ React.createFactory $ require :./suggest
+  span $ React.createFactory :span
+  input $ React.createFactory :input
 
-= mixinListenTo $ require :../mixins/listen-to
+  mixinListenTo $ require :../mixins/listen-to
 
-= iconUrl $ require ":../../images/cirru-32x32.png"
+  iconUrl $ require ":../../images/cirru-32x32.png"
 
-= T React.PropTypes
+  T React.PropTypes
 
 = module.exports $ React.createClass $ object
   :displayName :cirru-token
@@ -59,57 +60,61 @@
   :setFocus $ \ ()
     if (_.isEqual @props.coord @props.focus)
       do
-        = inputEl $ @refs.input.getDOMNode
+        var inputEl @refs.input
         if (is document.activeElement inputEl)
           do $ return
         inputEl.focus
         = inputEl.selectionStart inputEl.value.length
         = inputEl.selectionEnd inputEl.value.length
+    return
 
   :getTokens $ \ ()
-    = tokens $ _.flattenDeep $ astStore.get
+    var tokens $ _.flattenDeep $ astStore.get
     = tokens $ tokens.filter $ \ (item)
       > item.length 2
     = tokens $ list.removeOne tokens @props.token
-    = uniqueTokens $ _.unique tokens
+    var
+      uniqueTokens $ _.unique tokens
     search.fuzzyStart uniqueTokens @props.token
 
   :inSuggest $ \ ()
     if @state.disableSuggest
       do $ return false
 
-    = tokens (@getTokens)
+    var tokens (@getTokens)
     if (is tokens.length 0)
       do $ return false
 
     return true
 
   :getCurrentGuess $ \ ()
-    = tokens (@getTokens)
+    var tokens (@getTokens)
     . tokens @state.select
 
   :selectPrev $ \ ()
-    = tokens $ @getTokens
+    var tokens $ @getTokens
     if (> @state.select 0)
       do $ @setState $ object $ :select $ - @state.select 1
       do $ @setState $ object $ :select $ - tokens.length 1
+    return
 
   :selectNext $ \ ()
-    = tokens $ @getTokens
+    var tokens $ @getTokens
     if (>= @state.select (- tokens.length 1))
       do $ @setState $ object $ :select 0
       do $ @setState $ object $ :select $ + @state.select 1
+    return
 
   :isCaretAhead $ \ ()
-    = inputEl $ @refs.input.getDOMNode
+    var inputEl @refs.input
     is inputEl.selectionStart 0
 
   :isCaretBehind $ \ ()
-    = inputEl $ @refs.input.getDOMNode
+    var inputEl @refs.input
     is inputEl.selectionEnd inputEl.value.length
 
   :onChange $ \ (event)
-    = text event.target.value
+    var text event.target.value
     astActions.updateToken @props.coord text
     @setState $ object
       :disableSuggest false
@@ -132,13 +137,13 @@
 
   :onKeyDown $ \ (event)
     event.stopPropagation
-    = keyCode event.keyCode
+    var keyCode event.keyCode
     switch keyCode
       keydownCode.esc
         @setState $ object (:disableSuggest true)
         return undefined
       keydownCode.enter
-        = tokens (@getTokens)
+        var tokens (@getTokens)
         if (@inSuggest)
           do
             @onSuggest $ @getCurrentGuess
@@ -171,9 +176,10 @@
             do $ astActions.goDown @props.coord
       keydownCode.cancel
         if (is @props.token :)
-          astActions.removeNode @props.coord
-          event.stopPropagation
-          event.preventDefault
+          do
+            astActions.removeNode @props.coord
+            event.stopPropagation
+            event.preventDefault
       keydownCode.left
         if (@isCaretAhead)
           do $ astActions.goLeft @props.coord
@@ -187,12 +193,13 @@
             if event.shiftKey
               do $ astActions.redo
               do $ astActions.undo
+    return
 
   :onDragOver $ \ (event)
     event.preventDefault
 
   :onDragStart $ \ (event)
-    = img $ document.createElement :img
+    var img $ document.createElement :img
     = img.src iconUrl
     event.dataTransfer.setDragImage img 16 16
     event.stopPropagation
@@ -214,15 +221,16 @@
     astActions.dropTo @props.coord
 
   :render $ \ ()
-    = width $ detect.textWidth @props.token :14px :Menlo
-    = style $ object
-      :width $ ++: (+ width 8) :px
-    = tokens (@getTokens)
-    = className $ cx $ object
-      :cirru-token true
-      :is-fuzzy $ or (is @props.token :) (? (@props.token.match /\s))
-      :is-drag @state.isDrag
-      :is-drop @state.isDrop
+    var
+      width $ detect.textWidth @props.token :14px :Menlo
+      style $ object
+        :width $ + (+ width 8) :px
+      tokens (@getTokens)
+      className $ cx $ object
+        :cirru-token true
+        :is-fuzzy $ or (is @props.token :) (? (@props.token.match /\s))
+        :is-drag @state.isDrag
+        :is-drop @state.isDrop
 
     span
       object (:className className) (:draggable true) (:onClick @onRootClick)
@@ -239,7 +247,7 @@
           :onChange @onChange
           :onKeyDown @onKeyDown
           :onClick @onClick
-      if (and (_.isEqual @props.focus @props.coord) (not @state.disableSuggest))
+      cond (and (_.isEqual @props.focus @props.coord) (not @state.disableSuggest))
         Suggest $ object
           :text @props.token
           :onSuggest @onSuggest

@@ -1,11 +1,12 @@
 
-= React $ require :react
+var
+  React $ require :react
 
-= Editor $ React.createFactory $ require :./editor
+  ({}~ div) React.DOM
 
-= div $ React.createFactory :div
+  Editor $ React.createFactory $ require :./editor
 
-= cachedAst $ JSON.parse $ or
+var cachedAst $ JSON.parse $ or
   localStorage.getItem :cirru-ast
   , :[]
 

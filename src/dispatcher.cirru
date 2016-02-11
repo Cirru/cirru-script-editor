@@ -1,10 +1,11 @@
 
-= flux $ require :flux
-= _ $ require :lodash
+var
+  flux $ require :flux
+  _ $ require :lodash
 
-= Dispatcher flux.Dispatcher
+  Dispatcher flux.Dispatcher
 
-= dispatcher $ new Dispatcher
+  dispatcher $ new Dispatcher
 
 _.assign dispatcher $ object
 

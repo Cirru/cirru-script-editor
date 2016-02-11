@@ -1,7 +1,7 @@
 
 = exports.fuzzyStart $ \ (list query)
-  = result $ list.map $ \ (text)
-    = index $ text.indexOf query
+  var result $ list.map $ \ (text)
+    var index $ text.indexOf query
     object
       :start index
       :match $ >= index 0
@@ -10,7 +10,7 @@
   = result $ result.filter $ \ (item) item.match
 
   = result $ result.sort $ \ (a b)
-    cond
+    case true
       (< a.start b.start) -1
       (> a.start b.start) 1
       else 0

@@ -1,10 +1,5 @@
 
-/src/
-/src/
-/build/
-
-/gulp.cirru
-/assets.json
-
-/index.*
+/build
+/index.html
+/gulpfile.cirru
 /webpack.*

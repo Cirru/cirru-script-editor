@@ -1,7 +1,8 @@
 
 = exports.removeOne $ \ (list one)
-  = newList $ array
-  = found false
+  var
+    newList $ array
+    found false
   list.forEach $ \ (item)
     if found
       do $ newList.push item
@@ -9,4 +10,5 @@
         do
           = found true
         do $ newList.push item
+    return
   return newList

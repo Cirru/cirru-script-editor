@@ -1,14 +1,15 @@
 
-= EventEmitter  $ require :wolfy87-eventemitter
-= dispatcher    $ require :../dispatcher
-= manipulations $ require :../util/manipulations
-= caret         $ require :../util/caret
-= history       $ require :../util/history
+var
+  EventEmitter  $ require :wolfy87-eventemitter
+  dispatcher    $ require :../dispatcher
+  manipulations $ require :../util/manipulations
+  caret         $ require :../util/caret
+  history       $ require :../util/history
 
-= store $ array
-= focus $ array
+  store $ array
+  focus $ array
 
-= astStore $ new EventEmitter
+  astStore $ new EventEmitter
 
 = astStore.dispatchToken $ dispatcher.register $ \ (action)
 
@@ -34,7 +35,7 @@
           = store $ array $ array :
           = focus $ array 0 0
         do
-          = needWrap $ is action.coord.length 1
+          var needWrap $ is action.coord.length 1
           = store $ manipulations.afterToken store action.coord
           = focus $ caret.forward store action.coord
           if needWrap
@@ -88,6 +89,7 @@
       = store piece.store
       = focus piece.focus
       astStore.onchange
+  return
 
 _.assign astStore $ object
   :onchange $ \ ()

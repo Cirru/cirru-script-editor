@@ -1,87 +1,84 @@
 
-= _ $ require :lodash
-= detect $ require :../util/detect
+var
+  _ $ require :lodash
+  detect $ require :../util/detect
 
-= updateHelper $ \ (ast coord text matched)
-  if matched
-    do $ if (> coord.length 0)
-      do $ ast.map $ \ (item index)
-        updateHelper item (coord.slice 1) text (is (. coord 0) index)
-      do text
-    do ast
+  bind $ \ (v k) (k v)
 
-= afterHelper $ \ (ast coord matched)
-  if matched
-    do $ if (> coord.length 1)
-      do $ ast.map $ \ (item index)
-        afterHelper item (coord.slice 1) (is (. coord 0) index)
-      do
-        = pos $ + 1 $ . coord 0
-        = before $ ast.slice 0 pos
-        before.concat (array :) (ast.slice pos)
-    do ast
+  updateHelper $ \ (ast coord text matched)
+    cond matched
+      cond (> coord.length 0)
+        ast.map $ \ (item index)
+          updateHelper item (coord.slice 1) text (is (. coord 0) index)
+        , text
+      , ast
 
-= beforeHelper $ \ (ast coord matched insertion)
-  if matched
-    do $ if (> coord.length 1)
-      do $ ast.map $ \ (item index)
-        beforeHelper item (coord.slice 1) (is (. coord 0) index) insertion
-      do
-        = pos $ . coord 0
-        = before $ ast.slice 0 pos
-        before.concat (array insertion) (ast.slice pos)
-    do ast
+  afterHelper $ \ (ast coord matched)
+    cond matched
+      cond (> coord.length 1)
+        ast.map $ \ (item index)
+          afterHelper item (coord.slice 1) (is (. coord 0) index)
+        bind (+ 1 $ . coord 0) $ \ (pos)
+          bind (ast.slice 0 pos) $ \ (before)
+            before.concat (array :) (ast.slice pos)
+      , ast
 
-= removeHelper $ \ (ast coord matched)
-  if matched
-    do $ if (> coord.length 1)
-      do $ ast.map $ \ (item index)
-        removeHelper item (coord.slice 1) (is (. coord 0) index)
-      do
-        = pos $ . coord 0
-        = before $ ast.slice 0 pos
-        before.concat $ ast.slice (+ pos 1)
-    do ast
+  beforeHelper $ \ (ast coord matched insertion)
+    cond matched
+      cond (> coord.length 1)
+        ast.map $ \ (item index)
+          beforeHelper item (coord.slice 1) (is (. coord 0) index) insertion
+        bind (. coord 0) $ \ (pos)
+          bind (ast.slice 0 pos) $ \ (before)
+            before.concat (array insertion) (ast.slice pos)
+      , ast
 
-= prependHelper $ \ (ast coord matched)
-  if matched
-    do $ if (> coord.length 0)
-      do $ ast.map $ \ (item index)
-        prependHelper item (coord.slice 1) (is (. coord 0) index)
-      do
-        = before $ array :
-        before.concat ast
-    do ast
+  removeHelper $ \ (ast coord matched)
+    cond matched
+      cond (> coord.length 1)
+        ast.map $ \ (item index)
+          removeHelper item (coord.slice 1) (is (. coord 0) index)
+        bind (. coord 0) $ \ (pos)
+          bind (ast.slice 0 pos) $ \ (before)
+            before.concat $ ast.slice (+ pos 1)
+      , ast
 
-= appendHelper $ \ (ast coord matched insertion)
-  if matched
-    do $ if (> coord.length 0)
-      do $ ast.map $ \ (item index)
-        appendHelper item (coord.slice 1) (is (. coord 0) index) insertion
-      do
+  prependHelper $ \ (ast coord matched)
+    cond matched
+      cond (> coord.length 0)
+        ast.map $ \ (item index)
+          prependHelper item (coord.slice 1) (is (. coord 0) index)
+        bind (array :) $ \ (before)
+          before.concat ast
+      , ast
+
+  appendHelper $ \ (ast coord matched insertion)
+    cond matched
+      cond (> coord.length 0)
+        ast.map $ \ (item index)
+          appendHelper item (coord.slice 1) (is (. coord 0) index) insertion
         ast.concat $ array insertion
-    do ast
+      , ast
 
-= packHelper $ \ (ast coord matched)
-  if matched
-    do $ if (> coord.length 0)
-      do $ ast.map $ \ (item index)
-        packHelper item (coord.slice 1) (is (. coord 0) index)
-      do $ array ast
-    do ast
+  packHelper $ \ (ast coord matched)
+    cond matched
+      cond (> coord.length 0)
+        ast.map $ \ (item index)
+          packHelper item (coord.slice 1) (is (. coord 0) index)
+        array ast
+      , ast
 
-= unpackHelper $ \ (ast coord matched)
-  if matched
-    do $ if (> coord.length 1)
-      do $ ast.map $ \ (item index)
-        unpackHelper item (coord.slice 1) (is (. coord 0) index)
-      do
-        = pos $ . coord 0
-        = before $ ast.slice 0 pos
-        = after $ ast.slice (+ pos 1)
-        = current $ or (. ast pos) (array)
-        before.concat current after
-    do ast
+  unpackHelper $ \ (ast coord matched)
+    cond matched
+      cond (> coord.length 1)
+        ast.map $ \ (item index)
+          unpackHelper item (coord.slice 1) (is (. coord 0) index)
+        bind (. coord 0) $ \ (pos)
+          bind (ast.slice 0 pos) $ \ (before)
+            bind (ast.slice (+ pos 1)) $ \ (after)
+              bind (or (. ast pos) (array)) $ \ (current)
+                before.concat current after
+      , ast
 
 = exports.updateToken $ \ (ast coord text)
   updateHelper ast coord text true
@@ -104,7 +101,7 @@
 = exports.unpackExpr $ \ (ast coord)
   unpackHelper ast coord true
 
-= getHelper $ \ (ast coord)
+var getHelper $ \ (ast coord)
   if (is coord.length 0)
     do $ return ast
   getHelper (. ast (. coord 0)) (coord.slice 1)
@@ -113,10 +110,11 @@
   if (detect.contains coord focus)
     do $ return ast
 
-  = node $ getHelper ast focus
-  = target $ getHelper ast coord
+  var
+    node $ getHelper ast focus
+    target $ getHelper ast coord
 
   = ast $ removeHelper ast focus true
-  if (_.isArray target)
-    do $ return $ appendHelper ast coord true node
-    do $ return $ beforeHelper ast coord true node
+  cond (_.isArray target)
+    appendHelper ast coord true node
+    beforeHelper ast coord true node

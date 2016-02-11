@@ -1,26 +1,27 @@
 
-= _ $ require :lodash
+var
+  _ $ require :lodash
 
-= getHelper $ \ (ast coord)
-  if (> coord.length 0)
-    do
-      = head (. coord 0)
-      if (_.isArray ast)
-        do $ getHelper (. ast head) (coord.slice 1)
-        do $ return undefined
-    do $ return ast
+  getHelper $ \ (ast coord)
+    cond (> coord.length 0)
+      cond (_.isArray ast)
+        getHelper (. ast (. coord 0)) (coord.slice 1)
+        , undefined
+      , ast
 
 = exports.forward $ \ (ast coord)
-  = last $ . coord (- coord.length 1)
-  = before $ coord.slice 0 -1
+  var
+    last $ . coord (- coord.length 1)
+    before $ coord.slice 0 -1
   before.concat (+ last 1)
 
 = exports.backward $ \ (ast coord)
-  = last $ . coord (- coord.length 1)
-  = before $ coord.slice 0 -1
-  if (> last 0)
-    do $ before.concat (- last 1)
-    do $ return before
+  var
+    last $ . coord (- coord.length 1)
+    before $ coord.slice 0 -1
+  cond (> last 0)
+    before.concat (- last 1)
+    , before
 
 = exports.inside $ \ (ast coord)
   coord.concat 0
@@ -31,28 +32,25 @@
 = exports.left $ \ (ast coord)
   if (is coord.length 0)
     do $ return coord
-  = last $ _.last coord
-  = initial $ _.initial coord
-  = suppose $ initial.concat (- last 1)
-  if (? (getHelper ast suppose))
-    do suppose
-    do initial
+  var
+    last $ _.last coord
+    initial $ _.initial coord
+    suppose $ initial.concat (- last 1)
+  cond (? (getHelper ast suppose)) suppose initial
 
 = exports.right $ \ (ast coord)
   if (is coord.length 0)
     do $ return coord
-  = last $ _.last coord
-  = initial $ _.initial coord
-  = suppose $ initial.concat (+ last 1)
-  if (? $ getHelper ast suppose)
-    do suppose
-    do initial
+  var
+    last $ _.last coord
+    initial $ _.initial coord
+    suppose $ initial.concat (+ last 1)
+  cond (? $ getHelper ast suppose) suppose initial
 
 = exports.up $ \ (ast coord)
   _.initial coord
 
 = exports.down $ \ (ast coord)
-  = suppose $ coord.concat 0
-  if (? $ getHelper ast suppose)
-    do suppose
-    do coord
+  var
+    suppose $ coord.concat 0
+  cond (? $ getHelper ast suppose) suppose coord

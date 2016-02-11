@@ -1,7 +1,8 @@
 
-= _ $ require :lodash
+var
+  _ $ require :lodash
 
-= dispatcher $ require :../dispatcher
+  dispatcher $ require :../dispatcher
 
 = exports.focusTo $ \ (coord)
   dispatcher.handleAction $ object
@@ -16,7 +17,7 @@
 
 = exports.removeNode $ \ (coord)
   -- "slow down moving and don't trigger back"
-  setTimeout $ \= ()
+  setTimeout $ \\ ()
     dispatcher.handleAction $ object
       :type :remove-node
       :coord coord

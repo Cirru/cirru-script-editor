@@ -1,19 +1,20 @@
 
-= React $ require :react/addons
-= _ $ require :lodash
-= cx $ require :classnames
+var
+  React $ require :react
+  _ $ require :lodash
+  cx $ require :classnames
 
-= Token $ React.createFactory $ require :./token
-= div $ React.createFactory :div
+  Token $ React.createFactory $ require :./token
+  div $ React.createFactory :div
 
-= astActions $ require :../actions/ast
+  astActions $ require :../actions/ast
 
-= keydownCode $ require :../util/keydown-code
-= detect $ require :../util/detect
+  keydownCode $ require :../util/keydown-code
+  detect $ require :../util/detect
 
-= iconUrl $ require ":../../images/cirru-32x32.png"
+  iconUrl $ require ":../../images/cirru-32x32.png"
 
-= T React.PropTypes
+  T React.PropTypes
 
 = module.exports $ React.createClass $ object
   :displayName :cirru-expr
@@ -51,8 +52,8 @@
   :setFocus $ \ ()
     if (_.isEqual @props.coord @props.focus)
       do
-        = root $ @refs.root.getDOMNode
-        root.focus
+        @refs.root.focus
+    return
 
   :onClick $ \ (event)
     event.stopPropagation
@@ -65,8 +66,8 @@
         event.preventDefault
         astActions.removeNode @props.coord
       keydownCode.enter
-        cond
-          event.shiftKey
+        switch true
+          (? event.shiftKey)
             astActions.beforeToken @props.coord
           (or event.metaKey event.ctrlKey)
             astActions.prependToken @props.coord
@@ -95,12 +96,13 @@
             if event.shiftKey
               do $ astActions.redo
               do $ astActions.undo
+    return
 
   :onDragOver $ \ (event)
     event.preventDefault
 
   :onDragStart $ \ (event)
-    = img $ document.createElement :img
+    var img $ document.createElement :img
     = img.src iconUrl
     event.dataTransfer.setDragImage img 16 16
     event.stopPropagation
@@ -122,14 +124,15 @@
     astActions.dropTo @props.coord
 
   :render $ \ ()
-    = className $ cx $ object
-      :cirru-expr true
-      :is-inline @props.inline
-      :is-drag @state.isDrag
-      :is-drop @state.isDrop
-      :is-empty $ is @props.expr.length 0
-      :is-root $ is @props.level 0
-    = isLastList true
+    var
+      className $ cx $ object
+        :cirru-expr true
+        :is-inline @props.inline
+        :is-drag @state.isDrag
+        :is-drop @state.isDrop
+        :is-empty $ is @props.expr.length 0
+        :is-root $ is @props.level 0
+      isLastList true
 
     div
       object (:className className) (:draggable true) (:onClick @onClick)
@@ -142,14 +145,14 @@
         :onDragEnter @onDragEnter
         :onDragLeave @onDragLeave
         :onDrop @onDrop
-      _.map @props.expr $ \= (item index)
-        = isLastInline $ not isLastList
-        = isLastList $ _.isArray item
-        if (_.isString item)
-          do $ Token $ object (:token item) (:key index)
+      _.map @props.expr $ \\ (item index)
+        var isLastInline $ not isLastList
+        var isLastList $ _.isArray item
+        cond (_.isString item)
+          Token $ object (:token item) (:key index)
             :coord $ @props.coord.concat index
             :focus @props.focus
-          do $ Expr $ object (:expr item) (:key index)
+          Expr $ object (:expr item) (:key index)
             :level $ + @props.level 1
             :coord $ @props.coord.concat index
             :focus @props.focus
@@ -157,4 +160,4 @@
               detect.isPlain item
               and (> @props.level 0) isLastInline
 
-= Expr $ React.createFactory module.exports
+var Expr $ React.createFactory module.exports
