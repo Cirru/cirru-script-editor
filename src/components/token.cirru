@@ -3,18 +3,13 @@ var
   React $ require :react
   _ $ require :lodash
   cx $ require :classnames
-
-  astStore    $ require :../store/ast
+  Immutable $ require :immutable
 
   search $ require :../util/search
-  list $ require :../util/list
-
-  astActions $ require :../actions/ast
 
   detect $ require :../util/detect
   keydownCode $ require :../util/keydown-code
 
-  Suggest $ React.createFactory $ require :./suggest
   span $ React.createFactory :span
   input $ React.createFactory :input
 
@@ -26,80 +21,13 @@ var
   :displayName :cirru-token
 
   :getInitialState $ \ () $ object
-    :disableSuggest true
     :select 0
 
   :propTypes $ object
     :token T.string.isRequired
-    :coord T.array.isRequired
-    :focus T.array.isRequired
-
-  :componentDidMount $ \ ()
-    @setFocus
-
-  :componentDidUpdate $ \ ()
-    @setFocus
-
-  :shouldComponentUpdate $ \ (props state)
-    if (isnt props.token @props.token)
-      do $ return true
-    if (not $ _.isEqual props.focus @props.focus)
-      do
-        if (_.isEqual props.focus @props.coord)
-          do $ return true
-        if (_.isEqual props.focus props.coord)
-          do $ return true
-    if (not $ _.isEqual state @state)
-      do $ return true
-    return false
-
-  :setFocus $ \ ()
-    if (_.isEqual @props.coord @props.focus)
-      do
-        var inputEl @refs.input
-        if (is document.activeElement inputEl)
-          do $ return
-        inputEl.focus
-        = inputEl.selectionStart inputEl.value.length
-        = inputEl.selectionEnd inputEl.value.length
-    return
-
-  :getTokens $ \ ()
-    var tokens $ _.flattenDeep $ astStore.get
-    = tokens $ tokens.filter $ \ (item)
-      > item.length 2
-    = tokens $ list.removeOne tokens @props.token
-    var
-      uniqueTokens $ _.unique tokens
-    search.fuzzyStart uniqueTokens @props.token
-
-  :inSuggest $ \ ()
-    if @state.disableSuggest
-      do $ return false
-
-    var tokens (@getTokens)
-    if (is tokens.length 0)
-      do $ return false
-
-    return true
-
-  :getCurrentGuess $ \ ()
-    var tokens (@getTokens)
-    . tokens @state.select
-
-  :selectPrev $ \ ()
-    var tokens $ @getTokens
-    if (> @state.select 0)
-      do $ @setState $ object $ :select $ - @state.select 1
-      do $ @setState $ object $ :select $ - tokens.length 1
-    return
-
-  :selectNext $ \ ()
-    var tokens $ @getTokens
-    if (>= @state.select (- tokens.length 1))
-      do $ @setState $ object $ :select 0
-      do $ @setState $ object $ :select $ + @state.select 1
-    return
+    :coord $ . (T.instanceOf Immutable.List) :isRequired
+    :focus $ . (T.instanceOf Immutable.List) :isRequired
+    :dispatch T.func.isRequired
 
   :isCaretAhead $ \ ()
     var inputEl @refs.input
@@ -115,11 +43,6 @@ var
     @setState $ object
       :disableSuggest false
       :select 0
-
-  :onSuggest $ \ (text)
-    astActions.updateToken @props.coord text
-    @setState $ object
-      :disableSuggest true
 
   :onClick $ \ (event)
     astActions.focusTo @props.coord
@@ -156,20 +79,6 @@ var
         if event.shiftKey
           do $ astActions.unpackExpr $ @props.coord.slice 0 -1
           do $ astActions.packNode @props.coord
-      keydownCode.up
-        if (@inSuggest)
-          do
-            event.preventDefault
-            @selectPrev
-          do $ if (@isCaretAhead)
-            do $ astActions.goUp @props.coord
-      keydownCode.down
-        if (@inSuggest)
-          do
-            event.preventDefault
-            @selectNext
-          do $ if (@isCaretBehind)
-            do $ astActions.goDown @props.coord
       keydownCode.cancel
         if (is @props.token :)
           do
@@ -205,13 +114,8 @@ var
       object (:className className) (:onClick @onRootClick) (:tabIndex 0)
       input
         object (:value @props.token) (:style style) (:ref :input)
+          :id $ ... @props.coord (unshift :leaf) (join :-)
           :onBlur @onBlur
           :onChange @onChange
           :onKeyDown @onKeyDown
           :onClick @onClick
-      cond (and (_.isEqual @props.focus @props.coord) (not @state.disableSuggest))
-        Suggest $ object
-          :text @props.token
-          :onSuggest @onSuggest
-          :tokens tokens
-          :select @state.select

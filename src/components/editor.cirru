@@ -1,42 +1,35 @@
 
 var
   React $ require :react
+  Immutable $ require :immutable
 
-  astStore    $ require :../store/ast
-
-  mixinListenTo $ require :../mixins/listen-to
+  schema $ require :../schema
 
   Expr $ React.createFactory $ require :./expr
 
   ({}~ div) React.DOM
 
-  T React.PropTypes
-
 = module.exports $ React.createClass $ object
   :displayName :cirru-editor
-  :mixins $ array mixinListenTo
 
   :propTypes $ object
-    :ast      T.array.isRequired
-    :focus    T.array.isRequired
-    :onChange T.func.isRequired
+    :ast React.PropTypes.array.isRequired
+    :focus React.PropTypes.array.isRequired
+    :onChange React.PropTypes.func.isRequired
 
-  :componentDidMount $ \ ()
-    @listenTo astStore @setAst
-    astStore.init @props.ast @props.focus
-
-  :setAst $ \ ()
-    @props.onChange (astStore.get) (astStore.getFocus)
+  :getInitialState $ \ ()
+    {}
+      :tree (schema.model.get :tree)
+      :focus (schema.model.get :focus)
 
   :onKeyDown $ \ (event)
     event.stopPropagation
     event.preventDefault
 
+  :dispatch $ \ (type data)
+    console.log :dispatch type data
+
   :render $ \ ()
-    div
-      object (:className :cirru-editor) (:onKeyDown @onKeyDown)
-      Expr
-        object (:expr @props.ast) (:coord $ array)
-          :focus @props.focus
-          :level 0
-          :inline false
+    div ({} :className :cirru-editor :onKeyDown @onKeyDown)
+      Expr $ {} :expr @state.tree :coord (Immutable.List) :inline false
+        , :dispatch @dispatch

@@ -4,7 +4,6 @@ var
   dispatcher    $ require :../dispatcher
   manipulations $ require :../util/manipulations
   caret         $ require :../util/caret
-  history       $ require :../util/history
 
   store $ array
   focus $ array
