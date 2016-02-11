@@ -12,8 +12,6 @@ var
   keydownCode $ require :../util/keydown-code
   detect $ require :../util/detect
 
-  iconUrl $ require ":../../images/cirru-32x32.png"
-
   T React.PropTypes
 
 = module.exports $ React.createClass $ object
@@ -27,8 +25,6 @@ var
     :inline T.bool.isRequired
 
   :getInitialState $ \ () $ object
-    :isDrag false
-    :isDrop false
 
   :componentDidMount $ \ ()
     @setFocus
@@ -98,53 +94,21 @@ var
               do $ astActions.undo
     return
 
-  :onDragOver $ \ (event)
-    event.preventDefault
-
-  :onDragStart $ \ (event)
-    var img $ document.createElement :img
-    = img.src iconUrl
-    event.dataTransfer.setDragImage img 16 16
-    event.stopPropagation
-    astActions.focusTo @props.coord
-    @setState $ object (:isDrag true)
-
-  :onDragEnd $ \ (event)
-    @setState $ object (:isDrag false)
-
-  :onDragEnter $ \ (event)
-    @setState $ object (:isDrop true)
-
-  :onDragLeave $ \ (event)
-    @setState $ object (:isDrop false)
-
-  :onDrop $ \ (event)
-    event.stopPropagation
-    @setState $ object (:isDrop false)
-    astActions.dropTo @props.coord
-
   :render $ \ ()
     var
       className $ cx $ object
         :cirru-expr true
         :is-inline @props.inline
-        :is-drag @state.isDrag
-        :is-drop @state.isDrop
         :is-empty $ is @props.expr.length 0
         :is-root $ is @props.level 0
       isLastList true
 
     div
-      object (:className className) (:draggable true) (:onClick @onClick)
+      object (:className className) (:onClick @onClick)
         :tabIndex 0
         :onKeyDown @onKeyDown
         :ref :root
-        :onDragOver @onDragOver
-        :onDragStart @onDragStart
-        :onDragEnd @onDragEnd
-        :onDragEnter @onDragEnter
-        :onDragLeave @onDragLeave
-        :onDrop @onDrop
+
       _.map @props.expr $ \\ (item index)
         var isLastInline $ not isLastList
         var isLastList $ _.isArray item

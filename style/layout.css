@@ -95,13 +95,3 @@
 .cirru-guess.is-selected {
   background-color: hsl(240,80%,70%);
 }
-
-.cirru-token.is-drag,
-.cirru-expr.is-drag {
-  opacity: 0.3;
-}
-
-.cirru-token.is-drop,
-.cirru-expr.is-drop {
-  box-shadow: 0 0 4px white;
-}
