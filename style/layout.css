@@ -1,10 +1,10 @@
 
 .cirru-editor {
-  background-color: hsl(240,80%,80%);
+  background-color: hsl(160,20%,10%);
   padding: 100px 10px 300px;
 }
 
-.cirru-expr:focus, .cirru-token input:focus {
+.cirru-expr:focus, input.cirru-token:focus {
   outline: none;
 }
 
@@ -53,7 +53,7 @@
   line-height: 24px;
 }
 
-.cirru-token input {
+input.cirru-token {
   border: none;
   display: inline-block;
   background-color: transparent;
@@ -67,11 +67,11 @@
   transform: translate(-4px, 0);
 }
 
-.cirru-token.is-fuzzy input {
+input.cirru-token.is-fuzzy {
   background-color: hsla(240, 80%, 90%,0.3);
 }
 
-.cirru-token input:focus {
+input.cirru-token:focus {
   background-color: hsla(240, 80%, 60%,0.3);
 }
 

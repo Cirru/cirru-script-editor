@@ -1,5 +1,6 @@
 
 var
+  hsl $ require :hsl
   React $ require :react
   Immutable $ require :immutable
 

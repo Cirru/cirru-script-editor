@@ -23,6 +23,7 @@ var
 
   :propTypes $ object
     :token T.string.isRequired
+    :inline T.bool.isRequired
     :coord $ . (T.instanceOf Immutable.List) :isRequired
     :dispatch T.func.isRequired
 
@@ -45,6 +46,7 @@ var
 
   :onClick $ \ (event)
     @props.dispatch :focus-to @props.coord
+    event.stopPropagation
 
   :onBlur $ \ (event)
     @setState $ object
@@ -62,10 +64,15 @@ var
         return undefined
       keydownCode.enter
         if event.shiftKey
-          do $ @props.dispatch :before-token @props.coord
-          do $ @props.dispatch :after-token @props.coord
+          do $ @props.dispatch :prev-line @props.coord
+          do $ @props.dispatch :next-line @props.coord
         @setState $ object
           :disableSuggest true
+      keydownCode.space
+        if (not event.shiftKey)
+          do
+            @props.dispatch :after-token @props.coord
+            event.preventDefault
       keydownCode.tab
         event.preventDefault
         if event.shiftKey
@@ -83,6 +90,12 @@ var
       keydownCode.right
         if (@isCaretBehind)
           do $ @props.dispatch :go-right @props.coord
+      keydownCode.up
+        if (@isCaretAhead)
+          do $ @props.dispatch :go-up @props.coord
+      keydownCode.down
+        if (@isCaretBehind)
+          do $ @props.dispatch :go-right @props.coord
     return
 
   :render $ \ ()
@@ -94,12 +107,12 @@ var
         :cirru-token true
         :is-fuzzy $ or (is @props.token :) (? (@props.token.match /\s))
 
-    span
-      object (:className className) (:onClick @onRootClick) (:tabIndex 0)
-      input
-        object (:value @props.token) (:style style) (:ref :input)
-          :id $ ... @props.coord (unshift :leaf) (join :-)
-          :onBlur @onBlur
-          :onChange @onChange
-          :onKeyDown @onKeyDown
-          :onClick @onClick
+    input
+      {} (:value @props.token) (:style style) (:ref :input)
+        :className className
+        :onClick @onRootClick
+        :id $ ... @props.coord (unshift :leaf) (join :-)
+        :onBlur @onBlur
+        :onChange @onChange
+        :onKeyDown @onKeyDown
+        :onClick @onClick

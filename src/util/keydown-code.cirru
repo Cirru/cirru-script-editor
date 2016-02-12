@@ -10,3 +10,4 @@
   :tab 9
   :cancel 8
   :z 90
+  :space 32

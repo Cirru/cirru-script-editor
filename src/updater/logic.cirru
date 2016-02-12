@@ -96,6 +96,33 @@ var
       target $ tree.getIn $ data.toJS
     cond (target.has 0) suppose data
 
+  prevLineHelper $ \ (tree data)
+    var
+      target $ tree.getIn (... data (butLast) (toJS))
+      targetCoord $ cond (is (typeof target) :string) data (data.butLast)
+    cond (is target.size 0) tree
+      tree.updateIn (... targetCoord (butLast) (toJS)) $ \ (container)
+        ... container
+          splice (targetCoord.last) 0 (Immutable.List $ [] :)
+
+  nextLineHelper $ \ (tree data)
+    var
+      target $ tree.getIn (... data (butLast) (toJS))
+      targetCoord $ cond (is (typeof target) :string) data (data.butLast)
+    cond (is target.size 0) tree
+      tree.updateIn (... targetCoord (butLast) (toJS)) $ \ (container)
+        ... container
+          splice (+ 1 (targetCoord.last)) 0 (Immutable.List $ [] :)
+
+  focusNextLine $ \ (tree data)
+    var
+      target $ tree.getIn (... data (butLast) (toJS))
+      targetCoord $ cond (is (typeof target) :string) data (data.butLast)
+    cond (is targetCoord.size 0) data
+      ... targetCoord
+        update (- targetCoord.size 1) $ \ (index) (+ 1 index)
+        push 0
+
 = exports.updateToken $ \ (model data)
   var
     coord $ data.get :coord
@@ -121,24 +148,40 @@ var
   ... model
     update :tree $ \ (tree)
       afterHelper tree data true
-    set :focus $ goRight tree data
+    set :focus
+      cond (is data.size 0)
+        data.push 0
+        data.set (- data.size 1) $ + 1 (data.last)
 
 = exports.prependToken $ \ (model data)
   ... model
     update :tree $ \ (tree)
       prependHelper tree data true
-    set :focus $ goDown (model.get :tree) data
+    set :focus $ data.push 0
+
+= exports.prevLine $ \ (model data)
+  ... model
+    update :tree $ \ (tree)
+      prevLineHelper tree data
+    set :focus $ ... data (butLast) (push 0)
+
+= exports.nextLine $ \ (model data)
+  ... model
+    update :tree $ \ (tree)
+      nextLineHelper tree data
+    set :focus $ focusNextLine (model.get :tree) data
 
 = exports.packNode $ \ (model data)
   ... model
     update :tree $ \ (tree)
       packHelper tree data true
-    set :focus $ goDown (model.get :tree) data
+    set :focus data
 
 = exports.unpackExpr $ \ (model data)
   ... model
     update :tree $ \ (tree)
       unpackHelper tree data true
+    set :focus data
 
 = exports.focusTo $ \ (model data)
   ... model

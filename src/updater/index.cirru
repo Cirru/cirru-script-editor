@@ -12,6 +12,8 @@ var
       :remove-node logic.removeNode
       :before-token logic.beforeToken
       :after-token logic.afterToken
+      :prev-line logic.prevLine
+      :next-line logic.nextLine
       :prepend-token logic.prependToken
       :pack-node logic.packNode
       :unpack-expr logic.unpackExpr

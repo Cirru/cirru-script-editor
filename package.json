@@ -36,6 +36,7 @@
   "dependencies": {
     "classnames": "^1.2.0",
     "flux": "^2.0.1",
+    "hsl": "^0.1.1",
     "immutable": "^3.7.6",
     "keycode": "^2.1.0",
     "lodash": "^3.3.1",

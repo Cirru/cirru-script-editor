@@ -35,11 +35,11 @@ var
       keydownCode.enter
         switch true
           event.shiftKey
-            @props.dispatch :before-token @props.coord
+            @props.dispatch :prev-line @props.coord
           (or event.metaKey event.ctrlKey)
             @props.dispatch :prepend-token @props.coord
           else
-            @props.dispatch :after-token @props.coord
+            @props.dispatch :next-line @props.coord
       keydownCode.tab
         if event.shiftKey
           do
@@ -83,6 +83,7 @@ var
           Token $ object (:token item) (:key index)
             :coord $ @props.coord.push index
             :dispatch @props.dispatch
+            :inline @props.inline
           Expr $ object (:expr item) (:key index)
             :coord $ @props.coord.push index
             :dispatch @props.dispatch
