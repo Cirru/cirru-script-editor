@@ -1,5 +1,7 @@
 
 var
+  Immutable $ require :immutable
+
   bind $ \ (v k) (k v)
 
   updaterHelper $ \ (tree coord text matched)
@@ -42,6 +44,34 @@ var
               concat $ tree.slice pos
       , tree
 
+  prependHelper $ \ (tree coord matched)
+    cond matched
+      cond (> coord.size 0)
+        tree.map $ \ (item index)
+          prependHelper item (coord.rest) (is index (coord.first))
+        tree.unshift :
+      , tree
+
+  packHelper $ \ (tree coord matched)
+    cond matched
+      cond (> coord.size 0)
+        tree.map $ \ (item index)
+          packHelper item (coord.rest) (is index (coord.first))
+        Immutable.List $ [] tree
+      , tree
+
+  unpackHelper $ \ (tree coord matched)
+    cond matched
+      cond (> coord.size 1)
+        tree.map $ \ (item index)
+          unpackHelper item (coord.rest) (is index (coord.first))
+        bind (coord.first) $ \ (pos)
+          bind (tree.slice 0 pos) $ \ (before)
+            bind (tree.slice (+ 1 pos)) $ \ (after)
+              bind (or (tree.get pos) (Immutable.List)) $ \ (current)
+                before.concat current after
+      , tree
+
 = exports.updateToken $ \ (model data)
   var
     coord $ data.get :coord
@@ -66,10 +96,19 @@ var
       afterHelper tree data true
 
 = exports.prependToken $ \ (model data)
+  ... model
+    update :tree $ \ (tree)
+      prependHelper tree data true
 
 = exports.packNode $ \ (model data)
+  ... model
+    update :tree $ \ (tree)
+      packHelper tree data true
 
 = exports.unpackExpr $ \ (model data)
+  ... model
+    update :tree $ \ (tree)
+      unpackHelper tree data true
 
 = exports.goLeft $ \ (model data)
 

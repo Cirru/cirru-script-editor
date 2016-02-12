@@ -72,7 +72,7 @@ var
       keydownCode.tab
         event.preventDefault
         if event.shiftKey
-          do $ @props.dispatch :unpack-expr @props.coord.slice 0 -1
+          do $ @props.dispatch :unpack-expr (@props.coord.butLast)
           do $ @props.dispatch :pack-node @props.coord
       keydownCode.cancel
         if (is @props.token :)

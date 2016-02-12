@@ -35,7 +35,7 @@ var
         @props.dispatch :remove-node @props.coord
       keydownCode.enter
         switch true
-          (? event.shiftKey)
+          event.shiftKey
             @props.dispatch :before-token @props.coord
           (or event.metaKey event.ctrlKey)
             @props.dispatch :prepend-token @props.coord
