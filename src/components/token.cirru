@@ -13,8 +13,6 @@ var
   span $ React.createFactory :span
   input $ React.createFactory :input
 
-  mixinListenTo $ require :../mixins/listen-to
-
   T React.PropTypes
 
 = module.exports $ React.createClass $ object
@@ -27,7 +25,6 @@ var
     :token T.string.isRequired
     :coord $ . (T.instanceOf Immutable.List) :isRequired
     :dispatch T.func.isRequired
-    :focusTo T.func.isRequired
 
   :isCaretAhead $ \ ()
     var inputEl @refs.input
@@ -47,7 +44,7 @@ var
       :select 0
 
   :onClick $ \ (event)
-    @props.focusTo @props.coord
+    @props.dispatch :focus-to @props.coord
 
   :onBlur $ \ (event)
     @setState $ object

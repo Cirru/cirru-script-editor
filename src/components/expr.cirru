@@ -19,13 +19,12 @@ var
     :coord $ . (React.PropTypes.instanceOf Immutable.List) :isRequired
     :inline React.PropTypes.bool.isRequired
     :dispatch React.PropTypes.func.isRequired
-    :focusTo React.PropTypes.func.isRequired
 
   :getInitialState $ \ () $ {}
 
   :onClick $ \ (event)
     event.stopPropagation
-    @props.focusTo @props.coord
+    @props.dispatch :focus-to @props.coord
 
   :onKeyDown $ \ (event)
     event.stopPropagation
@@ -84,11 +83,9 @@ var
           Token $ object (:token item) (:key index)
             :coord $ @props.coord.push index
             :dispatch @props.dispatch
-            :focusTo @props.focusTo
           Expr $ object (:expr item) (:key index)
             :coord $ @props.coord.push index
             :dispatch @props.dispatch
-            :focusTo @props.focusTo
             :inline $ and
               detect.isPlain item
               and (> @props.coord.size 0) isLastInline

@@ -19,6 +19,16 @@ var
     {}
       :model schema.model
 
+  :componentDidUpdate $ \ ()
+    var
+      target $ @state.model.get :focus
+      targetId $ ... target (unshift :leaf) (join :-)
+      targetEl $ document.getElementById targetId
+    if (isnt targetEl document.activeElement)
+      do
+        targetEl.focus
+    return
+
   :onKeyDown $ \ (event)
     event.stopPropagation
     event.preventDefault
@@ -30,9 +40,6 @@ var
     console.log (newStore.toJS)
     @setState $ {} :model newStore
 
-  :focusTo $ \ (coord)
-    console.log (coord.toJS)
-
   :render $ \ ()
     div ({} :className :cirru-editor :onKeyDown @onKeyDown)
       Expr $ {}
@@ -40,4 +47,3 @@ var
         :coord (Immutable.List)
         :inline false
         :dispatch @dispatch
-        :focusTo @focusTo

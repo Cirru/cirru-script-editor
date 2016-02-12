@@ -72,6 +72,30 @@ var
                 before.concat current after
       , tree
 
+  goLeft $ \ (data)
+    cond (is data.size 0) data
+      bind (data.last) $ \ (last)
+        cond (is last 0)
+          data.butLast
+          data.set (- data.size 1) (- last 1)
+
+  goRight $ \ (tree data)
+    cond (is data.size 0) data
+      bind (data.butLast) $ \ (containerCoord)
+        bind (tree.getIn (containerCoord.toJS)) $ \ (container)
+          cond (is (data.last) (- container.size 1))
+            data.butLast
+            data.set (- data.size 1) (+ 1 (data.last))
+
+  goUp $ \ (data)
+    data.butLast
+
+  goDown $ \ (tree data)
+    var
+      suppose $ data.push 0
+      target $ tree.getIn $ data.toJS
+    cond (target.has 0) suppose data
+
 = exports.updateToken $ \ (model data)
   var
     coord $ data.get :coord
@@ -84,6 +108,7 @@ var
   ... model
     update :tree $ \ (tree)
       removeHelper tree data true
+    set :focus $ goLeft data
 
 = exports.beforeToken $ \ (model data)
   ... model
@@ -91,29 +116,50 @@ var
       beforeHelper tree data true
 
 = exports.afterToken $ \ (model data)
+  var
+    tree $ model.get :tree
   ... model
     update :tree $ \ (tree)
       afterHelper tree data true
+    set :focus $ goRight tree data
 
 = exports.prependToken $ \ (model data)
   ... model
     update :tree $ \ (tree)
       prependHelper tree data true
+    set :focus $ goDown (model.get :tree) data
 
 = exports.packNode $ \ (model data)
   ... model
     update :tree $ \ (tree)
       packHelper tree data true
+    set :focus $ goDown (model.get :tree) data
 
 = exports.unpackExpr $ \ (model data)
   ... model
     update :tree $ \ (tree)
       unpackHelper tree data true
 
+= exports.focusTo $ \ (model data)
+  ... model
+    set :focus data
+
 = exports.goLeft $ \ (model data)
+  ... model
+    set :focus $ goLeft data
 
 = exports.goRight $ \ (model data)
+  var
+    tree $ model.get :tree
+  ... model
+    set :focus $ goRight tree data
 
 = exports.goUp $ \ (model data)
+  ... model
+    set :focus $ goUp data
 
 = exports.goDown $ \ (model data)
+  var
+    tree $ model.get :tree
+  ... model
+    set :focus $ goDown tree data
