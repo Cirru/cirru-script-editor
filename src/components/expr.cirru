@@ -19,6 +19,7 @@ var
     :coord $ . (React.PropTypes.instanceOf Immutable.List) :isRequired
     :inline React.PropTypes.bool.isRequired
     :dispatch React.PropTypes.func.isRequired
+    :isNeck React.PropTypes.bool.isRequired
 
   :getInitialState $ \ () $ {}
 
@@ -35,11 +36,11 @@ var
       keydownCode.enter
         switch true
           event.shiftKey
-            @props.dispatch :prev-line @props.coord
+            @props.dispatch :before-token @props.coord
           (or event.metaKey event.ctrlKey)
             @props.dispatch :prepend-token @props.coord
           else
-            @props.dispatch :next-line @props.coord
+            @props.dispatch :after-token @props.coord
       keydownCode.tab
         if event.shiftKey
           do
@@ -67,6 +68,7 @@ var
         :is-inline @props.inline
         :is-empty $ is @props.expr.size 0
         :is-root $ is @props.coord.size 0
+        :is-neck @props.isNeck
       isLastList true
 
     div
@@ -84,11 +86,11 @@ var
             :coord $ @props.coord.push index
             :dispatch @props.dispatch
             :inline @props.inline
+            :isHead (is index 0)
           Expr $ object (:expr item) (:key index)
             :coord $ @props.coord.push index
             :dispatch @props.dispatch
-            :inline $ and
-              detect.isPlain item
-              and (> @props.coord.size 0) isLastInline
+            :inline $ is index (- @props.expr.size 1)
+            :isNeck $ is index 1
 
 var Expr $ React.createFactory module.exports

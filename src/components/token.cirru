@@ -24,6 +24,7 @@ var
   :propTypes $ object
     :token T.string.isRequired
     :inline T.bool.isRequired
+    :isHead T.bool.isRequired
     :coord $ . (T.instanceOf Immutable.List) :isRequired
     :dispatch T.func.isRequired
 
@@ -64,8 +65,8 @@ var
         return undefined
       keydownCode.enter
         if event.shiftKey
-          do $ @props.dispatch :prev-line @props.coord
-          do $ @props.dispatch :next-line @props.coord
+          do $ @props.dispatch :before-token @props.coord
+          do $ @props.dispatch :after-token @props.coord
         @setState $ object
           :disableSuggest true
       keydownCode.space
@@ -75,8 +76,8 @@ var
             event.preventDefault
       keydownCode.tab
         event.preventDefault
-        if event.shiftKey
-          do $ @props.dispatch :unpack-expr (@props.coord.butLast)
+        event.stopPropagation
+        if (not event.shiftKey)
           do $ @props.dispatch :pack-node @props.coord
       keydownCode.cancel
         if (is @props.token :)
@@ -106,6 +107,7 @@ var
       className $ cx $ object
         :cirru-token true
         :is-fuzzy $ or (is @props.token :) (? (@props.token.match /\s))
+        :is-head @props.isHead
 
     input
       {} (:value @props.token) (:style style) (:ref :input)

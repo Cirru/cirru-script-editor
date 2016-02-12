@@ -25,9 +25,9 @@ var
       target $ @state.model.get :focus
       targetId $ ... target (unshift :leaf) (join :-)
       targetEl $ document.getElementById targetId
-    if (isnt targetEl document.activeElement)
-      do
-        targetEl.focus
+    -- "|has bug, wait for new frame"
+    requestAnimationFrame $ \ ()
+      targetEl.focus
     return
 
   :onKeyDown $ \ (event)
@@ -38,7 +38,9 @@ var
     console.log :dispatch type data
     var
       newStore $ updater @state.model type (Immutable.fromJS data)
-    console.log (newStore.toJS)
+    console.log
+      ... newStore (get :tree) (toJS)
+      ... newStore (get :focus) (toJS)
     @setState $ {} :model newStore
 
   :render $ \ ()
@@ -48,3 +50,4 @@ var
         :coord (Immutable.List)
         :inline false
         :dispatch @dispatch
+        :isNeck false

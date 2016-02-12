@@ -23,7 +23,7 @@
     "gulp-cirru-script": "0.5.2-1",
     "gulp-util": "^3.0.7",
     "hsl": "^0.1.1",
-    "json-loader": "^0.5.3",
+    "json-loader": "^0.5.4",
     "react-dom": "^0.14.7",
     "rsyncwrapper": "^0.4.3",
     "run-sequence": "^1.1.5",

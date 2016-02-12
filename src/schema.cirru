@@ -1,7 +1,8 @@
 
 var
   Immutable $ require :immutable
+  example $ require :./example.json
 
 = exports.model $ Immutable.fromJS $ {}
-  :tree $ [] $ [] :
+  :tree example
   :focus $ [] 0 0

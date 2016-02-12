@@ -20,7 +20,8 @@ var
     :resolve webpackConfig.resolve
     :module $ {}
       :loaders $ []
-        {} (:test /\.cirru$) (:loader :cirru-script) (:ignore /node_modules)
+        {} (:test /\.cirru$) (:loader :cirru-script)
+        {} (:test /\.json$) (:loader :json)
         {} (:test "/\.(png|jpg)$") (:loader :url-loader)
           :query $ {} (:limit 100)
         {} (:test /\.css$) $ :loader

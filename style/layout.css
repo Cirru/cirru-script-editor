@@ -9,10 +9,11 @@
 }
 
 .cirru-expr {
-  min-height: 24px;
+  min-height: 20px;
   border: none;
   border-left: 1px solid hsla(0,100%,100%,0.3);
-  padding: 2px 0px 2px 12px;
+  padding: 0px 0px 0px 10px;
+  margin: 4px 0px;
 }
 
 .cirru-expr:focus {
@@ -21,17 +22,13 @@
 
 .cirru-expr.is-inline {
   display: inline-block;
-  border: none;
-  box-shadow: 0 1px 0 hsla(0,100%,100%,0.3);
-  vertical-align: middle;
+  vertical-align: top;
   margin-right: 8px;
   margin-left: 0;
+  margin-top: 0px;
+  margin-bottom: 0px;
   padding-top: 0;
   padding-bottom: 0;
-}
-
-.cirru-expr.is-inline:focus {
-  box-shadow: 0 1px 0 white;
 }
 
 .cirru-expr.is-inline .cirru-token {
@@ -50,7 +47,7 @@
 .cirru-token {
   position: relative;
   display: inline-block;
-  line-height: 24px;
+  line-height: 20px;
 }
 
 input.cirru-token {
@@ -59,12 +56,17 @@ input.cirru-token {
   background-color: transparent;
   color: white;
   font-family: Menlo;
-  line-height: 24px;
+  line-height: 20px;
   font-size: 14px;
   padding: 0 0 0 4px;
   box-sizing: content-box;
   border-radius: 2px;
   transform: translate(-4px, 0);
+  color: hsl(100,50%,50%);
+}
+
+input.cirru-token.is-head {
+  color: hsl(220, 80%, 76%)
 }
 
 input.cirru-token.is-fuzzy {
@@ -72,7 +74,7 @@ input.cirru-token.is-fuzzy {
 }
 
 input.cirru-token:focus {
-  background-color: hsla(240, 80%, 60%,0.3);
+  background-color: hsla(200, 0%, 100%,0.15);
 }
 
 .cirru-suggest {

@@ -175,13 +175,13 @@ var
   ... model
     update :tree $ \ (tree)
       packHelper tree data true
-    set :focus data
+    set :focus $ data.push 0
 
 = exports.unpackExpr $ \ (model data)
   ... model
     update :tree $ \ (tree)
       unpackHelper tree data true
-    set :focus data
+    set :focus $ data.butLast
 
 = exports.focusTo $ \ (model data)
   ... model
