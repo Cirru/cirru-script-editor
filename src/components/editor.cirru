@@ -4,6 +4,7 @@ var
   Immutable $ require :immutable
 
   schema $ require :../schema
+  updater $ require :../updater
 
   Expr $ React.createFactory $ require :./expr
 
@@ -13,14 +14,10 @@ var
   :displayName :cirru-editor
 
   :propTypes $ object
-    :ast React.PropTypes.array.isRequired
-    :focus React.PropTypes.array.isRequired
-    :onChange React.PropTypes.func.isRequired
 
   :getInitialState $ \ ()
     {}
-      :tree (schema.model.get :tree)
-      :focus (schema.model.get :focus)
+      :model schema.model
 
   :onKeyDown $ \ (event)
     event.stopPropagation
@@ -28,8 +25,19 @@ var
 
   :dispatch $ \ (type data)
     console.log :dispatch type data
+    var
+      newStore $ updater @state.model type (Immutable.fromJS data)
+    console.log (newStore.toJS)
+    @setState $ {} :model newStore
+
+  :focusTo $ \ (coord)
+    console.log (coord.toJS)
 
   :render $ \ ()
     div ({} :className :cirru-editor :onKeyDown @onKeyDown)
-      Expr $ {} :expr @state.tree :coord (Immutable.List) :inline false
-        , :dispatch @dispatch
+      Expr $ {}
+        :expr $ @state.model.get :tree
+        :coord (Immutable.List)
+        :inline false
+        :dispatch @dispatch
+        :focusTo @focusTo

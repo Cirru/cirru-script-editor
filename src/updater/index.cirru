@@ -8,19 +8,17 @@ var
 = module.exports $ \ (store type data)
   var
     handler $ case type
-      :update-token
-      :remove-node
-      :before-token
-      :after-token
-      :prepend-token
-      :pack-node
-      :unpack-expr
-      :drop-to
-      :focus-to
-      :go-left
-      :go-right
-      :go-up
-      :go-down
+      :update-token logic.updateToken
+      :remove-node logic.removeNode
+      :before-token logic.beforeToken
+      :after-token logic.afterToken
+      :prepend-token logic.prependToken
+      :pack-node logic.packNode
+      :unpack-expr logic.unpackExpr
+      :go-left logic.goLeft
+      :go-right logic.goRight
+      :go-up logic.goUp
+      :go-down logic.goDown
       else id
 
   handler store data

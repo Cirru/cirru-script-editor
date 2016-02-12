@@ -26,8 +26,8 @@ var
   :propTypes $ object
     :token T.string.isRequired
     :coord $ . (T.instanceOf Immutable.List) :isRequired
-    :focus $ . (T.instanceOf Immutable.List) :isRequired
     :dispatch T.func.isRequired
+    :focusTo T.func.isRequired
 
   :isCaretAhead $ \ ()
     var inputEl @refs.input
@@ -39,13 +39,15 @@ var
 
   :onChange $ \ (event)
     var text event.target.value
-    astActions.updateToken @props.coord text
+    @props.dispatch :update-token $ {}
+      :coord @props.coord
+      :text text
     @setState $ object
       :disableSuggest false
       :select 0
 
   :onClick $ \ (event)
-    astActions.focusTo @props.coord
+    @props.focusTo @props.coord
 
   :onBlur $ \ (event)
     @setState $ object
@@ -62,42 +64,28 @@ var
         @setState $ object (:disableSuggest true)
         return undefined
       keydownCode.enter
-        var tokens (@getTokens)
-        if (@inSuggest)
-          do
-            @onSuggest $ @getCurrentGuess
-            @setState $ object
-              :disableSuggest true
-          do
-            if event.shiftKey
-              do $ astActions.beforeToken @props.coord
-              do $ astActions.afterToken @props.coord
-            @setState $ object
-              :disableSuggest true
+        if event.shiftKey
+          do $ @props.dispatch :before-token @props.coord
+          do $ @props.dispatch :after-token @props.coord
+        @setState $ object
+          :disableSuggest true
       keydownCode.tab
         event.preventDefault
         if event.shiftKey
-          do $ astActions.unpackExpr $ @props.coord.slice 0 -1
-          do $ astActions.packNode @props.coord
+          do $ @props.dispatch :unpack-expr @props.coord.slice 0 -1
+          do $ @props.dispatch :pack-node @props.coord
       keydownCode.cancel
         if (is @props.token :)
           do
-            astActions.removeNode @props.coord
+            @props.dispatch :remove-node @props.coord
             event.stopPropagation
             event.preventDefault
       keydownCode.left
         if (@isCaretAhead)
-          do $ astActions.goLeft @props.coord
+          do $ @props.dispatch :go-left @props.coord
       keydownCode.right
         if (@isCaretBehind)
-          do $ astActions.goRight @props.coord
-      keydownCode.z
-        if (or event.metaKey event.ctrlKey)
-          do
-            event.preventDefault
-            if event.shiftKey
-              do $ astActions.redo
-              do $ astActions.undo
+          do $ @props.dispatch :go-right @props.coord
     return
 
   :render $ \ ()
@@ -105,7 +93,6 @@ var
       width $ detect.textWidth @props.token :14px :Menlo
       style $ object
         :width $ + (+ width 8) :px
-      tokens (@getTokens)
       className $ cx $ object
         :cirru-token true
         :is-fuzzy $ or (is @props.token :) (? (@props.token.match /\s))

@@ -9,11 +9,9 @@ var
 
   Container $ React.createFactory $ require :./components/container
 
-  editor $ Container
-
 = window.isCirruLogOn true
 
-ReactDOM.render editor (document.querySelector :#app)
+ReactDOM.render (Container) (document.querySelector :#app)
 
 window.addEventListener :keydown $ \ (event)
   if (is event.keyCode keydownCode.cancel)
@@ -21,3 +19,8 @@ window.addEventListener :keydown $ \ (event)
       console.log :blocked
       event.preventDefault
   return
+
+if module.hot
+  do $ module.hot.accept :./components/container $ \ ()
+    = Container $ React.createFactory $ require :./components/container
+    ReactDOM.render (Container) (document.querySelector :#app)

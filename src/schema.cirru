@@ -3,5 +3,5 @@ var
   Immutable $ require :immutable
 
 = exports.model $ Immutable.fromJS $ {}
-  :tree $ [] $ []
-  :focus $ []
+  :tree $ [] $ [] :
+  :focus $ [] 0 0
