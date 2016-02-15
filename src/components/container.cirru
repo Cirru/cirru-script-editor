@@ -1,6 +1,7 @@
 
 var
   React $ require :react
+  Immutable $ require :immutable
 
   ({}~ div) React.DOM
 
@@ -15,17 +16,13 @@ var cachedAst $ JSON.parse $ or
   :displayName :container
 
   :getInitialState $ \ ()
-    object
-      :ast cachedAst
-      :focus $ array
+    {}
+      :tree $ or (Immutable.fromJS cachedAst) (Immutable.List)
 
-  :onChange $ \ (ast focus)
-    @setState $ object (:ast ast) (:focus focus)
-    localStorage.setItem :cirru-ast $ JSON.stringify @state.ast
+  :onSave $ \ (tree)
+    @setState $ {} :tree tree
+    localStorage.setItem :cirru-ast $ JSON.stringify tree
 
   :render $ \ ()
-    div (object)
-      Editor $ object
-        :ast @state.ast
-        :focus @state.focus
-        :onChange @onChange
+    div ({})
+      Editor $ {} :tree @state.tree :onSave @onSave :height 400

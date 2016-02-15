@@ -140,7 +140,9 @@ var
 = exports.removeNode $ \ (model data)
   ... model
     update :tree $ \ (tree)
-      removeHelper tree data true
+      cond (> data.size 0)
+        removeHelper tree data true
+        , tree
     set :focus $ goLeft data
 
 = exports.beforeToken $ \ (model data)

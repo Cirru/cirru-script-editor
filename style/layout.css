@@ -1,13 +1,14 @@
 
 .cirru-editor {
   background-color: hsla(160,20%,0%,1);
-  padding: 100px 10px 300px;
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .cirru-expr:focus, input.cirru-token:focus {
@@ -101,4 +102,29 @@ input.cirru-token:focus {
 
 .cirru-guess.is-selected {
   background-color: hsl(240,80%,70%);
+}
+
+.cirru-toolbar {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 1px;
+}
+
+.cirru-tool-button {
+  color: white;
+  font-size: 12px;
+  font-family: Menlo;
+  background-color: hsl(120,40%,40%);
+  padding: 0 6px;
+  line-height: 18px;
+  height: 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.cirru-container {
+  overflow: auto;
+  flex: 1;
 }
