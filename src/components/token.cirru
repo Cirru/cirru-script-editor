@@ -1,7 +1,6 @@
 
 var
   React $ require :react
-  _ $ require :lodash
   cx $ require :classnames
   Immutable $ require :immutable
 

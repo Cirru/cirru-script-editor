@@ -2,7 +2,6 @@
 var
   React $ require :react
   Immutable $ require :immutable
-  _ $ require :lodash
   cx $ require :classnames
 
   Token $ React.createFactory $ require :./token
@@ -67,7 +66,6 @@ var
         :is-inline @props.inline
         :is-empty $ is @props.expr.size 0
         :is-root $ is @props.coord.size 0
-      isLastList true
 
     div
       object (:className className) (:onClick @onClick)
@@ -77,9 +75,7 @@ var
         :ref :root
 
       @props.expr.map $ \\ (item index)
-        var isLastInline $ not isLastList
-        var isLastList $ _.isArray item
-        cond (_.isString item)
+        cond (is (typeof item) :string)
           Token $ object (:token item) (:key index)
             :coord $ @props.coord.push index
             :dispatch @props.dispatch

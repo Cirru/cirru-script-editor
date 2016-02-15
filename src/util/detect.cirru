@@ -1,7 +1,5 @@
 
 var
-  _ $ require :lodash
-
   canvas $ document.createElement :canvas
 
   ctx $ canvas.getContext :2d
