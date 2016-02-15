@@ -77,7 +77,8 @@ var
       keydownCode.tab
         event.preventDefault
         event.stopPropagation
-        if (not event.shiftKey)
+        if event.shiftKey
+          do $ @props.dispatch :unpack-node @props.coord
           do $ @props.dispatch :pack-node @props.coord
       keydownCode.cancel
         if (is @props.token :)

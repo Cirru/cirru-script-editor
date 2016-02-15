@@ -17,6 +17,7 @@ var
       :prepend-token logic.prependToken
       :pack-node logic.packNode
       :unpack-expr logic.unpackExpr
+      :unpack-node logic.unpackNode
       :focus-to logic.focusTo
       :go-left logic.goLeft
       :go-right logic.goRight

@@ -50,4 +50,3 @@ var
         :coord (Immutable.List)
         :inline false
         :dispatch @dispatch
-        :isNeck false

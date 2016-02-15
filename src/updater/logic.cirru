@@ -123,6 +123,12 @@ var
         update (- targetCoord.size 1) $ \ (index) (+ 1 index)
         push 0
 
+  focusUnpackNode $ \ (data)
+    cond (< data.size 2) data
+      bind (data.butLast) $ \ (base)
+        base.update (- base.size 1) $ \ (lastItem)
+          + lastItem (base.last)
+
 = exports.updateToken $ \ (model data)
   var
     coord $ data.get :coord
@@ -182,6 +188,12 @@ var
     update :tree $ \ (tree)
       unpackHelper tree data true
     set :focus $ data.butLast
+
+= exports.unpackNode $ \ (model data)
+  ... model
+    update :tree $ \ (tree)
+      unpackHelper tree (data.butLast) true
+    set :focus $ focusUnpackNode data
 
 = exports.focusTo $ \ (model data)
   ... model

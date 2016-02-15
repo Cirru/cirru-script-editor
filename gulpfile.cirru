@@ -16,7 +16,7 @@ gulp.task :rsync $ \ (cb)
       :src $ [] :build/*
       :recursive true
       :args $ [] :--verbose
-      :dest :tiye:~/repo/workflow/
+      :dest :tiye:~/repo/cirru/editor/
       :deleteAll true
     \ (error stdout stderr cmd)
       if (? error)

@@ -19,7 +19,6 @@ var
     :coord $ . (React.PropTypes.instanceOf Immutable.List) :isRequired
     :inline React.PropTypes.bool.isRequired
     :dispatch React.PropTypes.func.isRequired
-    :isNeck React.PropTypes.bool.isRequired
 
   :getInitialState $ \ () $ {}
 
@@ -68,7 +67,6 @@ var
         :is-inline @props.inline
         :is-empty $ is @props.expr.size 0
         :is-root $ is @props.coord.size 0
-        :is-neck @props.isNeck
       isLastList true
 
     div
@@ -91,6 +89,5 @@ var
             :coord $ @props.coord.push index
             :dispatch @props.dispatch
             :inline $ is index (- @props.expr.size 1)
-            :isNeck $ is index 1
 
 var Expr $ React.createFactory module.exports

@@ -1,7 +1,13 @@
 
 .cirru-editor {
-  background-color: hsl(160,20%,10%);
+  background-color: hsla(160,20%,0%,1);
   padding: 100px 10px 300px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
 }
 
 .cirru-expr:focus, input.cirru-token:focus {
@@ -61,7 +67,6 @@ input.cirru-token {
   padding: 0 0 0 4px;
   box-sizing: content-box;
   border-radius: 2px;
-  transform: translate(-4px, 0);
   color: hsl(100,50%,50%);
 }
 
