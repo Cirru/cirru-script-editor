@@ -146,20 +146,22 @@ var
     set :focus $ goLeft data
 
 = exports.beforeToken $ \ (model data)
-  ... model
-    update :tree $ \ (tree)
-      beforeHelper tree data true
+  cond (is data.size 0) model
+    ... model
+      update :tree $ \ (tree)
+        beforeHelper tree data true
 
 = exports.afterToken $ \ (model data)
   var
     tree $ model.get :tree
-  ... model
-    update :tree $ \ (tree)
-      afterHelper tree data true
-    set :focus
-      cond (is data.size 0)
-        data.push 0
-        data.set (- data.size 1) $ + 1 (data.last)
+  cond (is data.size 0) model
+    ... model
+      update :tree $ \ (tree)
+        afterHelper tree data true
+      set :focus
+        cond (is data.size 0)
+          data.push 0
+          data.set (- data.size 1) $ + 1 (data.last)
 
 = exports.prependToken $ \ (model data)
   ... model
