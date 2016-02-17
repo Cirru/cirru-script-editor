@@ -56,7 +56,7 @@ var
           not $ Immutable.is (@state.model.get :tree) @props.tree
           div ({} :className :cirru-tool-button :onClick @onSave) ":save"
       div ({} :className :cirru-container)
-        div ({} :style (@styleSpace))
+        div ({} :style (@styleSmallSpace))
         Expr $ {}
           :expr $ @state.model.get :tree
           :coord (Immutable.List)
@@ -65,7 +65,12 @@ var
         div ({} :style (@styleSpace))
 
   :styleRoot $ \ ()
-    {} :height @props.height
+    {}
+      :height @props.height
+      :width :100%
+
+  :styleSmallSpace $ \ ()
+    {} :height 200
 
   :styleSpace $ \ ()
     {} :height $ - @props.height 100

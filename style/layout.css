@@ -62,7 +62,7 @@ input.cirru-token {
   display: inline-block;
   background-color: transparent;
   color: white;
-  font-family: Menlo;
+  font-family: Menlo, Courier, monospace;
   line-height: 20px;
   font-size: 14px;
   padding: 0 0 0 4px;

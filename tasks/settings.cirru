@@ -3,9 +3,9 @@
   case env
     :dev $ {}
       :env :dev
-      :host :http://localhost
-      :port 8080
+      :host :http://repo
+      :port 8082
     :build $ {}
       :env :build
-      :host :http://localhost
-      :port 8080
+      :host :http://repo
+      :port 8082

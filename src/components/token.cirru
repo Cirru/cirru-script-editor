@@ -55,6 +55,9 @@ var
   :onRootClick $ \ (event)
     event.stopPropagation
 
+  :onDoubleClick $ \ (event)
+    event.stopPropagation
+
   :onKeyDown $ \ (event)
     event.stopPropagation
     var keyCode event.keyCode
@@ -111,6 +114,7 @@ var
 
     input
       {} (:value @props.token) (:style style) (:ref :input)
+        :onDoubleClick @onDoubleClick
         :className className
         :onClick @onRootClick
         :id $ ... @props.coord (unshift :leaf) (join :-)

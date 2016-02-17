@@ -1,5 +1,6 @@
 
 var
+  hsl $ require :hsl
   React $ require :react
   Immutable $ require :immutable
   cx $ require :classnames
@@ -9,6 +10,7 @@ var
 
   keydownCode $ require :../util/keydown-code
   detect $ require :../util/detect
+  format $ require :../util/format
 
 = module.exports $ React.createClass $ object
   :displayName :cirru-expr
@@ -20,10 +22,20 @@ var
     :dispatch React.PropTypes.func.isRequired
 
   :getInitialState $ \ () $ {}
+    :isFolded false
 
   :onClick $ \ (event)
     event.stopPropagation
     @props.dispatch :focus-to @props.coord
+
+  :onDoubleClick $ \ (event)
+    event.stopPropagation
+    if (not @state.isFolded) $ do
+      @setState $ {} :isFolded true
+    return
+
+  :onUnfold $ \ (event)
+    @setState $ {} :isFolded false
 
   :onKeyDown $ \ (event)
     event.stopPropagation
@@ -46,20 +58,20 @@ var
           do
             @props.dispatch :pack-node @props.coord
       keydownCode.left
-        @props.dispatch :go-left @props.coord
-        event.preventDefault
-      keydownCode.right
-        @props.dispatch :go-right @props.coord
-        event.preventDefault
-      keydownCode.up
         @props.dispatch :go-up @props.coord
         event.preventDefault
-      keydownCode.down
+      keydownCode.right
         @props.dispatch :go-down @props.coord
+        event.preventDefault
+      keydownCode.up
+        @props.dispatch :go-left @props.coord
+        event.preventDefault
+      keydownCode.down
+        @props.dispatch :go-right @props.coord
         event.preventDefault
     return
 
-  :render $ \ ()
+  :renderExpr $ \ ()
     var
       className $ cx $ object
         :cirru-expr true
@@ -68,7 +80,8 @@ var
         :is-root $ is @props.coord.size 0
 
     div
-      object (:className className) (:onClick @onClick)
+      {} (:className className) (:onClick @onClick)
+        :onDoubleClick @onDoubleClick
         :id $ ... @props.coord (unshift :leaf) (join :-)
         :tabIndex 0
         :onKeyDown @onKeyDown
@@ -85,5 +98,34 @@ var
             :coord $ @props.coord.push index
             :dispatch @props.dispatch
             :inline $ is index (- @props.expr.size 1)
+
+  :renderFolded $ \ ()
+    div
+      {} :onClick @onUnfold :onDoubleClick @onDoubleClick
+        , :tabIndex null :key :unfocused
+        , :style @styleFolded
+      format.plain @props.expr
+
+  :render $ \ ()
+    cond @state.isFolded
+      @renderFolded
+      @renderExpr
+
+  :styleFolded $ {}
+    :color :white
+    :WebkitUserSelect :none
+    :whiteSpace :nowrap
+    :fontFamily ":Menlo"
+    :fontSize 12
+    :backgroundColor $ hsl 60 90 24
+    :color :white
+    :padding ":0 4px"
+    :lineHeight :24px
+    :maxWidth 400
+    :overflow :hidden
+    :textOverflow :ellipsis
+    :margin ":2px 0"
+    :cursor :pointer
+    :borderRadius 4
 
 var Expr $ React.createFactory module.exports
