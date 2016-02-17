@@ -2,7 +2,7 @@
 var
   plainString $ \ (token)
     cond
-      ? $ token.match /^\w[\w\d-_\.]*$
+      ? $ token.match "/^[^\\s\\\"]+$"
       , token
       JSON.stringify token
 

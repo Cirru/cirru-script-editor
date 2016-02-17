@@ -1,6 +1,6 @@
 {
   "name": "cirru-editor",
-  "version": "0.5.8",
+  "version": "0.6.0",
   "description": "Editor of Cirru grammar",
   "main": "lib/components/editor.js",
   "scripts": {
@@ -38,7 +38,7 @@
     "hsl": "^0.1.1",
     "immutable": "^3.7.6",
     "keycode": "^2.1.0",
-    "react": "^0.14.5"
+    "react": "^0.14.7"
   },
   "repository": {
     "type": "git",
