@@ -17,8 +17,7 @@ var
 = module.exports $ React.createClass $ object
   :displayName :cirru-token
 
-  :getInitialState $ \ () $ object
-    :select 0
+  :getInitialState $ \ () $ {}
 
   :propTypes $ object
     :token T.string.isRequired
@@ -40,38 +39,24 @@ var
     @props.dispatch :update-token $ {}
       :coord @props.coord
       :text text
-    @setState $ object
-      :disableSuggest false
-      :select 0
 
   :onClick $ \ (event)
     @props.dispatch :focus-to @props.coord
-    event.stopPropagation
-
-  :onBlur $ \ (event)
-    @setState $ object
-      :disableSuggest true
-
-  :onRootClick $ \ (event)
     event.stopPropagation
 
   :onDoubleClick $ \ (event)
     event.stopPropagation
 
   :onKeyDown $ \ (event)
-    event.stopPropagation
     var keyCode event.keyCode
     switch keyCode
-      keydownCode.esc
-        @setState $ object (:disableSuggest true)
-        return undefined
       keydownCode.enter
+        event.stopPropagation
         if event.shiftKey
           do $ @props.dispatch :before-token @props.coord
           do $ @props.dispatch :after-token @props.coord
-        @setState $ object
-          :disableSuggest true
       keydownCode.space
+        event.stopPropagation
         if (not event.shiftKey)
           do
             @props.dispatch :after-token @props.coord
@@ -83,21 +68,26 @@ var
           do $ @props.dispatch :unpack-node @props.coord
           do $ @props.dispatch :pack-node @props.coord
       keydownCode.cancel
+        event.stopPropagation
         if (is @props.token :)
           do
             @props.dispatch :remove-node @props.coord
             event.stopPropagation
             event.preventDefault
       keydownCode.left
+        event.stopPropagation
         if (@isCaretAhead)
           do $ @props.dispatch :go-left @props.coord
       keydownCode.right
+        event.stopPropagation
         if (@isCaretBehind)
           do $ @props.dispatch :go-right @props.coord
       keydownCode.up
+        event.stopPropagation
         if (@isCaretAhead)
           do $ @props.dispatch :go-up @props.coord
       keydownCode.down
+        event.stopPropagation
         if (@isCaretBehind)
           do $ @props.dispatch :go-right @props.coord
     return
@@ -116,9 +106,7 @@ var
       {} (:value @props.token) (:style style) (:ref :input)
         :onDoubleClick @onDoubleClick
         :className className
-        :onClick @onRootClick
         :id $ ... @props.coord (unshift :leaf) (join :-)
-        :onBlur @onBlur
         :onChange @onChange
         :onKeyDown @onKeyDown
         :onClick @onClick

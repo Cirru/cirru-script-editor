@@ -33,10 +33,6 @@ var
       targetEl.focus
     return
 
-  :onKeyDown $ \ (event)
-    event.stopPropagation
-    event.preventDefault
-
   :dispatch $ \ (type data)
     -- console.log :dispatch type dat
     var
@@ -50,7 +46,7 @@ var
     @props.onSave (@state.model.get :tree)
 
   :render $ \ ()
-    div ({} :className :cirru-editor :onKeyDown @onKeyDown :style (@styleRoot))
+    div ({} :className :cirru-editor :style (@styleRoot))
       div ({} :className :cirru-toolbar)
         cond
           not $ Immutable.is (@state.model.get :tree) @props.tree

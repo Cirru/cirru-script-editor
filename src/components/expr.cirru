@@ -38,12 +38,13 @@ var
     @setState $ {} :isFolded false
 
   :onKeyDown $ \ (event)
-    event.stopPropagation
     switch event.keyCode
       keydownCode.cancel
+        event.stopPropagation
         event.preventDefault
         @props.dispatch :remove-node @props.coord
       keydownCode.enter
+        event.stopPropagation
         switch true
           event.shiftKey
             @props.dispatch :before-token @props.coord
@@ -52,21 +53,26 @@ var
           else
             @props.dispatch :after-token @props.coord
       keydownCode.tab
+        event.stopPropagation
         if event.shiftKey
           do
             @props.dispatch :unpack-expr @props.coord
           do
             @props.dispatch :pack-node @props.coord
       keydownCode.left
+        event.stopPropagation
         @props.dispatch :go-up @props.coord
         event.preventDefault
       keydownCode.right
+        event.stopPropagation
         @props.dispatch :go-down @props.coord
         event.preventDefault
       keydownCode.up
+        event.stopPropagation
         @props.dispatch :go-left @props.coord
         event.preventDefault
       keydownCode.down
+        event.stopPropagation
         @props.dispatch :go-right @props.coord
         event.preventDefault
     return
