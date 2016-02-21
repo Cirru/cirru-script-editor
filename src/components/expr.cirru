@@ -121,7 +121,7 @@ var
     :color :white
     :WebkitUserSelect :none
     :whiteSpace :nowrap
-    :fontFamily ":Menlo"
+    :fontFamily ":Menlo, Consolas, monospace"
     :fontSize 12
     :backgroundColor $ hsl 60 90 24
     :color :white

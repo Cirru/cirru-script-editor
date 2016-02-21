@@ -63,7 +63,7 @@ input.cirru-token {
   display: inline-block;
   background-color: transparent;
   color: white;
-  font-family: Menlo, Courier, monospace;
+  font-family: Menlo, Consolas, monospace;
   line-height: 20px;
   font-size: 14px;
   padding: 0 0 0 4px;
@@ -94,7 +94,7 @@ input.cirru-token:focus {
 .cirru-guess {
   background-color: hsl(240,80%,75%);
   color: white;
-  font-family: Menlo;
+  font-family: Menlo, Consolas, monospace;
   font-size: 14px;
   padding: 2px 4px;
   cursor: pointer;
@@ -115,7 +115,7 @@ input.cirru-token:focus {
 .cirru-tool-button {
   color: white;
   font-size: 12px;
-  font-family: Menlo;
+  font-family: Menlo, Consolas, monospace;
   background-color: hsl(120,40%,40%);
   padding: 0 6px;
   line-height: 18px;

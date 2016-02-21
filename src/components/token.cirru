@@ -94,7 +94,7 @@ var
 
   :render $ \ ()
     var
-      width $ detect.textWidth @props.token :14px :Menlo
+      width $ detect.textWidth @props.token :14px ":Menlo, Consolas, monospace"
       style $ object
         :width $ + (+ width 8) :px
       className $ cx $ object
