@@ -25,4 +25,4 @@ var cachedAst $ JSON.parse $ or
 
   :render $ \ ()
     div ({})
-      Editor $ {} :tree @state.tree :onSave @onSave :height 400
+      Editor $ {} :tree @state.tree :onSave @onSave :height window.innerHeight

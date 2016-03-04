@@ -69,11 +69,11 @@ input.cirru-token {
   padding: 0 0 0 4px;
   box-sizing: content-box;
   border-radius: 2px;
-  color: hsl(100,50%,50%);
+  color: hsl(220,30%,35%)
 }
 
 input.cirru-token.is-head {
-  color: hsl(220, 80%, 76%)
+  color: hsl(40,40%,50%);
 }
 
 input.cirru-token.is-fuzzy {
