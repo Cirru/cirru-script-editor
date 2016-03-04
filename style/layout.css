@@ -66,10 +66,10 @@ input.cirru-token {
   font-family: Menlo, Consolas, monospace;
   line-height: 20px;
   font-size: 14px;
-  padding: 0 0 0 4px;
+  padding: 0 0px 0 4px;
   box-sizing: content-box;
   border-radius: 2px;
-  color: hsl(220,30%,35%)
+  color: hsl(220,30%,40%)
 }
 
 input.cirru-token.is-head {
@@ -77,11 +77,13 @@ input.cirru-token.is-head {
 }
 
 input.cirru-token.is-fuzzy {
-  background-color: hsla(240, 80%, 90%,0.3);
+  background-color: hsla(200, 0%, 100%,0.15);
+  margin: 0 4px;
 }
 
 input.cirru-token:focus {
-  background-color: hsla(200, 0%, 100%,0.15);
+  border-radius: 8px;
+  box-shadow: 0px 0px 2px hsla(200,80%,100%,1);
 }
 
 .cirru-suggest {
