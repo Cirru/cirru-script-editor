@@ -19,6 +19,7 @@ var
     :expr $ . (React.PropTypes.instanceOf Immutable.List) :isRequired
     :coord $ . (React.PropTypes.instanceOf Immutable.List) :isRequired
     :inline React.PropTypes.bool.isRequired
+    :isSimple React.PropTypes.bool.isRequired
     :dispatch React.PropTypes.func.isRequired
 
   :getInitialState $ \ () $ {}
@@ -61,19 +62,19 @@ var
             @props.dispatch :pack-node @props.coord
       keydownCode.left
         event.stopPropagation
-        @props.dispatch :go-up @props.coord
+        @props.dispatch :go-left @props.coord
         event.preventDefault
       keydownCode.right
         event.stopPropagation
-        @props.dispatch :go-down @props.coord
+        @props.dispatch :go-right @props.coord
         event.preventDefault
       keydownCode.up
         event.stopPropagation
-        @props.dispatch :go-left @props.coord
+        @props.dispatch :go-up @props.coord
         event.preventDefault
       keydownCode.down
         event.stopPropagation
-        @props.dispatch :go-right @props.coord
+        @props.dispatch :go-down @props.coord
         event.preventDefault
     return
 
@@ -82,6 +83,7 @@ var
       className $ cx $ object
         :cirru-expr true
         :is-inline @props.inline
+        :is-simple @props.isSimple
         :is-empty $ is @props.expr.size 0
         :is-root $ is @props.coord.size 0
 
@@ -104,6 +106,7 @@ var
             :coord $ @props.coord.push index
             :dispatch @props.dispatch
             :inline $ is index (- @props.expr.size 1)
+            :isSimple $ detect.isSimple item
 
   :renderFolded $ \ ()
     div
@@ -123,8 +126,7 @@ var
     :whiteSpace :nowrap
     :fontFamily ":Menlo, Consolas, monospace"
     :fontSize 12
-    :backgroundColor $ hsl 60 90 24
-    :color :white
+    :color $ hsl 0 0 50
     :padding ":0 4px"
     :lineHeight :24px
     :maxWidth 400
@@ -133,5 +135,6 @@ var
     :margin ":2px 0"
     :cursor :pointer
     :borderRadius 4
+    :border $ + ":1px solid " (hsl 0 0 50)
 
 var Expr $ React.createFactory module.exports

@@ -26,7 +26,7 @@ var
     :module $ {}
       :loaders $ []
         {} (:test /\.cirru$) (:loader :cirru-script)
-        {} (:test "/\.(png|jpg|gif)$") (:loader :url-loader)
+        {} (:test "/\.(png|jpg|gif|woff2)$") (:loader :url-loader)
           :query $ {} (:limit 100)
         {} (:test /\.css$) $ :loader :style!css!autoprefixer
         {} (:test /\.json$) $ :loader :json

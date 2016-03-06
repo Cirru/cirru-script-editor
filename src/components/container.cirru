@@ -18,6 +18,16 @@ var cachedAst $ JSON.parse $ or
   :getInitialState $ \ ()
     {}
       :tree $ or (Immutable.fromJS cachedAst) (Immutable.List)
+      :height window.innerHeight
+
+  :componentDidMount $ \ ()
+    window.addEventListener :resize @onResize
+
+  :componentWillUnmount $ \ ()
+    window.removeEventListener :resize @onResize
+
+  :onResize $ \ ()
+    @setState $ {} :height window.innerHeight
 
   :onSave $ \ (tree)
     @setState $ {} :tree tree
@@ -25,4 +35,4 @@ var cachedAst $ JSON.parse $ or
 
   :render $ \ ()
     div ({})
-      Editor $ {} :tree @state.tree :onSave @onSave :height window.innerHeight
+      Editor $ {} :tree @state.tree :onSave @onSave :height @state.height

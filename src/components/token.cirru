@@ -94,9 +94,9 @@ var
 
   :render $ \ ()
     var
-      width $ detect.textWidth @props.token :14px ":Menlo, Consolas, monospace"
+      width $ detect.textWidth @props.token :15px ":Source Code Pro, Menlo, Consolas, monospace"
       style $ object
-        :width $ + (+ width 8) :px
+        :width $ + (+ width 4) :px
       className $ cx $ object
         :cirru-token true
         :is-fuzzy $ or (is @props.token :) (? (@props.token.match /\s))

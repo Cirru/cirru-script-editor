@@ -4,3 +4,9 @@
 body {
   margin: 0;
 }
+
+body * {
+  /*
+  box-shadow: 0 0 1px hsla(0,100%,100%,0.4);
+  */
+}

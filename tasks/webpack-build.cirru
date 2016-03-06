@@ -22,7 +22,7 @@ var
       :loaders $ []
         {} (:test /\.cirru$) (:loader :cirru-script)
         {} (:test /\.json$) (:loader :json)
-        {} (:test "/\.(png|jpg)$") (:loader :url-loader)
+        {} (:test "/\.(png|jpg|woff2)$") (:loader :url-loader)
           :query $ {} (:limit 100)
         {} (:test /\.css$) $ :loader
           ExtractTextPlugin.extract :style-loader :css!autoprefixer

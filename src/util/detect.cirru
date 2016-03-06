@@ -11,6 +11,8 @@ var
   ctx.restore
   Math.ceil width
 
-= exports.isPlain $ \ (ast)
-  ast.every $ \ (item)
-    is (typeof item) :string
+= exports.isSimple $ \ (ast)
+  and
+    < ast.size 5
+    ast.every $ \ (item)
+      is (typeof item) :string

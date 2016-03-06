@@ -57,6 +57,7 @@ var
           :expr $ @state.model.get :tree
           :coord (Immutable.List)
           :inline false
+          :isSimple false
           :dispatch @dispatch
         div ({} :style (@styleSpace))
 
