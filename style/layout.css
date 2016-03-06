@@ -29,40 +29,26 @@
 .cirru-expr {
   min-height: 20px;
   border: none;
-  border: 1px solid hsla(0,100%,100%,0.1);
-  border-bottom-left-radius: 4px;
+  border: 1px solid hsla(0,100%,100%,0.25);
   border-width: 0px 0px 0px 1px;
-  padding: 0px 0px 0px 14px;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  padding: 0px 0px 0px 0px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding-left: 8px;
   vertical-align: top;
-  transition-duration: 400ms;
-}
-
-.cirru-expr:hover {
-  border-color: hsla(360, 100%, 100%, 0.2);
+  margin-left: 12px;
 }
 
 .cirru-expr:focus {
   border-color: hsla(360, 100%, 100%, 0.5);
 }
 
-.cirru-expr.is-inline {
+.cirru-expr.is-last {
   display: inline-block;
   vertical-align: top;
-  margin-right: 14px;
-  margin-left: 0;
-}
-
-.cirru-expr.is-simple {
-  display: inline-block;
-  border-width: 0px 0px 1px 0;
-  padding: 0 4px 4px 4px;
-  margin: 0 8px 0 0;
-}
-
-.cirru-expr.is-inline .cirru-token {
-  margin-top: -1px;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-right: 0;
 }
 
 .cirru-expr.is-empty {
@@ -75,15 +61,16 @@
   margin-left: 10px;
 }
 
-.cirru-token {
-  position: relative;
+.cirru-expr.is-simple {
   display: inline-block;
-  line-height: 20px;
-  margin-right: 4px;
-  opacity: 0.8;
+  border-width: 0 0 1px 0;
+  padding-bottom: 4px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 input.cirru-token {
+  margin-right: 4px;
   border: none;
   display: inline-block;
   background-color: transparent;
@@ -93,22 +80,15 @@ input.cirru-token {
   font-size: 15px;
   padding: 0 0px 0 4px;
   box-sizing: content-box;
-  color: hsl(220,40%,40%)
+  color: hsl(200,20%,45%)
 }
 
 input.cirru-token.is-head {
-  color: hsl(30,60%,50%);
+  color: hsl(50,60%,50%);
 }
 
 input.cirru-token.is-fuzzy {
   background-color: hsla(200, 0%, 100%,0.15);
-}
-
-input.cirru-token:hover {
-  opacity: 1;
-}
-input.cirru-token:focus {
-  opacity: 1;
 }
 
 .cirru-toolbar {
@@ -124,7 +104,7 @@ input.cirru-token:focus {
 .cirru-tool-button {
   color: white;
   font-size: 12px;
-  font-family: Menlo, Consolas, monospace;
+  font-family: Source Code Pro, Menlo, Consolas, monospace;
   background-color: hsl(120,40%,40%);
   padding: 0 6px;
   line-height: 18px;

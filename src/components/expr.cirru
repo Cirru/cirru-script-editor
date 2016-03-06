@@ -18,9 +18,10 @@ var
   :propTypes $ object
     :expr $ . (React.PropTypes.instanceOf Immutable.List) :isRequired
     :coord $ . (React.PropTypes.instanceOf Immutable.List) :isRequired
-    :inline React.PropTypes.bool.isRequired
+    :isLast React.PropTypes.bool.isRequired
     :isSimple React.PropTypes.bool.isRequired
     :dispatch React.PropTypes.func.isRequired
+    :level React.PropTypes.number.isRequired
 
   :getInitialState $ \ () $ {}
     :isFolded false
@@ -82,7 +83,7 @@ var
     var
       className $ cx $ object
         :cirru-expr true
-        :is-inline @props.inline
+        :is-last @props.isLast
         :is-simple @props.isSimple
         :is-empty $ is @props.expr.size 0
         :is-root $ is @props.coord.size 0
@@ -100,13 +101,19 @@ var
           Token $ object (:token item) (:key index)
             :coord $ @props.coord.push index
             :dispatch @props.dispatch
-            :inline @props.inline
             :isHead (is index 0)
           Expr $ object (:expr item) (:key index)
             :coord $ @props.coord.push index
             :dispatch @props.dispatch
-            :inline $ is index (- @props.expr.size 1)
-            :isSimple $ detect.isSimple item
+            :isLast $ and
+              is index (- @props.expr.size 1)
+              > @props.level 1
+            :isSimple $ and
+              detect.isSimple item
+              > @props.level 1
+              < index 4
+              isnt index (- @props.expr.size 1)
+            :level $ + @props.level 1
 
   :renderFolded $ \ ()
     div

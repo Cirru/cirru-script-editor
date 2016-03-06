@@ -21,7 +21,6 @@ var
 
   :propTypes $ object
     :token T.string.isRequired
-    :inline T.bool.isRequired
     :isHead T.bool.isRequired
     :coord $ . (T.instanceOf Immutable.List) :isRequired
     :dispatch T.func.isRequired
