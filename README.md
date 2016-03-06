@@ -4,39 +4,27 @@ Cirru Editor
 
 built with React
 
+Demo http://repo.cirru.org/cirru-editor/
+
 ### Keyboard
 
-```cirru
-tab
-  token packNode
-  expr packNode
+* Enter/Space
+* Shift Enter
+* Shift Enter
+* Left
+* Right
+* Up
+* Down
+* Tab
+* Shift Tab
+* Delete
 
-shift tab
-  token unpackExpr(parent)
-  expr unpackExpr
+### To be done
 
-enter
-  token afterToken
-  expr afterToken
-
-shift enter
-  token beforeToken
-  expr beforeToken
-
-command enter
-  token afterToken
-  expr prependToken
-```
-
-### Focus
-
-```cirru
-focus-to
-focus-forward
-focus-backward
-focus-inside
-focus-outside
-```
+* Undo
+* Redo
+* Cut
+* Paste
 
 ### License
 
