@@ -106,21 +106,20 @@ var
                 and isLastSimple
                   detect.isSimple item
                   > @props.level 0
-                  < index 3
-                  isnt index (- @props.expr.size 1)
                 \\ (isSimple)
                   makeList
                     acc.push $ Expr $ {} (:expr item) (:key index)
                       :coord $ @props.coord.push index
                       :dispatch @props.dispatch
                       :isLast $ and
+                        not isSimple
                         is index (- @props.expr.size 1)
                         > @props.level 0
                       :isSimple isSimple
                       :level $ + @props.level 1
                     items.rest
                     + index 1
-                    , isSimple
+                    , false
 
     div
       {} (:className className) (:onClick @onClick)
