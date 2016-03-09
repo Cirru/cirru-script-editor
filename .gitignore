@@ -2,7 +2,7 @@
 /build/
 /lib/
 /node_modules/
-/assets.json
+/tasks/assets.json
 /index.html
 
 example.json

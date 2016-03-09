@@ -104,6 +104,7 @@ var
     input
       {} (:value @props.token) (:style style) (:ref :input)
         :onDoubleClick @onDoubleClick
+        :spellCheck false
         :className className
         :id $ ... @props.coord (unshift :leaf) (join :-)
         :onChange @onChange

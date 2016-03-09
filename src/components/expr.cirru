@@ -12,6 +12,8 @@ var
   detect $ require :../util/detect
   format $ require :../util/format
 
+  bind $ \\ (v k) (k v)
+
 = module.exports $ React.createClass $ object
   :displayName :cirru-expr
 
@@ -88,6 +90,38 @@ var
         :is-empty $ is @props.expr.size 0
         :is-root $ is @props.coord.size 0
 
+      makeList $ \\ (acc items index isLastSimple)
+        cond (is items.size 0) acc
+          bind (items.first) $ \\ (item)
+            cond (is (typeof item) :string)
+              makeList
+                acc.push $ Token $ {} (:token item) (:key index)
+                  :coord $ @props.coord.push index
+                  :dispatch @props.dispatch
+                  :isHead (is index 0)
+                items.rest
+                + index 1
+                , true
+              bind
+                and isLastSimple
+                  detect.isSimple item
+                  > @props.level 0
+                  < index 3
+                  isnt index (- @props.expr.size 1)
+                \\ (isSimple)
+                  makeList
+                    acc.push $ Expr $ {} (:expr item) (:key index)
+                      :coord $ @props.coord.push index
+                      :dispatch @props.dispatch
+                      :isLast $ and
+                        is index (- @props.expr.size 1)
+                        > @props.level 0
+                      :isSimple isSimple
+                      :level $ + @props.level 1
+                    items.rest
+                    + index 1
+                    , isSimple
+
     div
       {} (:className className) (:onClick @onClick)
         :onDoubleClick @onDoubleClick
@@ -95,25 +129,7 @@ var
         :tabIndex 0
         :onKeyDown @onKeyDown
         :ref :root
-
-      @props.expr.map $ \\ (item index)
-        cond (is (typeof item) :string)
-          Token $ object (:token item) (:key index)
-            :coord $ @props.coord.push index
-            :dispatch @props.dispatch
-            :isHead (is index 0)
-          Expr $ object (:expr item) (:key index)
-            :coord $ @props.coord.push index
-            :dispatch @props.dispatch
-            :isLast $ and
-              is index (- @props.expr.size 1)
-              > @props.level 1
-            :isSimple $ and
-              detect.isSimple item
-              > @props.level 1
-              < index 4
-              isnt index (- @props.expr.size 1)
-            :level $ + @props.level 1
+      makeList (Immutable.List) @props.expr 0 true
 
   :renderFolded $ \ ()
     div
