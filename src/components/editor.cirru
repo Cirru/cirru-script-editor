@@ -18,6 +18,11 @@ var
     :tree $ . (React.PropTypes.instanceOf Immutable.List) :isRequired
     :onSave React.PropTypes.func.isRequired
     :height React.PropTypes.number.isRequired
+    :mixpanelTrack React.PropTypes.func
+
+  :getDefaultProps $ \ ()
+    {}
+      :mixpanelTrack $ \ ()
 
   :getInitialState $ \ ()
     {}
@@ -41,6 +46,7 @@ var
       ... newStore (get :tree) (toJS)
       ... newStore (get :focus) (toJS)
     @setState $ {} :model newStore
+    @props.mixpanelTrack (+ ":dispatch " type)
 
   :onSave $ \ (event)
     @props.onSave (@state.model.get :tree)
@@ -60,6 +66,7 @@ var
           :isSimple false
           :dispatch @dispatch
           :level 0
+          :mixpanelTrack @props.mixpanelTrack
         div ({} :style (@styleSpace))
 
   :styleRoot $ \ ()
