@@ -127,7 +127,7 @@ var
     cond (< data.size 2) data
       bind (data.butLast) $ \ (base)
         base.update (- base.size 1) $ \ (lastItem)
-          + lastItem (base.last)
+          + lastItem (data.last)
 
 = exports.updateToken $ \ (model data)
   var
