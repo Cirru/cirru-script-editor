@@ -118,6 +118,7 @@ var
                         not isSimple
                         is index (- @props.expr.size 1)
                         > @props.level 0
+                        not @props.isLast
                       :isSimple isSimple
                       :level $ + @props.level 1
                       :eventTrack @props.eventTrack
