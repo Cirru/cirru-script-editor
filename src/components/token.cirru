@@ -24,7 +24,7 @@ var
     :isHead T.bool.isRequired
     :coord $ . (T.instanceOf Immutable.List) :isRequired
     :dispatch T.func.isRequired
-    :mixpanelTrack T.func.isRequired
+    :eventTrack T.func.isRequired
 
   :isCaretAhead $ \ ()
     var inputEl @refs.input

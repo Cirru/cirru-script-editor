@@ -24,7 +24,7 @@ var
     :isSimple React.PropTypes.bool.isRequired
     :dispatch React.PropTypes.func.isRequired
     :level React.PropTypes.number.isRequired
-    :mixpanelTrack React.PropTypes.func.isRequired
+    :eventTrack React.PropTypes.func.isRequired
 
   :getInitialState $ \ () $ {}
     :isFolded false
@@ -37,7 +37,7 @@ var
     event.stopPropagation
     if (not @state.isFolded) $ do
       @setState $ {} :isFolded true
-      @props.mixpanelTrack ":folded expr"
+      @props.eventTrack ":folded expr"
     return
 
   :onUnfold $ \ (event)
@@ -101,7 +101,7 @@ var
                   :coord $ @props.coord.push index
                   :dispatch @props.dispatch
                   :isHead (is index 0)
-                  :mixpanelTrack @props.mixpanelTrack
+                  :eventTrack @props.eventTrack
                 items.rest
                 + index 1
                 , true
@@ -120,7 +120,7 @@ var
                         > @props.level 0
                       :isSimple isSimple
                       :level $ + @props.level 1
-                      :mixpanelTrack @props.mixpanelTrack
+                      :eventTrack @props.eventTrack
                     items.rest
                     + index 1
                     , false

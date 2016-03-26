@@ -33,10 +33,10 @@ var cachedAst $ JSON.parse $ or
     @setState $ {} :tree tree
     localStorage.setItem :cirru-ast $ JSON.stringify tree
 
-  :mixpanelTrack $ \ (name props)
+  :eventTrack $ \ (name props)
     console.log ":mixpanel track:" name props
 
   :render $ \ ()
     div ({})
       Editor $ {} :tree @state.tree :onSave @onSave :height @state.height
-        , :mixpanelTrack @mixpanelTrack
+        , :eventTrack @eventTrack
