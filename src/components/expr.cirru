@@ -112,7 +112,7 @@ var
                 + index 1
                 , true
               bind
-                and isLastSimple
+                and
                   detect.isSimple item
                   > @props.level 0
                 \\ (isSimple)
@@ -120,17 +120,17 @@ var
                     acc.push $ Expr $ {} (:expr item) (:key index)
                       :coord $ @props.coord.push index
                       :dispatch @props.dispatch
-                      :isLast $ and
+                      :isLast $ and isLastSimple
                         not isSimple
                         is index (- @props.expr.size 1)
                         > @props.level 0
                         not @props.isLast
-                      :isSimple isSimple
+                      :isSimple $ and isSimple isLastSimple
                       :level $ + @props.level 1
                       :eventTrack @props.eventTrack
                     items.rest
                     + index 1
-                    , false
+                    detect.isSimple item
 
     div
       {} (:className className) (:onClick @onClick)
