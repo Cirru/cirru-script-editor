@@ -48,7 +48,9 @@ var
     event.stopPropagation
 
   :onKeyDown $ \ (event)
-    var keyCode event.keyCode
+    var
+      keyCode event.keyCode
+      target event.target
     switch keyCode
       keydownCode.enter
         event.stopPropagation
@@ -76,20 +78,28 @@ var
             event.preventDefault
       keydownCode.left
         event.stopPropagation
-        if (@isCaretAhead)
-          do $ @props.dispatch :go-left @props.coord
+        if (is target.selectionStart target.selectionEnd) $ do
+          if (@isCaretAhead)
+            do $ @props.dispatch :go-left @props.coord
+        return
       keydownCode.right
         event.stopPropagation
-        if (@isCaretBehind)
-          do $ @props.dispatch :go-right @props.coord
+        if (is target.selectionStart target.selectionEnd) $ do
+          if (@isCaretBehind)
+            do $ @props.dispatch :go-right @props.coord
+        return
       keydownCode.up
         event.stopPropagation
-        if (@isCaretAhead)
-          do $ @props.dispatch :go-up @props.coord
+        if (is target.selectionStart target.selectionEnd) $ do
+          if (@isCaretAhead)
+            do $ @props.dispatch :go-up @props.coord
+        return
       keydownCode.down
         event.stopPropagation
-        if (@isCaretBehind)
-          do $ @props.dispatch :go-right @props.coord
+        if (is target.selectionStart target.selectionEnd) $ do
+          if (@isCaretBehind)
+            do $ @props.dispatch :go-right @props.coord
+        return
     return
 
   :render $ \ ()
