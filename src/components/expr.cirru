@@ -98,7 +98,7 @@ var
         :is-empty $ is @props.expr.size 0
         :is-root $ is @props.coord.size 0
 
-      makeList $ \\ (acc items index isLastSimple)
+      makeList $ \\ (acc items index lastKind)
         cond (is items.size 0) acc
           bind (items.first) $ \\ (item)
             cond (is (typeof item) :string)
@@ -110,7 +110,7 @@ var
                   :eventTrack @props.eventTrack
                 items.rest
                 + index 1
-                , true
+                , :token
               bind
                 and
                   detect.isSimple item
@@ -120,17 +120,19 @@ var
                     acc.push $ Expr $ {} (:expr item) (:key index)
                       :coord $ @props.coord.push index
                       :dispatch @props.dispatch
-                      :isLast $ and isLastSimple
+                      :isLast $ and
+                        in ([] :token :shallow-expr) lastKind
                         not isSimple
                         is index (- @props.expr.size 1)
                         > @props.level 0
                         not @props.isLast
-                      :isSimple $ and isSimple isLastSimple
+                      :isSimple $ and isSimple
+                        in ([] :token) lastKind
                       :level $ + @props.level 1
                       :eventTrack @props.eventTrack
                     items.rest
                     + index 1
-                    detect.isSimple item
+                    cond (detect.isSimple item) :shallow-expr :deep-expr
 
     div
       {} (:className className) (:onClick @onClick)
@@ -139,7 +141,7 @@ var
         :tabIndex 0
         :onKeyDown @onKeyDown
         :ref :root
-      makeList (Immutable.List) @props.expr 0 true
+      makeList (Immutable.List) @props.expr 0 :none
 
   :renderFolded $ \ ()
     div
