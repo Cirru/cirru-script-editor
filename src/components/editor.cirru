@@ -62,8 +62,7 @@ var
         Expr $ {}
           :expr $ @state.model.get :tree
           :coord (Immutable.List)
-          :isLast false
-          :isSimple false
+          :displayKind :normal
           :dispatch @dispatch
           :level 0
           :eventTrack @props.eventTrack

@@ -20,8 +20,7 @@ var
   :propTypes $ object
     :expr $ . (React.PropTypes.instanceOf Immutable.List) :isRequired
     :coord $ . (React.PropTypes.instanceOf Immutable.List) :isRequired
-    :isLast React.PropTypes.bool.isRequired
-    :isSimple React.PropTypes.bool.isRequired
+    :displayKind React.PropTypes.string.isRequired
     :dispatch React.PropTypes.func.isRequired
     :level React.PropTypes.number.isRequired
     :eventTrack React.PropTypes.func.isRequired
@@ -91,12 +90,15 @@ var
 
   :renderExpr $ \ ()
     var
-      className $ cx $ object
-        :cirru-expr true
-        :is-last @props.isLast
-        :is-simple @props.isSimple
-        :is-empty $ is @props.expr.size 0
-        :is-root $ is @props.coord.size 0
+      className $ cx
+        {}
+          :cirru-expr true
+          :is-empty $ is @props.expr.size 0
+          :is-root $ is @props.coord.size 0
+        case @props.displayKind
+          :inline :is-simple
+          :tail :is-last
+          else null
 
       makeList $ \\ (acc items index lastKind)
         cond (is items.size 0) acc
@@ -120,14 +122,21 @@ var
                     acc.push $ Expr $ {} (:expr item) (:key index)
                       :coord $ @props.coord.push index
                       :dispatch @props.dispatch
-                      :isLast $ and
-                        in ([] :token :shallow-expr) lastKind
-                        not isSimple
-                        is index (- @props.expr.size 1)
-                        > @props.level 0
-                        not @props.isLast
-                      :isSimple $ and isSimple
-                        in ([] :token) lastKind
+                      :displayKind $ cond
+                        and
+                          in ([] :token :shallow-expr) lastKind
+                          > @props.level 0
+                        cond
+                          and
+                            isnt @props.displayKind :tail
+                            is index (- @props.expr.size 1)
+
+                          , :tail
+                          cond
+                            and isSimple
+                              is lastKind :token
+                            , :inline :normal
+                        , :normal
                       :level $ + @props.level 1
                       :eventTrack @props.eventTrack
                     items.rest
