@@ -81,6 +81,12 @@ var
         event.stopPropagation
         @props.dispatch :go-down @props.coord
         event.preventDefault
+      keydownCode.space
+        event.stopPropagation
+        if (not event.shiftKey)
+          do
+            @props.dispatch :after-token @props.coord
+            event.preventDefault
     return
 
   :renderExpr $ \ ()
