@@ -80,6 +80,8 @@ var
             @props.dispatch :remove-node @props.coord
             event.stopPropagation
             event.preventDefault
+          do $ if event.shiftKey
+            do $ @props.dispatch :remove-node @props.coord
       keydownCode.left
         event.stopPropagation
         if (is target.selectionStart target.selectionEnd) $ do
