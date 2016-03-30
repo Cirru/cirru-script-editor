@@ -78,8 +78,10 @@ var
         event.preventDefault
       keydownCode.down
         event.stopPropagation
-        @props.dispatch :go-down @props.coord
         event.preventDefault
+        if event.shiftKey
+          do $ @props.dispatch :go-down-tail @props.coord
+          do $ @props.dispatch :go-down @props.coord
       keydownCode.space
         event.stopPropagation
         if (not event.shiftKey)

@@ -23,6 +23,7 @@ var
       :go-right logic.goRight
       :go-up logic.goUp
       :go-down logic.goDown
+      :go-down-tail logic.goDownTail
       else id
 
   handler store data

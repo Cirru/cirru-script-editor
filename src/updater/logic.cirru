@@ -96,6 +96,12 @@ var
       target $ tree.getIn $ data.toJS
     cond (target.has 0) suppose data
 
+  goDownTail $ \ (tree data)
+    var
+      target $ tree.getIn $ data.toJS
+      suppose $ data.push (- target.size 1)
+    cond (> target.size 0) suppose data
+
   prevLineHelper $ \ (tree data)
     var
       target $ tree.getIn (... data (butLast) (toJS))
@@ -222,3 +228,9 @@ var
     tree $ model.get :tree
   ... model
     set :focus $ goDown tree data
+
+= exports.goDownTail $ \ (model data)
+  var
+    tree $ model.get :tree
+  ... model
+    set :focus $ goDownTail tree data

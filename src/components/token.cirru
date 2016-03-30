@@ -59,10 +59,14 @@ var
           do $ @props.dispatch :after-token @props.coord
       keydownCode.space
         event.stopPropagation
-        if (not event.shiftKey)
-          do
-            @props.dispatch :after-token @props.coord
-            event.preventDefault
+        if (not event.altKey)
+          do $ if event.shiftKey
+            do
+              event.preventDefault
+              @props.dispatch :before-token @props.coord
+            do
+              event.preventDefault
+              @props.dispatch :after-token @props.coord
       keydownCode.tab
         event.preventDefault
         event.stopPropagation
