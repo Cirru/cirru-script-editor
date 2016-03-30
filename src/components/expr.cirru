@@ -156,29 +156,12 @@ var
     div
       {} :onClick @onUnfold :onDoubleClick @onDoubleClick
         , :tabIndex null :key :unfocused
-        , :style @styleFolded
+        , :className ":cirru-expr is-folded"
       format.plain @props.expr
 
   :render $ \ ()
     cond @state.isFolded
       @renderFolded
       @renderExpr
-
-  :styleFolded $ {}
-    :color :white
-    :WebkitUserSelect :none
-    :whiteSpace :nowrap
-    :fontFamily ":Menlo, Consolas, monospace"
-    :fontSize 12
-    :color $ hsl 0 0 50
-    :padding ":0 4px"
-    :lineHeight :24px
-    :maxWidth 400
-    :overflow :hidden
-    :textOverflow :ellipsis
-    :margin ":2px 0"
-    :cursor :pointer
-    :borderRadius 4
-    :border $ + ":1px solid " (hsl 0 0 50)
 
 var Expr $ React.createFactory module.exports

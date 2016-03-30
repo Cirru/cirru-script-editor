@@ -69,6 +69,26 @@
   margin-bottom: 0;
 }
 
+.cirru-expr.is-folded {
+  -webkit-user-select: none;
+  white-space: nowrap;
+  font-family: Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: hsl(0, 0%, 60%);
+  padding: 0 8px;
+  line-height: 24px;
+  max-width: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 2px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: hsl(180,10%,18%);
+  border: none;
+  display: inline-block;
+  vertical-align: top;
+}
+
 input.cirru-token {
   margin-right: 4px;
   border: none;
