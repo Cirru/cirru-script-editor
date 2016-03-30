@@ -2,6 +2,7 @@
 var
   hsl $ require :hsl
   React $ require :react
+  keycode $ require :keycode
   Immutable $ require :immutable
   cx $ require :classnames
 
@@ -88,6 +89,13 @@ var
           do
             @props.dispatch :after-token @props.coord
             event.preventDefault
+      (keycode :d)
+        if
+          and event.shiftKey event.metaKey
+          do
+            event.stopPropagation
+            event.preventDefault
+            @props.dispatch :duplicate @props.coord
     return
 
   :renderExpr $ \ ()

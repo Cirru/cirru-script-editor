@@ -234,3 +234,17 @@ var
     tree $ model.get :tree
   ... model
     set :focus $ goDownTail tree data
+
+= exports.duplicate $ \ (model data)
+  ... model
+    update :tree $ \ (tree)
+      ... tree
+        updateIn
+          ... data (butLast) (toJS)
+          \ (expr)
+            expr.insert
+              data.last
+              tree.getIn (data.toJS)
+    update :focus $ \ (focus)
+      ... focus (butLast)
+        push $ + (focus.last) 1

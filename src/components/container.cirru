@@ -34,7 +34,7 @@ var cachedAst $ JSON.parse $ or
     localStorage.setItem :cirru-ast $ JSON.stringify tree
 
   :eventTrack $ \ (name props)
-    console.log ":mixpanel track:" name props
+    console.log ":event track:" name props
 
   :render $ \ ()
     div ({})

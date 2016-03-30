@@ -24,6 +24,7 @@ var
       :go-up logic.goUp
       :go-down logic.goDown
       :go-down-tail logic.goDownTail
+      :duplicate logic.duplicate
       else id
 
   handler store data
