@@ -85,7 +85,10 @@ var
           do $ @props.dispatch :go-down @props.coord
       keydownCode.space
         event.stopPropagation
-        if (not event.shiftKey)
+        if event.shiftKey
+          do
+            @props.dispatch :before-token @props.coord
+            event.preventDefault
           do
             @props.dispatch :after-token @props.coord
             event.preventDefault
