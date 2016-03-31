@@ -85,7 +85,7 @@ var
           do $ @props.dispatch :go-down @props.coord
       keydownCode.space
         event.stopPropagation
-        if event.shiftKey
+        if (or event.shiftKey event.altKey)
           do
             @props.dispatch :before-token @props.coord
             event.preventDefault
