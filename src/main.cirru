@@ -8,13 +8,20 @@ var
   keydownCode $ require :./util/keydown-code
 
   Container $ React.createFactory $ require :./components/container
+  Immutable $ require :immutable
+  installDevTools $ require :immutable-devtools
+
+installDevTools Immutable
 
 = window.isCirruLogOn true
 
 ReactDOM.render (Container) (document.querySelector :#app)
 
 window.addEventListener :keydown $ \ (event)
-  if (is event.keyCode keydownCode.cancel)
+  if
+    and
+      is event.keyCode keydownCode.cancel
+      is event.target document.body
     do
       console.log :blocked
       event.preventDefault

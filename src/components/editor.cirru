@@ -8,6 +8,7 @@ var
   updater $ require :../updater
 
   Expr $ React.createFactory $ require :./expr
+  Summary $ React.createFactory $ require :./summary
 
   ({}~ div) React.DOM
 
@@ -27,45 +28,80 @@ var
   :getInitialState $ \ ()
     {}
       :model $ schema.model.set :tree @props.tree
+      :pointer 0
 
   :componentDidUpdate $ \ ()
     var
       target $ @state.model.get :focus
       targetId $ ... target (unshift :leaf) (join :-)
       targetEl $ document.getElementById targetId
+
     -- "|has bug, wait for new frame"
     requestAnimationFrame $ \ ()
-      targetEl.focus
+      if (? targetEl) $ do
+        targetEl.focus
+      return
     return
 
   :dispatch $ \ (type data)
-    -- console.log :dispatch type dat
+    -- console.log :dispatch type data
     var
       newStore $ updater @state.model type (Immutable.fromJS data)
     -- console.log
+      newStore @state.model
       ... newStore (get :tree) (toJS)
       ... newStore (get :focus) (toJS)
     @setState $ {} :model newStore
     @props.eventTrack (+ ":dispatch " type)
 
+  :onMovePointer $ \ (pointer)
+    @setState $ {} :pointer pointer
+
   :onSave $ \ (event)
     @props.onSave (@state.model.get :tree)
+
+  :onLineAdd $ \ (event)
+    var
+      tree $ @state.model.get :tree
+      pointer $ cond event.shiftKey @state.pointer (+ 1 @state.pointer)
+
+    @dispatch :create-line pointer
+    @onMovePointer pointer
+
+  :onLineRm $ \ (event)
+    var
+      tree $ @state.model.get :tree
+    if (tree.has @state.pointer) $ do
+      @dispatch :remove-node $ Immutable.fromJS $ [] @state.pointer
+      @onMovePointer (- @state.pointer 1)
+    return
 
   :render $ \ ()
     div ({} :className :cirru-editor :style (@styleRoot))
       div ({} :className :cirru-toolbar)
+        div ({} :className :cirru-tool-button :onClick @onLineAdd) :add
+        div ({} :className :cirru-tool-button :onClick @onLineRm) :rm
         cond
           not $ Immutable.is (@state.model.get :tree) @props.tree
-          div ({} :className :cirru-tool-button :onClick @onSave) ":save"
+          div ({} :className :cirru-tool-button :onClick @onSave) :save
+      Summary $ {}
+        :expr $ @state.model.get :tree
+        :pointer @state.pointer
+        :onMovePointer @onMovePointer
+        :dispatch @dispatch
       div ({} :className :cirru-container)
         div ({} :style (@styleSmallSpace))
-        Expr $ {}
-          :expr $ @state.model.get :tree
-          :coord (Immutable.List)
-          :displayKind :normal
-          :dispatch @dispatch
-          :level 0
-          :eventTrack @props.eventTrack
+        cond
+          ... @state.model (get :tree) (has @state.pointer)
+          Expr $ {}
+            :expr $ ... @state.model
+              get :tree
+              get @state.pointer
+            :coord (Immutable.fromJS $ [] @state.pointer)
+            :displayKind :normal
+            :dispatch @dispatch
+            :level 0
+            :eventTrack @props.eventTrack
         div ({} :style (@styleSpace))
 
   :styleRoot $ \ ()

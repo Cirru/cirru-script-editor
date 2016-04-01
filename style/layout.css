@@ -1,10 +1,17 @@
 
 @import url(./fonts/source-code-pro.css);
 
+.cirru-container {
+  overflow: auto;
+  flex: 1;
+}
+
 ::selection {
   color: hsl(360, 100%, 90%);
   background-color: hsla(200, 10%, 30%, 0.5);
 }
+
+/* editor */
 
 .cirru-editor {
   background-color: hsla(160,20%,0%,1);
@@ -15,12 +22,14 @@
   width: 100%;
   overflow-y: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .cirru-editor * {
   box-sizing: border-box;
 }
+
+/* expression */
 
 .cirru-expr:focus, input.cirru-token:focus {
   outline: none;
@@ -71,7 +80,7 @@
 .cirru-expr.is-folded {
   -webkit-user-select: none;
   white-space: nowrap;
-  font-family: Menlo, Consolas, monospace;
+  font-family: Source Code Pro, Menlo, Consolas, monospace;
   font-size: 12px;
   color: hsl(0, 0%, 60%);
   padding: 0 8px;
@@ -87,6 +96,8 @@
   display: inline-block;
   vertical-align: top;
 }
+
+/* token */
 
 input.cirru-token {
   margin-right: 4px;
@@ -110,10 +121,11 @@ input.cirru-token.is-fuzzy {
   background-color: hsla(200, 0%, 100%,0.15);
 }
 
+/* toolbar */
+
 .cirru-toolbar {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 248px;
   display: flex;
   align-items: center;
   height: 30px;
@@ -130,12 +142,10 @@ input.cirru-token.is-fuzzy {
   height: 18px;
   cursor: pointer;
   display: inline-block;
+  margin-right: 8px;
 }
 
-.cirru-container {
-  overflow: auto;
-  flex: 1;
-}
+/* scrollbar */
 
 ::-webkit-scrollbar {
   width: 4px;
@@ -143,4 +153,52 @@ input.cirru-token.is-fuzzy {
 
 ::-webkit-scrollbar-thumb {
   background-color: hsla(180, 100%, 50%, 0.2);
+}
+
+/* summary */
+
+.cirru-summary {
+  color: white;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cirru-summary-box {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 160px;
+}
+
+.cirru-query {
+  border: none;
+  outline: none;
+  font-family: Source Code Pro, Menlo, Consolas, monospace;
+  height: 32px;
+  line-height: 32px;
+  font-size: 14px;
+  width: 100%;
+  background-color: hsla(0, 100%, 100%, 0.2);
+  padding: 0 8px;
+  color: white;
+}
+
+.cirru-summary-line {
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: Source Code Pro, Menlo, Consolas, monospace;
+  font-size: 14px;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 8px;
+  color: hsl(140,50%,80%);
+  cursor: pointer;
+}
+
+.cirru-summary-line.is-empty {
+  background-color: hsla(0,100%,60%,0.6);
+}
+
+.cirru-summary-line.is-selected {
+  background-color: hsla(0,0%,100%,0.3);
 }

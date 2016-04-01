@@ -187,6 +187,12 @@ var
       nextLineHelper tree data
     set :focus $ focusNextLine (model.get :tree) data
 
+= exports.createLine $ \ (model data)
+  ... model
+    update :tree $ \ (tree)
+      tree.insert data $ Immutable.fromJS ([])
+    set :focus $ Immutable.fromJS $ [] data
+
 = exports.packNode $ \ (model data)
   ... model
     update :tree $ \ (tree)

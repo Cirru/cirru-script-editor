@@ -129,7 +129,7 @@ var
               bind
                 and
                   detect.isSimple item
-                  > @props.level 0
+                  >= @props.level 0
                 \\ (isSimple)
                   makeList
                     acc.push $ Expr $ {} (:expr item) (:key index)
@@ -138,7 +138,7 @@ var
                       :displayKind $ cond
                         and
                           in ([] :token :shallow-expr) lastKind
-                          > @props.level 0
+                          >= @props.level 0
                         cond
                           and
                             isnt @props.displayKind :tail

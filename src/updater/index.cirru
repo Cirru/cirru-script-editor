@@ -14,6 +14,7 @@ var
       :after-token logic.afterToken
       :prev-line logic.prevLine
       :next-line logic.nextLine
+      :create-line logic.createLine
       :prepend-token logic.prependToken
       :pack-node logic.packNode
       :unpack-expr logic.unpackExpr
