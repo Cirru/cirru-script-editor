@@ -20,15 +20,15 @@ var
 
   :filterLines $ \ ()
     ... @props.expr
-      map $ \ (line)
-        cond
-          is :string $ typeof (line.get 1)
-          + (line.get 0) ": " (line.get 1)
-          or (line.get 0) :
-      filter $ \\ (line)
-        <= 0 (line.indexOf @state.query)
       map $ \ (line index)
-        Immutable.fromJS $ [] line index
+        Immutable.fromJS $ [] index
+          cond
+            is :string $ typeof (line.get 1)
+            + (line.get 0) ": " (line.get 1)
+            or (line.get 0) :
+      filter $ \\ (line)
+        <= 0
+          ... line (get 1) (indexOf @state.query)
 
   :onQueryChange $ \ (event)
     event.stopPropagation
@@ -43,14 +43,15 @@ var
       div ({} :className :cirru-summary-box)
         ... (@filterLines) $ map $ \\ (line)
           var
-            pointer $ line.get 1
+            pointer $ line.get 0
+            content $ line.get 1
             onClick $ \\ ()
               @props.onMovePointer pointer
           div
             {}
               :className $ cx :cirru-summary-line
                 cond (is @props.pointer pointer) :is-selected
-                cond (is (line.get 0) :) :is-empty
+                cond (is content :) :is-empty
               :onClick onClick
               :key pointer
-            line.get 0
+            , content

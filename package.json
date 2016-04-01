@@ -1,6 +1,6 @@
 {
   "name": "cirru-editor",
-  "version": "0.6.15",
+  "version": "0.6.16",
   "description": "Editor of Cirru grammar",
   "main": "lib/components/editor.js",
   "scripts": {
