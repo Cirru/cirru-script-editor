@@ -57,7 +57,8 @@ var
           (or event.metaKey event.ctrlKey)
             @props.dispatch :prepend-token @props.coord
           else
-            @props.dispatch :after-token @props.coord
+            if (> @props.coord.size 1) $ do
+              @props.dispatch :after-token @props.coord
       keydownCode.tab
         event.stopPropagation
         if event.shiftKey
@@ -90,7 +91,8 @@ var
             @props.dispatch :before-token @props.coord
             event.preventDefault
           do
-            @props.dispatch :after-token @props.coord
+            if (> @props.coord.size 1) $ do
+              @props.dispatch :after-token @props.coord
             event.preventDefault
       (keycode :d)
         if
