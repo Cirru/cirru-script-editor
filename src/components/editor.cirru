@@ -67,6 +67,7 @@ var
 
     @dispatch :create-line pointer
     @onMovePointer pointer
+    @props.eventTrack :line-add
 
   :onLineRm $ \ (event)
     var
@@ -74,6 +75,7 @@ var
     if (tree.has @state.pointer) $ do
       @dispatch :remove-node $ Immutable.fromJS $ [] @state.pointer
       @onMovePointer (- @state.pointer 1)
+      @props.eventTrack :line-add
     return
 
   :render $ \ ()
@@ -89,6 +91,7 @@ var
         :pointer @state.pointer
         :onMovePointer @onMovePointer
         :dispatch @dispatch
+        :eventTrack @props.eventTrack
       div ({} :className :cirru-container)
         div ({} :style (@styleSmallSpace))
         cond

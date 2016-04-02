@@ -14,6 +14,7 @@ var
     :pointer React.PropTypes.number.isRequired
     :onMovePointer React.PropTypes.func.isRequired
     :dispatch React.PropTypes.func.isRequired
+    :eventTrack React.PropTypes.func.isRequired
 
   :getInitialState $ \ ()
     {} :query :
@@ -47,6 +48,7 @@ var
             content $ line.get 1
             onClick $ \\ ()
               @props.onMovePointer pointer
+              @props.eventTrack :move-pointer
           div
             {}
               :className $ cx :cirru-summary-line
