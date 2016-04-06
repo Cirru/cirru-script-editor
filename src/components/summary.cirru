@@ -48,6 +48,7 @@ var
             content $ line.get 1
             onClick $ \\ ()
               @props.onMovePointer pointer
+              @props.dispatch :focus-to $ Immutable.fromJS $ [] pointer
               @props.eventTrack :move-pointer
           div
             {}

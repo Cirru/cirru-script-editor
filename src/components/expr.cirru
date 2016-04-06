@@ -86,14 +86,18 @@ var
           do $ @props.dispatch :go-down @props.coord
       keydownCode.space
         event.stopPropagation
-        if (or event.shiftKey event.altKey)
+        if (is @props.level 0)
           do
-            @props.dispatch :before-token @props.coord
+            @props.dispatch :prepend-token @props.coord
             event.preventDefault
-          do
-            if (> @props.coord.size 1) $ do
-              @props.dispatch :after-token @props.coord
-            event.preventDefault
+          do $ if (or event.shiftKey event.altKey)
+            do
+              @props.dispatch :before-token @props.coord
+              event.preventDefault
+            do
+              if (> @props.coord.size 1) $ do
+                @props.dispatch :after-token @props.coord
+              event.preventDefault
       (keycode :d)
         if
           and event.shiftKey event.metaKey
