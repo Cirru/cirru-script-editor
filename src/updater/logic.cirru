@@ -191,7 +191,8 @@ var
   ... model
     update :tree $ \ (tree)
       tree.insert data $ Immutable.fromJS ([])
-    set :focus $ Immutable.fromJS $ [] data
+    set :focus $ Immutable.fromJS $ []
+      cond (Immutable.is (model.get :tree) (Immutable.List)) 0 data
 
 = exports.packNode $ \ (model data)
   ... model

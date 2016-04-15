@@ -66,7 +66,7 @@ var
       pointer $ cond event.shiftKey @state.pointer (+ 1 @state.pointer)
 
     @dispatch :create-line pointer
-    @onMovePointer pointer
+    @onMovePointer (cond (is tree.size 0) 0 pointer)
     @props.eventTrack :line-add
 
   :onLineRm $ \ (event)
