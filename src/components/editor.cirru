@@ -2,6 +2,7 @@
 var
   hsl $ require :hsl
   React $ require :react
+  keycode $ require :keycode
   Immutable $ require :immutable
 
   schema $ require :../schema
@@ -78,8 +79,17 @@ var
       @props.eventTrack :line-add
     return
 
+  :onKeyDown $ \ (event)
+    if
+      and event.metaKey
+        is (keycode event.keyCode) :s
+      do
+        event.preventDefault
+        @props.onSave (@state.model.get :tree)
+    return
+
   :render $ \ ()
-    div ({} :className :cirru-editor :style (@styleRoot))
+    div ({} :className :cirru-editor :style (@styleRoot) :onKeyDown @onKeyDown)
       div ({} :className :cirru-toolbar)
         div ({} :className :cirru-tool-button :onClick @onLineAdd) :add
         div ({} :className :cirru-tool-button :onClick @onLineRm) :rm
