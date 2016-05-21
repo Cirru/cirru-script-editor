@@ -37,10 +37,6 @@ var
 
   :render $ \ ()
     div ({} :className :cirru-summary)
-      input $ {} (:className :cirru-query)
-        :value @state.query
-        :onChange @onQueryChange
-        :placeholder ":filter..."
       div ({} :className :cirru-summary-box)
         ... (@filterLines) $ map $ \\ (line)
           var
@@ -58,3 +54,7 @@ var
               :onClick onClick
               :key pointer
             , content
+      input $ {} (:className :cirru-query)
+        :value @state.query
+        :onChange @onQueryChange
+        :placeholder ":filter..."

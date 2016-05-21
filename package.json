@@ -1,10 +1,11 @@
 {
   "name": "cirru-editor",
-  "version": "0.6.20",
+  "version": "0.6.21",
   "description": "Editor of Cirru grammar",
   "main": "lib/components/editor.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "gulp script"
   },
   "author": "jiyinyiyong",
   "license": "MIT",

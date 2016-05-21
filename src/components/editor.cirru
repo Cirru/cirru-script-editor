@@ -61,6 +61,10 @@ var
   :onSave $ \ (event)
     @props.onSave (@state.model.get :tree)
 
+  :onDiscard $ \ (event)
+    @setState $ {}
+      :model $ schema.model.set :tree @props.tree
+
   :onLineAdd $ \ (event)
     var
       tree $ @state.model.get :tree
@@ -89,13 +93,16 @@ var
     return
 
   :render $ \ ()
+    var changed
+      not $ Immutable.is (@state.model.get :tree) @props.tree
     div ({} :className :cirru-editor :style (@styleRoot) :onKeyDown @onKeyDown)
       div ({} :className :cirru-toolbar)
         div ({} :className :cirru-tool-button :onClick @onLineAdd) :add
         div ({} :className :cirru-tool-button :onClick @onLineRm) :rm
-        cond
-          not $ Immutable.is (@state.model.get :tree) @props.tree
+        cond changed
           div ({} :className :cirru-tool-button :onClick @onSave) :save
+        cond changed
+          div ({} :className :cirru-tool-button :onClick @onDiscard) :discard
       Summary $ {}
         :expr $ @state.model.get :tree
         :pointer @state.pointer
