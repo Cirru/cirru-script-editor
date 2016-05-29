@@ -255,3 +255,20 @@ var
     update :focus $ \ (focus)
       ... focus (butLast)
         push $ + (focus.last) 1
+
+= exports.cut $ \ (model data)
+  var
+    tree $ model.get :tree
+    targetExpr $ tree.getIn data
+  ... model
+    set :clipboard targetExpr
+    set :tree $ tree.removeIn data
+
+= exports.paste $ \ (model data)
+  var
+    targetExpr $ or
+      model.get :clipboard
+      Immutable.List
+  ... model
+    update :tree $ \ (tree)
+      tree.setIn data targetExpr

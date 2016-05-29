@@ -26,6 +26,8 @@ var
       :go-down logic.goDown
       :go-down-tail logic.goDownTail
       :duplicate logic.duplicate
+      :cut logic.cut
+      :paste logic.paste
       else id
 
   handler store data

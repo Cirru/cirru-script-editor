@@ -105,6 +105,12 @@ var
             event.stopPropagation
             event.preventDefault
             @props.dispatch :duplicate @props.coord
+      (keycode :x)
+        if
+          or event.ctrlKey event.metaKey
+          do
+            event.stopPropagation
+            @props.dispatch :cut @props.coord
     return
 
   :renderExpr $ \ ()

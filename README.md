@@ -18,13 +18,13 @@ Demo http://repo.cirru.org/cirru-editor/
 * Tab
 * Shift Tab
 * Delete
+* Cut
+* Paste (Command D)
 
 ### To be done
 
 * Undo
 * Redo
-* Cut
-* Paste
 
 ### License
 

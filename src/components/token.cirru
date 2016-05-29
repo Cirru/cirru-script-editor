@@ -2,6 +2,7 @@
 var
   React $ require :react
   cx $ require :classnames
+  keycode $ require :keycode
   Immutable $ require :immutable
 
   search $ require :../util/search
@@ -106,6 +107,18 @@ var
           if (@isCaretBehind)
             do $ @props.dispatch :go-right @props.coord
         return
+      (keycode :x)
+        if
+          or event.ctrlKey event.metaKey
+          do
+            event.stopPropagation
+      (keycode :d)
+        if
+          or event.ctrlKey event.metaKey
+          do
+            event.stopPropagation
+            event.preventDefault
+            @props.dispatch :paste @props.coord
     return
 
   :render $ \ ()
