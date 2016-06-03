@@ -261,14 +261,12 @@ var
     tree $ model.get :tree
     targetExpr $ tree.getIn data
   ... model
-    set :clipboard targetExpr
     set :tree $ tree.removeIn data
 
 = exports.paste $ \ (model data)
   var
-    targetExpr $ or
-      model.get :clipboard
+    targetExpr $ or data
       Immutable.List
   ... model
     update :tree $ \ (tree)
-      tree.setIn data targetExpr
+      tree.setIn (model.get :focus) targetExpr

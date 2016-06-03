@@ -19,6 +19,7 @@ var cachedAst $ JSON.parse $ or
     {}
       :tree $ or (Immutable.fromJS cachedAst) (Immutable.List)
       :height window.innerHeight
+      :clipboard null
 
   :componentDidMount $ \ ()
     window.addEventListener :resize @onResize
@@ -33,10 +34,14 @@ var cachedAst $ JSON.parse $ or
     @setState $ {} :tree tree
     localStorage.setItem :cirru-ast $ JSON.stringify tree
 
+  :onClipboard $ \ (expression)
+    @setState $ {} :clipboard expression
+
   :eventTrack $ \ (name props)
     console.log ":event track:" name props
 
   :render $ \ ()
     div ({})
       Editor $ {} :tree @state.tree :onSave @onSave :height @state.height
-        , :eventTrack @eventTrack
+        , :eventTrack @eventTrack :clipboard @state.clipboard
+        , :onClipboard @onClipboard

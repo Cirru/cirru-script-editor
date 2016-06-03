@@ -119,6 +119,8 @@ var
             event.stopPropagation
             event.preventDefault
             @props.dispatch :paste @props.coord
+      (keycode :c)
+        event.stopPropagation
     return
 
   :render $ \ ()

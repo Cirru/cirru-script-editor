@@ -111,6 +111,12 @@ var
           do
             event.stopPropagation
             @props.dispatch :cut @props.coord
+      (keycode :c)
+        if
+          or event.ctrlKey event.metaKey
+          do
+            event.stopPropagation
+            @props.dispatch :copy @props.coord
     return
 
   :renderExpr $ \ ()

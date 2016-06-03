@@ -21,6 +21,8 @@ var
     :onSave React.PropTypes.func.isRequired
     :height React.PropTypes.number.isRequired
     :eventTrack React.PropTypes.func
+    :onClipboard React.PropTypes.func
+    :clipboard $ React.PropTypes.instanceOf Immutable.List
 
   :getDefaultProps $ \ ()
     {}
@@ -45,6 +47,8 @@ var
     return
 
   :dispatch $ \ (type data)
+    if (is type :paste) $ do
+      = data @props.clipboard
     -- console.log :dispatch type data
     var
       newStore $ updater @state.model type (Immutable.fromJS data)
@@ -52,6 +56,11 @@ var
       newStore @state.model
       ... newStore (get :tree) (toJS)
       ... newStore (get :focus) (toJS)
+    if (in ([] :cut :copy) type :cut) $ do
+      var expression $ ... @state.model
+        get :tree
+        getIn $ @state.model.get :focus
+      @props.onClipboard expression
     @setState $ {} :model newStore
     @props.eventTrack (+ ":dispatch " type)
 
