@@ -53,6 +53,7 @@ var
                 cond (is content :) :is-empty
               :onClick onClick
               :key pointer
+              :title content
             , content
       input $ {} (:className :cirru-query)
         :value @state.query

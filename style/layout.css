@@ -38,7 +38,7 @@
 .cirru-expr {
   min-height: 20px;
   border: none;
-  border: 1px solid hsla(0,100%,100%,0.25);
+  border: 1px solid hsla(0,100%,100%,0.18);
   border-width: 0px 0px 0px 1px;
   padding: 0px 0px 0px 0px;
   margin-top: 4px;
@@ -55,7 +55,7 @@
 .cirru-expr.is-last {
   display: inline-block;
   vertical-align: top;
-  margin-top: 0;
+  margin-top: 2px;
   margin-bottom: 0;
   margin-right: 0;
 }
@@ -125,7 +125,7 @@ input.cirru-token.is-fuzzy {
 
 .cirru-toolbar {
   position: absolute;
-  left: 248px;
+  left: 208px;
   display: flex;
   align-items: center;
   height: 30px;
@@ -136,7 +136,9 @@ input.cirru-token.is-fuzzy {
   color: white;
   font-size: 12px;
   font-family: Source Code Pro, Menlo, Consolas, monospace;
-  background-color: hsl(120,40%,40%);
+  color: hsl(0,0%,70%);
+  background-color: hsla(120,40%,90%,0.3);
+  border-radius: 4px;
   padding: 0 6px;
   line-height: 18px;
   height: 18px;
@@ -159,7 +161,7 @@ input.cirru-token.is-fuzzy {
 
 .cirru-summary {
   color: white;
-  width: 240px;
+  width: 200px;
   display: flex;
   flex-direction: column;
 }
@@ -186,12 +188,13 @@ input.cirru-token.is-fuzzy {
 .cirru-summary-line {
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   font-family: Source Code Pro, Menlo, Consolas, monospace;
-  font-size: 14px;
-  height: 32px;
+  font-size: 13px;
   line-height: 32px;
-  padding: 0 8px;
-  color: hsl(140,50%,80%);
+  height: 32px;
+  padding: 0 4px;
+  color: hsla(120,20%,70%,0.6);
   cursor: pointer;
 }
 
@@ -200,5 +203,5 @@ input.cirru-token.is-fuzzy {
 }
 
 .cirru-summary-line.is-selected {
-  background-color: hsla(0,0%,100%,0.3);
+  color: hsla(0,0%,100%,0.8);
 }
