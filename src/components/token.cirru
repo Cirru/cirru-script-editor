@@ -98,8 +98,7 @@ var
       keydownCode.up
         event.stopPropagation
         if (is target.selectionStart target.selectionEnd) $ do
-          if (@isCaretAhead)
-            do $ @props.dispatch :go-up @props.coord
+          @props.dispatch :go-up @props.coord
         return
       keydownCode.down
         event.stopPropagation

@@ -16,7 +16,7 @@ gulp.task :rsync $ \ (cb)
       :src $ [] :build/*
       :recursive true
       :args $ [] :--verbose
-      :dest :tiye:~/repo/Cirru/cirru-editor/
+      :dest :tiye.me:~/repo/Cirru/cirru-editor/
       :deleteAll true
     \ (error stdout stderr cmd)
       console.log cmd
